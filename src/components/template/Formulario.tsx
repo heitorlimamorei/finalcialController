@@ -23,13 +23,13 @@ function Formulario() {
         <div className="w-full h-full">
         <form className="max-w-xl  mx-auto  my-10 p-10 bg-[#E0E5EC] dark:bg-[#232323] rounded-xl dark:shadow-[12px_12px_32px_#0f0f0f,-12px_-12px_32px_#373737]
         shadow-[12px_12px_32px_#5e6063,-12px_-12px_32px_#ffffff] dark:text-white">
-            <div className="mb-6">
+            <div className="mb-3">
                 <StarsRating
                     onRating={handleRating}
                 />
             </div>
 
-            <label htmlFor="text" className="">Escreva uma review sobre o que você achou do app para ajudar-nos a melhorar!</label>
+            <div className="mb-3"><label htmlFor="text" className="">Escreva uma review sobre o que você achou do app para ajudar-nos a melhorar!</label></div>
             <Input
             id="review"
             name="review"
