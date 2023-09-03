@@ -23,6 +23,7 @@ import IfSheetIsLoaded from "../../../components/IfSheetIsLoaded";
 import ExpenseChart from "../../../components/ExpenseChart";
 import useAuth from "../../../data/hook/useAuth";
 import ItemsFeed from "../../../components/ItemsFeed";
+import TimeLineFeed from "../../../components/ItemsTimeLine/Feed";
 
 function EditSheet() {
   const { BASE_URL } = variaveis;
@@ -304,10 +305,15 @@ function EditSheet() {
             setIsOpen4={setIsOpen4}
             toogleChart={toggleVisibility}
           />
-          <ItemsFeed
+         {
+          /* 
+           <ItemsFeed
             setEditMode={setEditMode}
             itemsRenderOptions={itemsRenderOptions}
           />
+          */
+         }
+         <TimeLineFeed />
         </IfSheetIsLoaded>
       </Layout>
     </div>

@@ -11,3 +11,11 @@ export const hasDatePassed = (date: firebaseTimesStampType) => {
   const today = new Date();
   return dateF < today;
 };
+
+export const formatDate = (date: Date): string =>  {
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let dayString = day < 10 ?  day.toString().padStart(2, "0") : day;
+  let monthString = month < 10 ? month.toString().padStart(2, "0") : month;
+  return `${dayString}/${monthString}`;
+}

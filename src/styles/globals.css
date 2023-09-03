@@ -6,21 +6,20 @@
 
 @import "tailwindcss/utilities";
 html,
-body{
-    font-family: 'Poppins', monospace;
-    ::-webkit-scrollbar {
-        width: 20px;
-        height: 20px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background-color: #626262;
-        border-radius: 20px;
-        border: 6px solid transparent;
-        background-clip: padding-box;
-        box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.2),
-          inset -5px -5px 10px rgba(0, 0, 0, 0.2);
-      }
+body {
+  font-family: 'Poppins', monospace;
 
-    
+  ::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #626262;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 2px 2px 5px rgba(255, 255, 255, 0.2),
+      inset -5px -5px 10px rgba(0, 0, 0, 0.2);
+  }
 }
-  
