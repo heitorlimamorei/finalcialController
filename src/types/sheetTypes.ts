@@ -200,3 +200,15 @@ export interface newOkrJsonProps {
   value: number;
   isPercentual: boolean;
 }
+
+export interface IOkrFrontProps {
+  id: string;
+  sheetId: string;
+  start_cycle: Date;
+  end_cycle: Date;
+  createdAt: Date;
+  author: string;
+  spentType: string;
+  value: number;
+  isPercentual: boolean;
+}
