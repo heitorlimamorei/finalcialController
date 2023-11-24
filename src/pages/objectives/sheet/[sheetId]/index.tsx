@@ -4,14 +4,27 @@ import { IOkrFrontProps, IOkrProps } from '../../../../types/sheetTypes';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import variaveis from '../../../../model/variaveis';
-import { toggleJsonToDate } from '../../../../utils/dateMethods';
+import { toggleDateToJson, toggleJsonToDate } from '../../../../utils/dateMethods';
+import CreateOkr from '../../../../components/Objectives/CreateOkr';
+import ModalForm from '../../../../components/template/ModalForm';
 
 const { BASE_URL } = variaveis;
+
+interface ISendFormProps {
+  start_cycle: Date;
+  end_cycle: Date;
+  author: string;
+  spentType: string;
+  value: number;
+  isPercentual: boolean;
+}
 
 const Objectives = () => {
   const router = useRouter();
   const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
   const [okrRespository, setOkrRespository] = useState<IOkrFrontProps[]>([]);
+  const [sheetId, setSheetId] = useState<string>('');
+  const [createOkrModalIsOpen, setCreateOkrModalIsOpen] = useState<boolean>(false);
 
   const refreshOkrRespository = (rawRepository: IOkrProps[]): void => {
     const normalizeOkrs = (resp: IOkrProps[]): IOkrFrontProps[] => {
@@ -40,14 +53,42 @@ const Objectives = () => {
   };
 
   useEffect(() => {
-    const sheetId: any = router.query.sheetId;
-    if (!!sheetId) loadOkrs(sheetId);
+    const sheetIdTemp: any = router.query.sheetId;
+    if (!!sheetIdTemp) {
+      setSheetId(sheetIdTemp);
+      loadOkrs(sheetIdTemp);
+    }
   }, [router.query]);
 
   console.log(okrRespository);
 
+  const closeCreateModal = () => setCreateOkrModalIsOpen(false);
+
+  const handleCreate = async (FormProps: ISendFormProps): Promise<void> => {
+    console.log(FormProps);
+    const { status } = await axios.post(
+      '/api/okr',
+      {
+        sheetId,
+        ...FormProps,
+        start_cycle: toggleDateToJson(FormProps.start_cycle),
+        end_cycle: toggleDateToJson(FormProps.end_cycle),
+      },
+      {
+        baseURL: BASE_URL,
+      },
+    );
+    if (status == 200) loadOkrs(sheetId);
+    closeCreateModal();
+  };
+
   return (
-    <Layout titulo="Pagina inicial" subtitulo="Estamos construindo um admin template"></Layout>
+    <Layout titulo="Pagina inicial" subtitulo="Estamos construindo um admin template">
+      <button onClick={() => setCreateOkrModalIsOpen(true)}>abrir</button>
+      <ModalForm isOpen={createOkrModalIsOpen}>
+        <CreateOkr sheetId={sheetId} sendForm={handleCreate} handleCancel={closeCreateModal} />
+      </ModalForm>
+    </Layout>
   );
 };
 

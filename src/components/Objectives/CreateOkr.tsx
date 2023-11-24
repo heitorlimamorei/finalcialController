@@ -4,6 +4,10 @@ import Select from '../template/Select';
 import useAuth from '../../data/hook/useAuth';
 import { useEffect, useState } from 'react';
 import useSheets from '../../data/hook/useSheets';
+import DatepickerType from 'react-tailwindcss-datepicker/dist/index'; 
+import Datepicker from 'react-tailwindcss-datepicker'; 
+
+const DatepickerTs: typeof DatepickerType = Datepicker;
 
 interface ISendFormProps {
   start_cycle: Date;
@@ -20,19 +24,30 @@ interface ICreateOkrProps {
   handleCancel: () => void;
 }
 
+interface ITimesStamps {
+  startDate: Date;
+  endDate: Date;
+}
+
 export default function CreateOkr(props: ICreateOkrProps) {
   const { data } = useAuth();
   const { user } = data;
   const [meta, setMeta] = useState<number>(0);
   const [spendType, setSpendType] = useState<string>('');
-  async function handleSubmit() {
+  const [timesStamps, setTimesStamps] = useState<ITimesStamps>({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
+  async function handleSubmit(ev) {
+    ev.preventDefault();
     await props.sendForm({
       value: meta,
       spentType: spendType,
       author: user.email,
       isPercentual: true,
-      start_cycle: new Date(),
-      end_cycle: new Date(),
+      start_cycle: new Date(timesStamps.startDate),
+      end_cycle: new Date(timesStamps.endDate),
     });
   }
 
@@ -46,13 +61,16 @@ export default function CreateOkr(props: ICreateOkrProps) {
   }
 
   useEffect(() => {
-    LoadIfIsNotLogged();
-    if (sheet.data.tiposDeGastos.length > 0) {
-      setSpendType(sheet.data.tiposDeGastos[0]);
+    if(!!sheet.currentUser) {
+      LoadIfIsNotLogged();
+      if (sheet.data.tiposDeGastos.length > 0) {
+        setSpendType(sheet.data.tiposDeGastos[0]);
+      }
     }
+    console.log(sheet.currentUser);
   }, [props.sheetId, sheet]);
 
-  if (sheet.data.tiposDeGastos.length > 0) return;
+  if (sheet.data.tiposDeGastos.length <= 0) return;
 
   return (
     <form onSubmit={handleSubmit} className={`w-full h-full`}>
@@ -63,12 +81,12 @@ export default function CreateOkr(props: ICreateOkrProps) {
         </label>
         <Input
           ClassName=""
-          type="numeber"
-          id="name"
-          name="name"
-          placeholder="Nome"
+          type="number"
+          id="meta"
+          name="meta"
+          placeholder="meta"
           value={meta}
-          onChange={(ev) => setMeta(ev.target.value)}
+          onChange={(ev) => setMeta(parseFloat(ev.target.value))}
         />
       </div>
       <div className="mb-5">
@@ -77,13 +95,19 @@ export default function CreateOkr(props: ICreateOkrProps) {
         </label>
         <Select
           options={sheet.data.tiposDeGastos}
-          id="targetRole"
+          id="spentTypesTargetMeta"
           selected={spendType}
           handleselected={(ev) => setSpendType(ev.target.value)}
-          name="targetRole"
+          name="spentTypesTargetMeta"
           ClassName="p-3"
         />
       </div>
+      <DatepickerTs
+        value={timesStamps}
+        onChange={(nv: any) => setTimesStamps(nv)}
+        i18n="pt-br"
+        primaryColor={'blue'}
+      />
       <div className="flex justify-between">
         <Button
           ClassName="px-4 py-2 rounded-md"
