@@ -7,6 +7,7 @@ import variaveis from '../../../../model/variaveis';
 import { toggleDateToJson, toggleJsonToDate } from '../../../../utils/dateMethods';
 import CreateOkr from '../../../../components/Objectives/CreateOkr';
 import ModalForm from '../../../../components/template/ModalForm';
+import UpdateOkr from '../../../../components/Objectives/UpdateOkr';
 
 const { BASE_URL } = variaveis;
 
@@ -61,6 +62,7 @@ const Objectives = () => {
   }, [router.query]);
 
   const closeCreateModal = () => setCreateOkrModalIsOpen(false);
+  const closeUpdateModal = () => setCurrentEditingOkr(null);
 
   const handleCreate = async (FormProps: ISendFormProps): Promise<void> => {
     const { status } = await axios.post(
@@ -95,6 +97,7 @@ const Objectives = () => {
       },
     );
     if (status == 200) loadOkrs(sheetId);
+    closeUpdateModal();
   };
 
   const setEditMode = (current: IOkrFrontProps) => {
@@ -103,9 +106,17 @@ const Objectives = () => {
 
   return (
     <Layout titulo="Pagina inicial" subtitulo="Estamos construindo um admin template">
-      <button onClick={() => setCreateOkrModalIsOpen(true)}>abrir</button>
+      <button onClick={() => setEditMode(okrRespository[0])}>editar</button>
       <ModalForm isOpen={createOkrModalIsOpen}>
         <CreateOkr sheetId={sheetId} sendForm={handleCreate} handleCancel={closeCreateModal} />
+      </ModalForm>
+      <ModalForm isOpen={!!currentEditingOkr}>
+        <UpdateOkr
+          sheetId={sheetId}
+          sendForm={handleUpdate}
+          handleCancel={closeUpdateModal}
+          cItemProps={currentEditingOkr}
+        />
       </ModalForm>
     </Layout>
   );
