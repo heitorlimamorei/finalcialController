@@ -21,10 +21,10 @@ interface ISendFormProps {
 
 const Objectives = () => {
   const router = useRouter();
-  const [isCreateFormOpen, setIsCreateFormOpen] = useState<boolean>(false);
   const [okrRespository, setOkrRespository] = useState<IOkrFrontProps[]>([]);
   const [sheetId, setSheetId] = useState<string>('');
   const [createOkrModalIsOpen, setCreateOkrModalIsOpen] = useState<boolean>(false);
+  const [currentEditingOkr, setCurrentEditingOkr] = useState<IOkrFrontProps>(null);
 
   const refreshOkrRespository = (rawRepository: IOkrProps[]): void => {
     const normalizeOkrs = (resp: IOkrProps[]): IOkrFrontProps[] => {
@@ -60,12 +60,9 @@ const Objectives = () => {
     }
   }, [router.query]);
 
-  console.log(okrRespository);
-
   const closeCreateModal = () => setCreateOkrModalIsOpen(false);
 
   const handleCreate = async (FormProps: ISendFormProps): Promise<void> => {
-    console.log(FormProps);
     const { status } = await axios.post(
       '/api/okr',
       {
@@ -80,6 +77,28 @@ const Objectives = () => {
     );
     if (status == 200) loadOkrs(sheetId);
     closeCreateModal();
+  };
+
+  const handleUpdate = async (FormProps: ISendFormProps): Promise<void> => {
+    const { status } = await axios.put(
+      '/api/okr',
+      {
+        ...currentEditingOkr,
+        author: FormProps.author, // needed for auth in the backend.
+        start_cycle: toggleDateToJson(FormProps.start_cycle),
+        end_cycle: toggleDateToJson(FormProps.end_cycle),
+        spentType: FormProps.spentType,
+        value: FormProps.value
+      },
+      {
+        baseURL: BASE_URL,
+      },
+    );
+    if (status == 200) loadOkrs(sheetId);
+  };
+
+  const setEditMode = (current: IOkrFrontProps) => {
+    setCurrentEditingOkr({...current});
   };
 
   return (
