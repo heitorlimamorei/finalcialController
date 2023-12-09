@@ -9,6 +9,8 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+import { firebaseTimesStampType } from "../../utils/dateMethods";
+
 interface ItemProps {
   id: string;
   name: string;
@@ -18,7 +20,9 @@ interface ItemProps {
   author: string;
   sheetId:string;
   type: string;
+  updatedAt?: firebaseTimesStampType;
 }
+
 interface newItemProps {
   name: string;
   description: string;
@@ -27,6 +31,7 @@ interface newItemProps {
   sheetId:string;
   type: string;
 }
+
 async function getItems(sheetId:string){
   let normalizado = []
   const sheetRef = collection(
@@ -39,10 +44,12 @@ async function getItems(sheetId:string){
   })
   return normalizado;
 }
+
 async function getItemById(sheetId: string, itemId:string): Promise<ItemProps> {
   const itens = await getItems(sheetId);
   return itens.find((item) => item.id === itemId)
 }
+
 async function createItem(newItem: newItemProps) {
   const itemsRef = collection(db, `planilhas/${newItem.sheetId}/items`);
   const itemRef = await addDoc(itemsRef, {
@@ -55,6 +62,7 @@ async function createItem(newItem: newItemProps) {
     type: newItem.type
   });
 }
+
 async function createForeignItem(item: ItemProps, sheetId: string)  {
   const itemsRef = collection(db, `planilhas/${sheetId}/items`);
   const itemRef = await addDoc(itemsRef, {
@@ -67,6 +75,7 @@ async function createForeignItem(item: ItemProps, sheetId: string)  {
     type: item.type
   });
 }
+
 async function updateItem(item:ItemProps){
   const itemRef = doc(db, `planilhas/${item.sheetId}/items/${item.id}`)
   const docRef = await updateDoc(itemRef, {
@@ -74,14 +83,17 @@ async function updateItem(item:ItemProps){
     description: item.description,
     author: item.author,
     value: item.value,
-    type: item.type
+    type: item.type,
+    updatedAt: new Date(),
   })
 }
+
 async function itemExists(sheetId:string, itemId:string){
   const docRef = doc(db, `planilhas/${sheetId}/items/${itemId}`)
   const itemRef = await getDoc(docRef)
   return itemRef.exists()
 }
+
 async function deleteItem(sheetId: string, itemId:string){
   const itemRef = doc(db, `planilhas/${sheetId}/items/${itemId}`);
   const docRef = await deleteDoc(itemRef)

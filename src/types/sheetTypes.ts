@@ -98,6 +98,7 @@ export interface sheetItemProps {
   date: any;
   description: string;
   name: string;
+  updatedAt?: firebaseTimesStampType;
 }
 export interface newSheetItemProps {
   value: number;
