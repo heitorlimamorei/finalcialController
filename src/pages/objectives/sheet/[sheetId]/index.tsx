@@ -8,6 +8,9 @@ import { toggleDateToJson, toggleJsonToDate } from '../../../../utils/dateMethod
 import CreateOkr from '../../../../components/Objectives/CreateOkr';
 import ModalForm from '../../../../components/template/ModalForm';
 import UpdateOkr from '../../../../components/Objectives/UpdateOkr';
+import useSheets from '../../../../data/hook/useSheets';
+import useAuth from '../../../../data/hook/useAuth';
+import { UserProps } from '../../../../types/userTypes';
 
 const { BASE_URL } = variaveis;
 
@@ -22,6 +25,8 @@ interface ISendFormProps {
 
 const Objectives = () => {
   const router = useRouter();
+  const { data: AuthData } = useAuth();
+  const { sheetReLoader } = useSheets();
   const [okrRespository, setOkrRespository] = useState<IOkrFrontProps[]>([]);
   const [sheetId, setSheetId] = useState<string>('');
   const [createOkrModalIsOpen, setCreateOkrModalIsOpen] = useState<boolean>(false);
@@ -61,6 +66,12 @@ const Objectives = () => {
     }
   }, [router.query]);
 
+  useEffect(() => {
+    const { user } = AuthData;
+    const sheetIdTemp: any = router.query.sheetId;
+    reloadSheet(sheetIdTemp, user);
+  }, [AuthData, router.query]);
+
   const closeCreateModal = () => setCreateOkrModalIsOpen(false);
   const closeUpdateModal = () => setCurrentEditingOkr(null);
 
@@ -90,7 +101,7 @@ const Objectives = () => {
         start_cycle: toggleDateToJson(FormProps.start_cycle),
         end_cycle: toggleDateToJson(FormProps.end_cycle),
         spentType: FormProps.spentType,
-        value: FormProps.value
+        value: FormProps.value,
       },
       {
         baseURL: BASE_URL,
@@ -101,7 +112,13 @@ const Objectives = () => {
   };
 
   const setEditMode = (current: IOkrFrontProps) => {
-    setCurrentEditingOkr({...current});
+    setCurrentEditingOkr({ ...current });
+  };
+
+  const reloadSheet = async (sheetId: string, user: UserProps) => {
+    if (!!user.email && !!sheetId) {
+      await sheetReLoader(sheetId, user.email);
+    }
   };
 
   return (
