@@ -93,7 +93,7 @@ function CreateSheet(props: ManageSheetProps) {
         <label className="block font-medium text-lg mb-2" htmlFor="value">
           Modifique os tipos de gastos
         </label>
-        <ul>
+        <ul className="max-h-[15rem] overflow-y-scroll scroll-m-0">
           {tiposDeGastos.map((tipo, i) => {
             return (
               <li
