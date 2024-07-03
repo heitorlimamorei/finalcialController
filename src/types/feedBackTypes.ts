@@ -1,5 +1,6 @@
 export interface IFeedBackItemProps {
   id: string;
+  email: string;
   user_name: string;
   user_url: string;
   stars: number;
@@ -13,6 +14,7 @@ export interface IFeedBackItemProps {
 
 export interface INewFeedBackProps {
   user_name: string;
+  email: string;
   user_url: string;
   stars: number;
   text: string;

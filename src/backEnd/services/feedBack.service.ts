@@ -1,9 +1,11 @@
-import feedbackRepository from "../repositories/feedback.repository";
-import { INewFeedBackProps } from "../../types/feedBackTypes";
+import feedbackRepository from '../repositories/feedback.repository';
+import { INewFeedBackProps } from '../../types/feedBackTypes';
+import axios from 'axios';
 
-async function createFeedBack(newBack: INewFeedBackProps) {
+async function createFeedBack(newFeedBack: INewFeedBackProps) {
   const {
     text,
+    email,
     user_name,
     user_url,
     stars,
@@ -12,7 +14,7 @@ async function createFeedBack(newBack: INewFeedBackProps) {
     featuresImprovement,
     appHasBeenShared,
     continued_using,
-  } = newBack;
+  } = newFeedBack;
 
   if (
     !!text &&
@@ -25,19 +27,33 @@ async function createFeedBack(newBack: INewFeedBackProps) {
     !!appHasBeenShared &&
     did_pan_before != null &&
     continued_using != undefined &&
-    continued_using != null
+    continued_using != null &&
+    email != undefined
   ) {
-    await feedbackRepository.createFeedBack(newBack);
+    const feedbackId = await feedbackRepository.createFeedBack(newFeedBack);
+
+    if (!feedbackId) {
+      throw new Error(`Feedback cannot be created`);
+    }
+    
+    const userResp = await axios.post('https://gpt-solver-backend.onrender.com/v1/user/cmdsuser', {
+      email: email,
+      name: user_name,
+    });
+
+    if (userResp.status != 201) {
+      throw new Error(`Feedback could not be created: reason: user cannot be created`);
+    }
   } else {
     throw new Error(`Feedback could not be created`);
   }
 }
 
 async function getFeedBacks() {
-    return await feedbackRepository.getFeedBacks();
+  return await feedbackRepository.getFeedBacks();
 }
 
 export default {
-    createFeedBack,
-    getFeedBacks
-}
+  createFeedBack,
+  getFeedBacks,
+};

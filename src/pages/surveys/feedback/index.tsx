@@ -44,6 +44,7 @@ export default function Feedback() {
       text: payload.text,
       user_url: user.user_url,
       user_name: user.user_name,
+      email: user.email,
       financial_management_improved: payload.financial_management_improved,
       did_pan_before: payload.did_pan_before,
       featuresImprovement: payload.featuresImprovement,

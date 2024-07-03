@@ -1,17 +1,20 @@
-import { collection, addDoc, getDocs, doc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, doc, setDoc, query, where } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { IFeedBackItemProps, INewFeedBackProps } from '../../types/feedBackTypes';
 
 async function createFeedBack(newFeedBack: INewFeedBackProps) {
-  const feedbackColletionRef = collection(db, 'feedback');
+  const feedbackColletionRef = collection(db, 'feedback2024');
   const feedback = await addDoc(feedbackColletionRef, { ...newFeedBack });
+
+  return feedback.id;
 }
 
 async function updateFeedback(feedback: IFeedBackItemProps) {
-  const feedbackRef = doc(db, `feedback/${feedback.id}`);
+  const feedbackRef = doc(db, `feedback2024/${feedback.id}`);
   const docRef = await setDoc(
     feedbackRef,
     {
+      email: feedback.email,
       user_name: feedback.user_name,
       user_url: feedback.user_url,
       stars: feedback.stars,
@@ -27,7 +30,7 @@ async function updateFeedback(feedback: IFeedBackItemProps) {
 }
 
 async function getFeedBacks(): Promise<IFeedBackItemProps[]> {
-  const feedbackColletionRef = collection(db, 'feedback');
+  const feedbackColletionRef = collection(db, 'feedback2024');
   const feedBacks = await getDocs(feedbackColletionRef);
   let normalizado = [];
 
@@ -38,8 +41,23 @@ async function getFeedBacks(): Promise<IFeedBackItemProps[]> {
   return normalizado;
 }
 
+async function getFeedbackByEmail(email: string): Promise<IFeedBackItemProps[]> {
+  const feedbackColletionRef = collection(db, 'feedback2024');
+  const q = query(feedbackColletionRef, where('email', '==', email));
+
+  let itens: IFeedBackItemProps[] = [];
+  const feedbacks = await getDocs(q);
+
+  feedbacks.forEach((item) => {
+    itens.push({ id: item.id, ...item.data() } as IFeedBackItemProps);
+  });
+
+  return itens;
+}
+
 export default {
   createFeedBack,
   getFeedBacks,
   updateFeedback,
+  getFeedbackByEmail,
 };
