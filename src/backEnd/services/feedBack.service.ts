@@ -16,26 +16,13 @@ async function createFeedBack(newFeedBack: INewFeedBackProps) {
     continued_using,
   } = newFeedBack;
 
-  if (
-    !!text &&
-    !!user_name &&
-    !!user_url &&
-    !!stars &&
-    !!financial_management_improved &&
-    did_pan_before != undefined &&
-    !!featuresImprovement &&
-    !!appHasBeenShared &&
-    did_pan_before != null &&
-    continued_using != undefined &&
-    continued_using != null &&
-    email != undefined
-  ) {
+  if (email != undefined) {
     const feedbackId = await feedbackRepository.createFeedBack(newFeedBack);
 
     if (!feedbackId) {
       throw new Error(`Feedback cannot be created`);
     }
-    
+
     const userResp = await axios.post('https://gpt-solver-backend.onrender.com/v1/user/cmdsuser', {
       email: email,
       name: user_name,
