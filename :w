@@ -1,0 +1,24 @@
+import { GrPieChart } from 'react-icons/gr';
+import { IoHomeOutline } from 'react-icons/io5';
+
+import Button from '@/components/Button';
+import DashboardHeader from '@/components/dashboard/DashboardHeader';
+
+export default function Dashboard() {
+  const selected = false;
+  return (
+    <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black">
+      <DashboardHeader name="Felipe Rese" />
+      <nav className="flex flex-row justify-between px-4 h-[8%] w-full shadow-[4px_4px_10px_#000000,-6px_-6px_24px_#ffffff]">
+        <Button className="shadow-black bg-[#0000F9] py-3">
+          <IoHomeOutline size={'1.5rem'} color={selected ? '#000000' : '#0000FF'} />
+        </Button>
+        <Button>
+          <GrPieChart size={'1.5rem'} />
+        </Button>
+        <Button> Home </Button>
+        <Button> Home </Button>
+      </nav>
+    </div>
+  );
+}
