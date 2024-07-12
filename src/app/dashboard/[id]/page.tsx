@@ -5,8 +5,8 @@ import Image from 'next/image';
 
 import useWindowSize from '@/hook/useWindowSize';
 
+import NavBar from '@/components/common/NavBar';
 import DashboardMobilePage from '@/components/dashboardMobile/DashboardMobilePage';
-import NavBar from '@/components/NavBar';
 
 export default function Dashboard() {
   const { width } = useWindowSize();
