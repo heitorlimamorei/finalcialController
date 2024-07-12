@@ -1,7 +1,7 @@
 'use client';
 
 import NavBar from '@/components/common/NavBar';
-import DashboardMobilePage from '@/components/dashboardMobile/DashboardMobilePage';
+import DashboardMobilePage from '@/components/mobile/dashboardMobile/DashboardMobilePage';
 
 export default function Dashboard() {
   return (
