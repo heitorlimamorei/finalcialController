@@ -1,11 +1,21 @@
+import { useState } from 'react';
+
+import { CreateItemModal } from '@/components/CreateItemModal';
 import { Sheet } from '@/components/sheetMock';
 
 import BalanceCard from './components/BalanceCard';
 
 export default function DashboardMobileBody() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleCreateItem = () => {
+    setIsOpen((c) => !c);
+  };
+
   return (
     <div className="w-full h-[90%]">
-      <BalanceCard />
+      <CreateItemModal isOpen={isOpen} onClose={handleCreateItem} />
+      <BalanceCard createItem={handleCreateItem} />
       <div className="h-[70%] overflow-y-hidden py-2 px-4">
         <h1 className="font-bold text-3xl">Últimas atividades</h1>
         <ul>
