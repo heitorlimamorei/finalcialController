@@ -5,7 +5,7 @@ import { Sheet } from '@/components/sheetMock';
 
 import BalanceCard from './components/BalanceCard';
 
-export default function DashboardMobileBody() {
+export default function DashboardMobile() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleCreateItem = () => {
