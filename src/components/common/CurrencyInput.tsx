@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import { twMerge } from 'tailwind-merge';
 
+import { ItemType } from '../CreateItemModal';
+
 interface CurrencyInputProps {
   value: number;
   onChange: (value: number) => void;
-  type: 'income' | 'expense';
+  type: ItemType | undefined;
   className?: string;
 }
 
