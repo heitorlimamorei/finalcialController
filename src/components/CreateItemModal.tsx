@@ -3,6 +3,7 @@ import { useEffect, useState, ReactElement } from 'react';
 import CurrencyInput from '@/components/common/CurrencyInput';
 
 import Button from './common/Button';
+import CreateItemForm from './CreateItemForm';
 import { CurrencyIcon, MinusIcon } from './icons/Icons';
 
 interface CreateItemModalProps {
@@ -67,41 +68,25 @@ export function CreateItemModal({ isOpen, onClose }: CreateItemModalProps): Reac
               </Button>
             </div>
           )}
+
           {transitionType === 'expense' && (
-            <div
-              className={`transition-transform duration-300 ${selectedType === 'expense' ? 'translate-x-0' : 'translate-x-[-25rem]'}`}>
-              <div className="flex flex-col items-center justify-center h-full">
-                <CurrencyInput
-                  value={value}
-                  onChange={setValue}
-                  type="expense"
-                  className="px-3 py-4 rounded-xl focus:outline-none text-2xl text-center text-white font-bold"
-                />
-                <Button
-                  className="my-2 bg-blue-600 p-2 border-2 border-blue-600 text-white rounded-full hover:bg-blue-500"
-                  onClick={onClose}>
-                  Close
-                </Button>
-              </div>
-            </div>
+            <CreateItemForm
+              onClose={onClose}
+              value={value}
+              setValue={setValue}
+              selectedType={selectedType}
+              type="expense"
+            />
           )}
+
           {transitionType === 'income' && (
-            <div
-              className={`transition-transform duration-300 ${selectedType === 'income' ? 'translate-x-0' : 'translate-x-[-25rem]'}`}>
-              <div className="flex flex-col items-center justify-center h-full">
-                <CurrencyInput
-                  value={value}
-                  onChange={setValue}
-                  type="income"
-                  className="px-3 py-4 rounded-xl focus:outline-none text-2xl text-center text-white font-bold"
-                />
-                <Button
-                  className="my-2 bg-blue-600 p-2 border-2 border-blue-600 text-white rounded-full hover:bg-blue-500"
-                  onClick={onClose}>
-                  Close
-                </Button>
-              </div>
-            </div>
+            <CreateItemForm
+              onClose={onClose}
+              value={value}
+              setValue={setValue}
+              selectedType={selectedType}
+              type="income"
+            />
           )}
         </div>
       </div>
