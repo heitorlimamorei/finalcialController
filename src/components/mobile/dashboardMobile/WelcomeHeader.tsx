@@ -1,8 +1,8 @@
-interface DashboardMobileHeaderProps {
+interface WelcomeHeaderProps {
   name: string;
 }
 
-export default function DashboardMobileHeader({ name }: DashboardMobileHeaderProps) {
+export default function WelcomeHeader({ name }: WelcomeHeaderProps) {
   const date = new Date();
   const hours = date.getHours();
 
