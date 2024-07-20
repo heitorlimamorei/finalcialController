@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { CreateItemModal } from '@/components/CreateItemModal';
+import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
 import { Sheet } from '@/components/sheetMock';
 
 import BalanceCard from './components/BalanceCard';

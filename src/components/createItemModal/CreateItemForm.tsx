@@ -1,9 +1,10 @@
 import { type ReactElement } from 'react';
 import { useState } from 'react';
 
-import CurrencyInput from './common/CurrencyInput';
-import DateInput from './common/DateInput';
-import TextInput from './common/TextInput';
+import Button from '../common/Button';
+import CurrencyInput from '../common/CurrencyInput';
+import DateInput from '../common/DateInput';
+import TextInput from '../common/TextInput';
 import { ItemType } from './CreateItemModal';
 
 interface CreateItemFormProps {
@@ -18,16 +19,16 @@ export default function CreateItemForm({ selectedType, type }: CreateItemFormPro
   const [description, setDescription] = useState<string>('');
   const [date, setDate] = useState<Date>(today);
 
-  function handleChangeName(e) {
+  function handleChangeName(e: any) {
     setName(e.target.value);
   }
-  function handleChangeDescription(e) {
+  function handleChangeDescription(e: any) {
     setDescription(e.target.value);
   }
   return (
     <div
       className={`transition-transform duration-300 w-full h-full ${selectedType === type ? 'translate-x-0' : 'translate-x-[-25rem]'}`}>
-      <div className="flex flex-col items-center justify-start h-full w-full px-3">
+      <form className="flex flex-col items-center justify-start h-full w-full px-3">
         <CurrencyInput
           value={amount}
           onChange={setAmount}
@@ -53,11 +54,22 @@ export default function CreateItemForm({ selectedType, type }: CreateItemFormPro
             onChange={handleChangeDescription}
           />
         </div>
+
         <div className="w-full my-2 flex flex-col">
           <label htmlFor="date">Data (mm-dd-yyyy)</label>
           <DateInput value={date} onChange={setDate} />
         </div>
-      </div>
+
+        <div className="w-full my-2 flex flex-col">
+          <label>Categoria</label>
+          <select name="" id="" className="p-2 rounded-xl bg-gray-200"></select>
+        </div>
+
+        <Button
+          className={`w-full m-2 ${type == 'income' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}>
+          Criar Item
+        </Button>
+      </form>
     </div>
   );
 }

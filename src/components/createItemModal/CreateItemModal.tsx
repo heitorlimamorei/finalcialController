@@ -1,8 +1,8 @@
 import { useEffect, useState, ReactElement } from 'react';
 
-import Button from './common/Button';
+import Button from '../common/Button';
+import { MinusIcon } from '../icons/Icons';
 import CreateItemForm from './CreateItemForm';
-import { CurrencyIcon, MinusIcon } from './icons/Icons';
 
 interface CreateItemModalProps {
   isOpen: boolean;
