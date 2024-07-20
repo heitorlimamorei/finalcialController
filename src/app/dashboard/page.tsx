@@ -1,9 +1,3 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-
-import { useSession } from 'next-auth/react';
-
 import { useFetchUserData } from '@/hook/useFetchUserData';
 import { IUser } from '@/types/user';
 
@@ -11,21 +5,17 @@ import NavBar from '@/components/common/NavBar';
 import DashboardMobile from '@/components/mobile/dashboardMobile/DashboardMobile';
 import WelcomeHeader from '@/components/mobile/dashboardMobile/WelcomeHeader';
 
-export default function Dashboard() {
-  const { data: session } = useSession();
-  const email = session?.user?.email;
-  const { fetchByEmail } = useFetchUserData();
-  const [user, setUser] = useState<IUser>();
+interface IDashboardProps {
+  searchParams: {
+    u: string;
+  };
+}
 
-  useEffect(() => {
-    async function fetchUsername() {
-      if (email) {
-        const user = await fetchByEmail(email);
-        setUser(user);
-      }
-    }
-    fetchUsername();
-  }, [email, fetchByEmail]);
+export default async function Dashboard(props: IDashboardProps) {
+  const { fetchUser } = useFetchUserData();
+  const id = props.searchParams.u;
+
+  const user: IUser = await fetchUser(id);
 
   if (user) {
     return (
@@ -34,7 +24,7 @@ export default function Dashboard() {
           <WelcomeHeader name={user.name} />
           <DashboardMobile />
         </div>
-        <NavBar selectedButton={'home'} />
+        <NavBar user={user} selectedButton={'home'} />
       </div>
     );
   }

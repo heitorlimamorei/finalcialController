@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 
 import { useFetchUserData } from '@/hook/useFetchUserData';
 import useWindowSize from '@/hook/useWindowSize';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 import LandingPageBody from '@/components/landingPage/LandingPageBody';
 import LandingPageHeader from '@/components/landingPage/LandingPageHeader';
@@ -27,10 +27,10 @@ export default function Home() {
     if (session != null) {
       const fetchData = async (email: string) => {
         try {
-          const result = await fetchByEmail(email);
-          if (result.email != '') {
-            console.log(result);
-            router.push('/dashboard');
+          const user = await fetchByEmail(email);
+          if (user.email != '') {
+            console.log(user);
+            router.push(`/dashboard?u=${user.id}`);
           }
         } catch (error) {
           if (axios.isAxiosError(error)) {
