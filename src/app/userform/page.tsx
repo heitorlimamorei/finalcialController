@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
+import { useFetchUserData } from '@/hook/useFetchUserData';
 import axios from 'axios';
 
 import Button from '@/components/common/Button';
@@ -13,11 +15,37 @@ const api = 'https://financial-controller-backend.onrender.com';
 
 export default function UserForm() {
   const { data: session } = useSession();
+  const { fetchByEmail } = useFetchUserData();
+  const router = useRouter();
   const email = session?.user?.email;
   const [name, setName] = useState<string>('');
   function handleNameChange(e: any) {
     setName(e.target.value);
   }
+  useEffect(() => {
+    if (session != null) {
+      const fetchData = async (email: string) => {
+        try {
+          const result = await fetchByEmail(email);
+          if (result.email != '') {
+            console.log(result);
+            router.push('/dashboard');
+          }
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            if (error.response?.status === 404) {
+              router.push('/userform');
+            }
+          }
+          console.error(error);
+        }
+      };
+      if (email) {
+        fetchData(email);
+      }
+    }
+  }, [email, router, fetchByEmail, session]);
+
   async function Createuser() {
     const resp = axios.post(`${api}/api/v1/user`, {
       name,

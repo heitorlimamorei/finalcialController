@@ -5,6 +5,7 @@ export interface IUser {
   id: string;
   email: string;
   name: string;
+  personalSheetId: string;
   sheetIds: string[];
   creditCards: ICreditCard[];
   subscriptions: string[];
