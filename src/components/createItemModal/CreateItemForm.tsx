@@ -5,7 +5,6 @@ import { useCategory } from '@/hook/useCategory';
 import useItem from '@/hook/useItem';
 import { ICategory } from '@/types/category';
 import { IUser } from '@/types/user';
-import axios from 'axios';
 
 import Button from '../common/Button';
 import CurrencyInput from '../common/CurrencyInput';
@@ -14,13 +13,11 @@ import TextInput from '../common/TextInput';
 import { ItemType } from './CreateItemModal';
 
 interface CreateItemFormProps {
-  type: ItemType | undefined;
-  selectedType: ItemType | undefined;
+  type: ItemType;
+  selectedType: ItemType;
   user: IUser;
   accountId: string;
 }
-
-const api = 'https://financial-controller-backend.onrender.com/api/v1';
 
 export default function CreateItemForm({
   selectedType,
@@ -28,20 +25,16 @@ export default function CreateItemForm({
   user,
   accountId,
 }: CreateItemFormProps): ReactElement {
-  const today: Date = new Date();
-  const { getCategories } = useCategory();
-
-  // Info needed to create item
   const [amount, setAmount] = useState<number>(0);
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [date, setDate] = useState<Date>(today);
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
-  const { createItem } = useItem();
-
-  // All categories list
+  const [date, setDate] = useState<Date>(new Date());
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>('');
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('');
   const [categories, setCategories] = useState<ICategory[]>([]);
+
+  const { createItem } = useItem();
+  const { getCategories } = useCategory();
 
   useEffect(() => {
     const fetchCategories = async (sheetId: string) => {
@@ -58,7 +51,7 @@ export default function CreateItemForm({
 
   async function submitItem(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const categoryId = selectedSubcategory ? selectedSubcategory : selectedCategory;
+    const categoryId = selectedSubcategoryId ? selectedSubcategoryId : selectedCategoryId;
     try {
       const response = await createItem({
         sheetId: user.personalSheetId,
@@ -69,7 +62,7 @@ export default function CreateItemForm({
         accountId,
         amount,
         date: date.toISOString(),
-        type: type?.toUpperCase(),
+        type: type.toUpperCase(),
       });
       console.log('Item created successfully:', response);
     } catch (error) {
@@ -77,22 +70,22 @@ export default function CreateItemForm({
     }
   }
 
-  function handleChangeName(e: ChangeEvent<HTMLInputElement>) {
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-  }
+  };
 
-  function handleChangeDescription(e: ChangeEvent<HTMLInputElement>) {
+  const handleChangeDescription = (e: ChangeEvent<HTMLInputElement>) => {
     setDescription(e.target.value);
-  }
+  };
 
-  function handleChangeCategory(e: ChangeEvent<HTMLSelectElement>) {
-    setSelectedCategory(e.target.value);
-    setSelectedSubcategory(''); // Reset subcategory when category changes
-  }
+  const handleChangeCategory = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategoryId(e.target.value);
+    setSelectedSubcategoryId(''); // Reset subcategory when category changes
+  };
 
-  function handleChangeSubcategory(e: ChangeEvent<HTMLSelectElement>) {
-    setSelectedSubcategory(e.target.value);
-  }
+  const handleChangeSubcategory = (e: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSubcategoryId(e.target.value);
+  };
 
   return (
     <div
@@ -110,7 +103,7 @@ export default function CreateItemForm({
           <label htmlFor="name">Nome</label>
           <TextInput
             className="w-full bg-gray-200 border-gray-300 rounded-xl py-3 px-3"
-            placeholder={type == 'income' ? 'Dividendo' : 'Padaria'}
+            placeholder={type == 'INCOME' ? 'Dividendo' : 'Padaria'}
             value={name}
             onChange={handleChangeName}
           />
@@ -120,7 +113,7 @@ export default function CreateItemForm({
           <label htmlFor="description">Descrição</label>
           <TextInput
             className="w-full bg-gray-200 border-gray-300 rounded-xl py-3 px-3"
-            placeholder={type == 'income' ? 'Ação Vale' : '5x Pães'}
+            placeholder={type == 'INCOME' ? 'Ação Vale' : '5x Pães'}
             value={description}
             onChange={handleChangeDescription}
           />
@@ -136,11 +129,11 @@ export default function CreateItemForm({
           <select
             id="category"
             className="p-2 rounded-xl bg-gray-200"
-            value={selectedCategory}
+            value={selectedCategoryId}
             onChange={handleChangeCategory}>
             <option value="">Selecione</option>
             {categories
-              .filter((category) => category.mainCategoryId === undefined)
+              .filter((category) => category.type === 'category')
               .map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -148,17 +141,17 @@ export default function CreateItemForm({
               ))}
           </select>
         </div>
-        {categories.some((category) => category.mainCategoryId === selectedCategory) && (
+        {categories.some((category) => category.mainCategoryId === selectedCategoryId) && (
           <div className="w-full my-2 flex flex-col">
             <label htmlFor="subcategory">Subcategoria</label>
             <select
               id="subcategory"
               className="p-2 rounded-xl bg-gray-200"
-              value={selectedSubcategory}
+              value={selectedSubcategoryId}
               onChange={handleChangeSubcategory}>
               <option value="">Selecione</option>
               {categories
-                .filter((category) => category.mainCategoryId === selectedCategory)
+                .filter((category) => category.mainCategoryId === selectedCategoryId)
                 .map((subcategory) => (
                   <option key={subcategory.id} value={subcategory.id}>
                     {subcategory.name}
@@ -169,9 +162,8 @@ export default function CreateItemForm({
         )}
 
         <Button
-          className={`w-full m-2 ${type == 'income' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}
-          type="submit"
-          onClick={() => submitItem}>
+          className={`w-full m-2 ${type == 'INCOME' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}
+          type="submit">
           Criar Item
         </Button>
       </form>
