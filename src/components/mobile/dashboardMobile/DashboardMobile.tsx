@@ -15,7 +15,7 @@ interface IDashboardMobileProps {
 
 export default function DashboardMobile({ user }: IDashboardMobileProps) {
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
-  const [accountId, setAccountId] = useState<string>();
+  const [accountId, setAccountId] = useState<string>('');
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
 
   const handleCreateItemModal = () => {
