@@ -41,6 +41,9 @@ export default function CreateItemForm({
     watch,
   } = useForm<CreateItemFormData>({
     resolver: zodResolver(createItemSchema),
+    defaultValues: {
+      date: new Date(),
+    },
   });
 
   const nameValue = watch('name', '');
@@ -67,6 +70,9 @@ export default function CreateItemForm({
     const categoryId = data.selectedSubcategoryId
       ? data.selectedSubcategoryId
       : data.selectedCategoryId;
+
+    const validDate = data.date || new Date();
+
     try {
       console.log({
         sheetId: user.personalSheetId,
@@ -76,7 +82,7 @@ export default function CreateItemForm({
         description: data.description,
         accountId,
         amount: data.amount,
-        date: data.date.toISOString(),
+        date: validDate.toISOString(),
         type: type,
       });
       const response = await createItem({
@@ -87,7 +93,7 @@ export default function CreateItemForm({
         description: data.description,
         accountId,
         amount: data.amount,
-        date: data.date.toISOString(),
+        date: validDate.toISOString(),
         type: type,
       });
       console.log('Item created successfully:', response);
@@ -108,41 +114,47 @@ export default function CreateItemForm({
           type={type}
           className="w-full h-[10%] rounded-xl focus:outline-none text-2xl text-center text-white font-bold"
         />
-        {errors.amount && <p>{errors.amount.message}</p>}
+        {errors.amount && <p className="text-red-500 font-bold text-lg">{errors.amount.message}</p>}
 
         <div className="w-full my-2">
-          <label htmlFor="name">Nome</label>
+          <label htmlFor="name" className={errors.name && 'text-red-500 font-bold'}>
+            Nome{errors.name && '*'}
+          </label>
           <TextInput
             className="w-full bg-gray-200 border-gray-300 rounded-xl py-3 px-3"
             placeholder={type === 'INCOME' ? 'Dividendo' : 'Padaria'}
             value={nameValue}
             onChange={(e) => setValue('name', e.target.value, { shouldValidate: true })}
           />
-          {errors.name && <p>{errors.name.message}</p>}
         </div>
 
         <div className="w-full my-2">
-          <label htmlFor="description">Descrição</label>
+          <label htmlFor="description">Descrição (opcional)</label>
           <TextInput
             className="w-full bg-gray-200 border-gray-300 rounded-xl py-3 px-3"
             placeholder={type === 'INCOME' ? 'Ação Vale' : '5x Pães'}
-            value={descriptionValue}
+            value={descriptionValue!}
             onChange={(e) => setValue('description', e.target.value, { shouldValidate: true })}
           />
           {errors.description && <p>{errors.description.message}</p>}
         </div>
 
         <div className="w-full my-2 flex flex-col">
-          <label htmlFor="date">Data (mm-dd-yyyy)</label>
+          <label htmlFor="date" className={errors.date && 'text-red-500 font-bold'}>
+            Data (mm-dd-yyyy){errors.date && '*'}
+          </label>
           <DateInput
             value={dateValue}
             onChange={(date) => setValue('date', date, { shouldValidate: true })}
           />
-          {errors.date && <p>{errors.date.message}</p>}
         </div>
 
         <div className="w-full my-2 flex flex-col">
-          <label htmlFor="category">Categoria</label>
+          <label
+            htmlFor="category"
+            className={errors.selectedCategoryId && 'text-red-500 font-bold'}>
+            Categoria{errors.selectedCategoryId && '*'}
+          </label>
           <select
             id="category"
             className="p-2 rounded-xl bg-gray-200"
@@ -150,7 +162,7 @@ export default function CreateItemForm({
             {...register('selectedCategoryId')}
             onChange={(e) => {
               setValue('selectedCategoryId', e.target.value, { shouldValidate: true });
-              setValue('selectedSubcategoryId', ''); // Reset subcategory when category changes
+              setValue('selectedSubcategoryId', '');
             }}>
             <option value="">Selecione</option>
             {categories
@@ -166,7 +178,7 @@ export default function CreateItemForm({
 
         {categories.some((category) => category.mainCategoryId === selectedCategoryIdValue) && (
           <div className="w-full my-2 flex flex-col">
-            <label htmlFor="subcategory">Subcategoria</label>
+            <label htmlFor="subcategory">Subcategoria (opcional)</label>
             <select
               id="subcategory"
               className="p-2 rounded-xl bg-gray-200"

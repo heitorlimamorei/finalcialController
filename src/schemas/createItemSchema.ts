@@ -8,7 +8,10 @@ export const createItemSchema = z.object({
     .min(0, { message: 'Amount must be a positive number' })
     .max(100000000, { message: 'Amount is too large' }),
   name: z.string().min(1, { message: 'Name is required' }),
-  description: z.string().max(1000, { message: 'Description is too big' }),
+  description: z
+    .string()
+    .max(1000, { message: 'Description is too big' })
+    .optional(),
   date: z.date().refine((date) => date >= minDate, {
     message: 'Date cannot be before 1950',
   }),

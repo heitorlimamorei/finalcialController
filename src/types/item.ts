@@ -18,7 +18,7 @@ export interface INewItem {
   categoryId: string;
   ownerId: string;
   name: string;
-  description: string;
+  description?: string;
   accountId: string;
   amount: number;
   date: string;
