@@ -31,8 +31,10 @@ export function useCategory() {
   }
 
   async function deleteCategory(sheetId: string, categoryId: string) {
-    const category = await axios.delete(`${api}/category/${categoryId}?sheetId=${sheetId}`);
-    return;
+    const resp = await axios.delete(`${api}/category/${categoryId}?sheetId=${sheetId}`);
+    if (resp.status !== 200) {
+      console.error('Error deleting category');
+    }
   }
 
   return {
