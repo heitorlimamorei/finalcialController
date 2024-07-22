@@ -1,17 +1,25 @@
 import { useEffect, useState, ReactElement } from 'react';
 
+import { IUser } from '@/types/user';
 import Button from '../common/Button';
 import { MinusIcon } from '../icons/Icons';
 import CreateItemForm from './CreateItemForm';
 
 interface CreateItemModalProps {
+  accountId: string;
   isOpen: boolean;
   onClose: () => void;
+  user: IUser;
 }
 
 export type ItemType = 'expense' | 'income';
 
-export function CreateItemModal({ isOpen, onClose }: CreateItemModalProps): ReactElement {
+export function CreateItemModal({
+  isOpen,
+  onClose,
+  user,
+  accountId,
+}: CreateItemModalProps): ReactElement {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isContainerVisible, setIsContainerVisible] = useState<boolean>(false);
 
@@ -68,11 +76,21 @@ export function CreateItemModal({ isOpen, onClose }: CreateItemModalProps): Reac
           )}
 
           {transitionType === 'expense' && (
-            <CreateItemForm selectedType={selectedType} type="expense" />
+            <CreateItemForm
+              selectedType={selectedType}
+              user={user}
+              type="expense"
+              accountId={accountId}
+            />
           )}
 
           {transitionType === 'income' && (
-            <CreateItemForm selectedType={selectedType} type="income" />
+            <CreateItemForm
+              selectedType={selectedType}
+              user={user}
+              type="income"
+              accountId={accountId}
+            />
           )}
         </div>
       </div>

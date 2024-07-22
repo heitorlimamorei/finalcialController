@@ -1,4 +1,3 @@
-import { type ReactElement } from 'react';
 import { useState } from 'react';
 
 import { useCategory } from '@/hook/useCategory';
@@ -18,7 +17,6 @@ interface CreateItemFormProps {
   accountId: string;
 }
 
-export default function CreateItemForm({ selectedType, type }: CreateItemFormProps): ReactElement {
 const api = 'https://financial-controller-backend.onrender.com/api/v1';
 export default function CreateItemForm({
   selectedType,
@@ -28,6 +26,7 @@ export default function CreateItemForm({
 }: CreateItemFormProps): ReactElement {
   const today: Date = new Date();
   const { getCategories } = useCategory();
+  // Info needed to create item
   const [amount, setAmount] = useState<number>(0);
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
