@@ -2,23 +2,20 @@
 import { useEffect, useState } from 'react';
 
 import { IAccount } from '@/types/account';
-import axios from 'axios';
 
 interface IChangeAccountModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onChange: (id: string) => void;
-  userId: string;
+  onChange: (account: IAccount) => void;
+  accounts: IAccount[];
 }
-const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function ChangeAccountModal({
   onChange,
   isOpen,
   onClose,
-  userId,
+  accounts,
 }: IChangeAccountModalProps) {
-  const [accounts, setAccounts] = useState<IAccount[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isContainerVisible, setIsContainerVisible] = useState<boolean>(false);
 
@@ -31,20 +28,6 @@ export default function ChangeAccountModal({
       setTimeout(() => setIsContainerVisible(false), 200);
     }
   }, [isOpen]);
-
-  useEffect(() => {
-    const fetchAccounts = async (ownerId: string) => {
-      try {
-        const response = await axios.get(`${api}/account?owid=${ownerId}`);
-        setAccounts(response.data);
-      } catch (error) {
-        console.error('Failed to fetch accounts:', error);
-      }
-    };
-    if (userId) {
-      fetchAccounts(userId);
-    }
-  }, [userId]);
 
   return (
     <div
@@ -61,7 +44,7 @@ export default function ChangeAccountModal({
               className="m-2 p-3 text-2xl font-bold border-black border-2 rounded-xl hover:bg-gray-200 cursor-pointer"
               key={account.id}
               onClick={() => {
-                onChange(account.id);
+                onChange(account);
                 onClose();
               }}>
               {account.nickname}

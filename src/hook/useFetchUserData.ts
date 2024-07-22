@@ -13,7 +13,7 @@ export function useFetchUserData() {
   }
 
   async function fetchUser(id: string): Promise<IUser> {
-    const resp = await axios.get<IUser>(`${api}/api/v1/user/${id}`);
+    const resp = await axios.get<IUser>(`${api}/user/${id}`);
 
     if (resp.status !== 200) console.error('Error when fetching user data');
 

@@ -1,6 +1,6 @@
 import { firebaseTimesStampType } from './utils.type';
 
-export interface IItem {
+export interface IBackItem {
   id: string;
   sheetId: string;
   categoryId: string;
@@ -10,6 +10,19 @@ export interface IItem {
   accountId: string;
   amount: number;
   date: firebaseTimesStampType;
+  type: string;
+}
+
+export interface IItem {
+  id: string;
+  sheetId: string;
+  categoryId: string;
+  ownerId: string;
+  name: string;
+  description: string;
+  accountId: string;
+  amount: number;
+  date: Date;
   type: string;
 }
 

@@ -1,4 +1,6 @@
+import { useAccount } from '@/hook/useAccount';
 import { useFetchUserData } from '@/hook/useFetchUserData';
+import { IAccount } from '@/types/account';
 import { IUser } from '@/types/user';
 
 import NavBar from '@/components/common/NavBar';
@@ -13,9 +15,12 @@ interface IDashboardProps {
 
 export default async function Dashboard(props: IDashboardProps) {
   const { fetchUser } = useFetchUserData();
+  const { getAccounts } = useAccount();
   const id = props.searchParams.u;
 
+  const accounts: IAccount[] = await getAccounts(id);
   let user: IUser = await fetchUser(id);
+
   user.personalSheetId = 'KboTREeG7JAHeFLpdGqO';
 
   if (user) {
@@ -23,7 +28,7 @@ export default async function Dashboard(props: IDashboardProps) {
       <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black overflow-y-scroll">
         <div className="w-full h-full overflow-y-hidden">
           <WelcomeHeader name={user.name} />
-          <DashboardMobile user={user} />
+          <DashboardMobile user={user} accounts={accounts} />
         </div>
         <NavBar user={user} selectedButton={'home'} />
       </div>

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const api = 'https://financial-controller-backend.onrender.com/api/v1';
+const api = process.env.NEXT_PUBLIC_API_URL;
 
 export function useCategory() {
   async function getCategories(sheetId: string) {
