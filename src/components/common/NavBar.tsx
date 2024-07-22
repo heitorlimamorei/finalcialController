@@ -51,8 +51,9 @@ export default function NavBar({ selectedButton, user }: NavBarProps) {
         <Button
           onClick={() => router.push(path)}
           key={id}
-          className={`flex items-center justify-center w-[13%] my-3 rounded-full transition-all duration-300 ${selectedButton === id ? 'bg-blue-200' : ''
-            }`}>
+          className={`flex items-center justify-center w-[13%] my-3 rounded-full transition-all duration-300 ${
+            selectedButton === id ? 'bg-blue-200' : ''
+          }`}>
           {icon ? icon(selectedButton === id ? '#0000FF' : '#000000', size) : <div>{label}</div>}
         </Button>
       ))}

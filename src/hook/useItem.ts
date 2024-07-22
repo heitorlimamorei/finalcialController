@@ -13,10 +13,7 @@ export default function useItem() {
     return response.data;
   }
   async function updateItem(item: IItem) {
-    const response = await axios.put(
-      `${api}/items/${item.id}?sheetId=${item.sheetId}`,
-      item,
-    );
+    const response = await axios.put(`${api}/items/${item.id}?sheetId=${item.sheetId}`, item);
     return response.data;
   }
   return { createItem, deleteItem, updateItem };
