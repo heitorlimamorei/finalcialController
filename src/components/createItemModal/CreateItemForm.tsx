@@ -1,9 +1,12 @@
+import { useEffect, type ReactElement, ChangeEvent } from 'react';
 import { useState } from 'react';
 
 import { useCategory } from '@/hook/useCategory';
+import useItem from '@/hook/useItem';
 import { ICategory } from '@/types/category';
 import { IUser } from '@/types/user';
 import axios from 'axios';
+
 import Button from '../common/Button';
 import CurrencyInput from '../common/CurrencyInput';
 import DateInput from '../common/DateInput';
@@ -18,6 +21,7 @@ interface CreateItemFormProps {
 }
 
 const api = 'https://financial-controller-backend.onrender.com/api/v1';
+
 export default function CreateItemForm({
   selectedType,
   type,
@@ -26,6 +30,7 @@ export default function CreateItemForm({
 }: CreateItemFormProps): ReactElement {
   const today: Date = new Date();
   const { getCategories } = useCategory();
+
   // Info needed to create item
   const [amount, setAmount] = useState<number>(0);
   const [name, setName] = useState<string>('');
@@ -33,6 +38,8 @@ export default function CreateItemForm({
   const [date, setDate] = useState<Date>(today);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>('');
+  const { createItem } = useItem();
+
   // All categories list
   const [categories, setCategories] = useState<ICategory[]>([]);
 
@@ -45,14 +52,39 @@ export default function CreateItemForm({
         console.log(error);
       }
     };
+
     fetchCategories(user.personalSheetId);
   }, [getCategories, user.personalSheetId]);
+
+  async function submitItem(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const categoryId = selectedSubcategory ? selectedSubcategory : selectedCategory;
+    try {
+      const response = await createItem({
+        sheetId: user.personalSheetId,
+        categoryId: categoryId,
+        ownerId: user.id,
+        name,
+        description,
+        accountId,
+        amount,
+        date: date.toISOString(),
+        type: type?.toUpperCase(),
+      });
+      console.log('Item created successfully:', response);
+    } catch (error) {
+      console.error('Error creating item:', error);
+    }
+  }
+
   function handleChangeName(e: ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
   }
+
   function handleChangeDescription(e: ChangeEvent<HTMLInputElement>) {
     setDescription(e.target.value);
   }
+
   function handleChangeCategory(e: ChangeEvent<HTMLSelectElement>) {
     setSelectedCategory(e.target.value);
     setSelectedSubcategory(''); // Reset subcategory when category changes
@@ -61,10 +93,13 @@ export default function CreateItemForm({
   function handleChangeSubcategory(e: ChangeEvent<HTMLSelectElement>) {
     setSelectedSubcategory(e.target.value);
   }
+
   return (
     <div
       className={`transition-transform duration-300 w-full h-full ${selectedType === type ? 'translate-x-0' : 'translate-x-[-25rem]'}`}>
-      <form className="flex flex-col items-center justify-start h-full w-full px-3">
+      <form
+        className="flex flex-col items-center justify-start h-full w-full px-3"
+        onSubmit={submitItem}>
         <CurrencyInput
           value={amount}
           onChange={setAmount}
@@ -72,7 +107,7 @@ export default function CreateItemForm({
           className="w-full h-[10%] rounded-xl focus:outline-none text-2xl text-center text-white font-bold"
         />
         <div className="w-full my-2">
-          <label htmlFor="">Nome</label>
+          <label htmlFor="name">Nome</label>
           <TextInput
             className="w-full bg-gray-200 border-gray-300 rounded-xl py-3 px-3"
             placeholder={type == 'income' ? 'Dividendo' : 'Padaria'}
@@ -82,7 +117,7 @@ export default function CreateItemForm({
         </div>
 
         <div className="w-full my-2">
-          <label htmlFor="">Descrição</label>
+          <label htmlFor="description">Descrição</label>
           <TextInput
             className="w-full bg-gray-200 border-gray-300 rounded-xl py-3 px-3"
             placeholder={type == 'income' ? 'Ação Vale' : '5x Pães'}
@@ -97,7 +132,6 @@ export default function CreateItemForm({
         </div>
 
         <div className="w-full my-2 flex flex-col">
-          <select name="" id="" className="p-2 rounded-xl bg-gray-200"></select>
           <label htmlFor="category">Categoria</label>
           <select
             id="category"
@@ -135,7 +169,9 @@ export default function CreateItemForm({
         )}
 
         <Button
-          className={`w-full m-2 ${type == 'income' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}>
+          className={`w-full m-2 ${type == 'income' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}
+          type="submit"
+          onClick={() => submitItem}>
           Criar Item
         </Button>
       </form>

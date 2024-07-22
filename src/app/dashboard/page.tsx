@@ -15,14 +15,15 @@ export default async function Dashboard(props: IDashboardProps) {
   const { fetchUser } = useFetchUserData();
   const id = props.searchParams.u;
 
-  const user: IUser = await fetchUser(id);
+  let user: IUser = await fetchUser(id);
+  user.personalSheetId = 'KboTREeG7JAHeFLpdGqO';
 
   if (user) {
     return (
       <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black overflow-y-scroll">
         <div className="w-full h-full overflow-y-hidden">
           <WelcomeHeader name={user.name} />
-          <DashboardMobile />
+          <DashboardMobile user={user} />
         </div>
         <NavBar user={user} selectedButton={'home'} />
       </div>

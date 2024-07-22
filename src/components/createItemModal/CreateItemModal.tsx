@@ -1,6 +1,7 @@
 import { useEffect, useState, ReactElement } from 'react';
 
 import { IUser } from '@/types/user';
+
 import Button from '../common/Button';
 import { MinusIcon } from '../icons/Icons';
 import CreateItemForm from './CreateItemForm';
@@ -55,7 +56,7 @@ export function CreateItemModal({
         className={`fixed inset-0 bg-black transition-opacity duration-500 ${isModalVisible ? 'opacity-50' : 'opacity-0'}`}
         onClick={onClose}></div>
       <div
-        className={`bg-gray-100 w-full md:w-1/2 h-[70%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
+        className={`bg-gray-100 w-full md:w-1/2 h-[75%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
         <div className="p-4 relative overflow-hidden h-full">
           {!selectedType && (
             <div

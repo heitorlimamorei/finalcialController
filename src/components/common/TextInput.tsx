@@ -5,7 +5,7 @@ interface TextInputProps {
   className: string;
   placeholder?: string;
   value: string;
-  onChange: (e: React.ChangeEvent) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function TextInput({
