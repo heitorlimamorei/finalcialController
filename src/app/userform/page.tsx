@@ -11,7 +11,7 @@ import axios from 'axios';
 import Button from '@/components/common/Button';
 import TextInput from '@/components/common/TextInput';
 
-const api = 'https://financial-controller-backend.onrender.com';
+const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function UserForm() {
   const { data: session } = useSession();
@@ -19,7 +19,6 @@ export default function UserForm() {
   const router = useRouter();
   const email = session?.user?.email;
   const [name, setName] = useState<string>('');
-  function handleNameChange(e: any) {
     setName(e.target.value);
   }
   useEffect(() => {

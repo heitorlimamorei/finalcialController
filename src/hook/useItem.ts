@@ -2,7 +2,7 @@ import { IItem, INewItem } from '@/types/item';
 import { firestoreTimestampToDate } from '@/utils/datefunctions';
 import axios from 'axios';
 
-const api = 'https://financial-controller-backend.onrender.com/api/v1';
+const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function useItem() {
   async function createItem(item: INewItem) {

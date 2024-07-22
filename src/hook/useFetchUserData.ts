@@ -1,11 +1,11 @@
 import { IUser } from '@/types/user';
 import axios from 'axios';
 
-const api = 'https://financial-controller-backend.onrender.com';
+const api = process.env.NEXT_PUBLIC_API_URL;
 
 export function useFetchUserData() {
   async function fetchByEmail(email: string): Promise<IUser> {
-    const resp = await axios.get<IUser>(`${api}/api/v1/user?email=${email}`);
+    const resp = await axios.get<IUser>(`${api}/user?email=${email}`);
 
     if (resp.status !== 200) console.error('Error when fetching user data');
 
