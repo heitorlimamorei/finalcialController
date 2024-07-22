@@ -13,7 +13,7 @@ interface CreateItemModalProps {
   user: IUser;
 }
 
-export type ItemType = 'expense' | 'income';
+export type ItemType = 'EXPENSE' | 'INCOME';
 
 export function CreateItemModal({
   isOpen,
@@ -39,7 +39,7 @@ export function CreateItemModal({
     }
   }, [isOpen]);
 
-  const handleButtonClick = (newType: ItemType) => {
+  const handleSetTypeChange = (newType: ItemType) => {
     if (newType !== selectedType) {
       setTransitionType(newType);
       setTimeout(() => setSelectedType(newType), 200);
@@ -63,33 +63,24 @@ export function CreateItemModal({
               className={`transition-transform duration-300 ${transitionType === undefined ? 'translate-x-0' : 'translate-x-full'}`}>
               <Button
                 className="flex flex-row items-center my-2 bg-red-600 w-full p-2 border-2 border-red-600 text-start text-xl font-bold text-white rounded-full hover:bg-red-500"
-                onClick={() => handleButtonClick('expense')}>
+                onClick={() => handleSetTypeChange('EXPENSE')}>
                 <div className="w-[10%] mr-5">{MinusIcon('#FFFFFF', 1)}</div>
                 Despesa
               </Button>
               <Button
                 className="flex flex-row items-center my-2 bg-green-600 w-full p-2 border-2 border-green-600 text-start text-xl font-bold text-white rounded-full hover:bg-green-500"
-                onClick={() => handleButtonClick('income')}>
+                onClick={() => handleSetTypeChange('INCOME')}>
                 <div className="w-[10%] mr-5">{MinusIcon('#FFFFFF', 1)}</div>
                 Receita
               </Button>
             </div>
           )}
 
-          {transitionType === 'expense' && (
+          {transitionType && (
             <CreateItemForm
-              selectedType={selectedType}
+              selectedType={selectedType!}
               user={user}
-              type="expense"
-              accountId={accountId}
-            />
-          )}
-
-          {transitionType === 'income' && (
-            <CreateItemForm
-              selectedType={selectedType}
-              user={user}
-              type="income"
+              type={transitionType}
               accountId={accountId}
             />
           )}
