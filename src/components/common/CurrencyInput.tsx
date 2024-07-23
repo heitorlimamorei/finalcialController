@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 import { twMerge } from 'tailwind-merge';
 
+import { ItemType } from '../createItemModal/CreateItemModal';
+
 interface CurrencyInputProps {
   value: number;
   onChange: (value: number) => void;
-  type: 'income' | 'expense';
+  type: ItemType | undefined;
   className?: string;
 }
 
@@ -35,7 +37,7 @@ export default function CurrencyInput({ value, onChange, type, className }: Curr
       value={formattedValue}
       onChange={handleChange}
       className={twMerge(
-        `border-none ${type == 'income' ? 'bg-green-500' : 'bg-red-500'}`,
+        `border-none ${type == 'INCOME' ? 'bg-green-500' : 'bg-red-500'}`,
         className,
       )}
     />

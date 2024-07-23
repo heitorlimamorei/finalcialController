@@ -1,25 +1,55 @@
+'use client';
 import { useState } from 'react';
 
-import { CreateItemModal } from '@/components/CreateItemModal';
-import { Sheet } from '@/components/sheetMock';
+import { IUser } from '@/types/user';
+
+import ChangeAccountModal from '@/components/changeAccountModal/ChangeAccountModal';
+import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
+import { sheet } from '@/components/sheetMock';
 
 import BalanceCard from './components/BalanceCard';
 
-export default function DashboardMobile() {
-  const [isOpen, setIsOpen] = useState(false);
+interface IDashboardMobileProps {
+  user: IUser;
+}
 
-  const handleCreateItem = () => {
-    setIsOpen((c) => !c);
+export default function DashboardMobile({ user }: IDashboardMobileProps) {
+  const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
+  const [accountId, setAccountId] = useState<string>('');
+  const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
+
+  const handleCreateItemModal = () => {
+    setIsCreateItemOpen((c) => !c);
+  };
+  const handleChangeAccountModal = () => {
+    setIsChangeAccountOpen((c) => !c);
+  };
+  const handleChangeAccount = (id: string) => {
+    setAccountId(id);
   };
 
   return (
     <div className="w-full h-[90%]">
-      <CreateItemModal isOpen={isOpen} onClose={handleCreateItem} />
-      <BalanceCard createItem={handleCreateItem} />
+      <CreateItemModal
+        user={user}
+        isOpen={isCreateItemOpen}
+        onClose={handleCreateItemModal}
+        accountId={accountId}
+      />
+      <ChangeAccountModal
+        userId={user.id}
+        onChange={handleChangeAccount}
+        isOpen={isChangeAccountOpen}
+        onClose={handleChangeAccountModal}
+      />
+      <BalanceCard
+        openChangeAccountModal={handleChangeAccountModal}
+        openCreateItemModal={handleCreateItemModal}
+      />
       <div className="h-[70%] overflow-y-hidden py-2 px-4">
         <h1 className="font-bold text-3xl">Últimas atividades</h1>
         <ul>
-          {Sheet.map((item: any) => (
+          {sheet.map((item: any) => (
             <li
               key={item.id}
               className="h-[5rem] border-x-transparent border-t-gray-200 flex flex-col justify-end">

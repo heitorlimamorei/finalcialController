@@ -1,24 +1,31 @@
 import { useEffect, useState, ReactElement } from 'react';
 
-import CurrencyInput from '@/components/common/CurrencyInput';
+import { IUser } from '@/types/user';
 
-import Button from './common/Button';
+import Button from '../common/Button';
+import { MinusIcon } from '../icons/Icons';
 import CreateItemForm from './CreateItemForm';
-import { CurrencyIcon, MinusIcon } from './icons/Icons';
 
 interface CreateItemModalProps {
+  accountId: string;
   isOpen: boolean;
   onClose: () => void;
+  user: IUser;
 }
 
-export function CreateItemModal({ isOpen, onClose }: CreateItemModalProps): ReactElement {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isContainerVisible, setIsContainerVisible] = useState(false);
+export type ItemType = 'EXPENSE' | 'INCOME';
 
-  const [selectedType, setSelectedType] = useState('');
-  const [transitionType, setTransitionType] = useState('');
+export function CreateItemModal({
+  isOpen,
+  onClose,
+  user,
+  accountId,
+}: CreateItemModalProps): ReactElement {
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isContainerVisible, setIsContainerVisible] = useState<boolean>(false);
 
-  const [value, setValue] = useState(0);
+  const [selectedType, setSelectedType] = useState<ItemType>();
+  const [transitionType, setTransitionType] = useState<ItemType>();
 
   useEffect(() => {
     if (isOpen) {
@@ -27,12 +34,12 @@ export function CreateItemModal({ isOpen, onClose }: CreateItemModalProps): Reac
     } else {
       setIsModalVisible(false);
       setTimeout(() => setIsContainerVisible(false), 200);
-      setSelectedType('');
-      setTransitionType('');
+      setSelectedType(undefined);
+      setTransitionType(undefined);
     }
   }, [isOpen]);
 
-  const handleButtonClick = (newType: string) => {
+  const handleSetTypeChange = (newType: ItemType) => {
     if (newType !== selectedType) {
       setTransitionType(newType);
       setTimeout(() => setSelectedType(newType), 200);
@@ -49,43 +56,32 @@ export function CreateItemModal({ isOpen, onClose }: CreateItemModalProps): Reac
         className={`fixed inset-0 bg-black transition-opacity duration-500 ${isModalVisible ? 'opacity-50' : 'opacity-0'}`}
         onClick={onClose}></div>
       <div
-        className={`bg-gray-100 w-full md:w-1/2 h-2/3 transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
+        className={`bg-gray-100 w-full md:w-1/2 h-[80%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
         <div className="p-4 relative overflow-hidden h-full">
           {!selectedType && (
             <div
-              className={`transition-transform duration-300 ${transitionType === '' ? 'translate-x-0' : 'translate-x-full'}`}>
+              className={`transition-transform duration-300 ${transitionType === undefined ? 'translate-x-0' : 'translate-x-full'}`}>
               <Button
                 className="flex flex-row items-center my-2 bg-red-600 w-full p-2 border-2 border-red-600 text-start text-xl font-bold text-white rounded-full hover:bg-red-500"
-                onClick={() => handleButtonClick('expense')}>
+                onClick={() => handleSetTypeChange('EXPENSE')}>
                 <div className="w-[10%] mr-5">{MinusIcon('#FFFFFF', 1)}</div>
                 Despesa
               </Button>
               <Button
                 className="flex flex-row items-center my-2 bg-green-600 w-full p-2 border-2 border-green-600 text-start text-xl font-bold text-white rounded-full hover:bg-green-500"
-                onClick={() => handleButtonClick('income')}>
+                onClick={() => handleSetTypeChange('INCOME')}>
                 <div className="w-[10%] mr-5">{MinusIcon('#FFFFFF', 1)}</div>
                 Receita
               </Button>
             </div>
           )}
 
-          {transitionType === 'expense' && (
+          {transitionType && (
             <CreateItemForm
-              onClose={onClose}
-              value={value}
-              setValue={setValue}
-              selectedType={selectedType}
-              type="expense"
-            />
-          )}
-
-          {transitionType === 'income' && (
-            <CreateItemForm
-              onClose={onClose}
-              value={value}
-              setValue={setValue}
-              selectedType={selectedType}
-              type="income"
+              selectedType={selectedType!}
+              user={user}
+              type={transitionType}
+              accountId={accountId}
             />
           )}
         </div>

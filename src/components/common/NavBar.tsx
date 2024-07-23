@@ -2,41 +2,44 @@
 
 import { useRouter } from 'next/navigation';
 
+import { IUser } from '@/types/user';
+
 import Button from '@/components/common/Button';
 import { HomeIcon, ChartIcon, GearIcon, SheetIcon } from '@/components/icons/Icons';
 
 interface NavBarProps {
   selectedButton: string;
+  user: IUser;
 }
 
-export default function NavBar({ selectedButton }: NavBarProps) {
+export default function NavBar({ selectedButton, user }: NavBarProps) {
   const router = useRouter();
   const navItems = [
     {
       id: 'home',
       icon: HomeIcon,
-      path: '/dashboard',
+      path: `/dashboard?u=${user.id}`,
       label: 'Home',
       size: 8,
     },
     {
       id: 'chart',
       icon: ChartIcon,
-      path: '/dashboard',
+      path: `/dashboard?u=${user.id}`,
       label: 'Charts',
       size: 8,
     },
     {
       id: 'sheets',
       icon: SheetIcon,
-      path: '/dashboard',
+      path: `/dashboard?u=${user.id}`,
       label: 'Sheets',
       size: 8,
     },
     {
       id: 'config',
       icon: GearIcon,
-      path: '/config',
+      path: `/config?u=${user.id}`,
       label: 'Config',
       size: 8,
     },
