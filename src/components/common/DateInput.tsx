@@ -19,7 +19,10 @@ export default function DateInput({ value, onChange, className }: DateInputProps
   return (
     <input
       type="date"
-      className={twMerge('bg-gray-200 border-gray-400 p-2 rounded-xl outline-none', className)}
+      className={twMerge(
+        'dark:bg-zinc-600 bg-gray-200 border-gray-400 p-2 rounded-xl outline-none',
+        className,
+      )}
       value={formattedValue}
       onChange={handleChange}
     />

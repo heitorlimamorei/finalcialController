@@ -38,12 +38,12 @@ export default function ChangeAccountModal({
         className={`fixed inset-0 bg-black transition-opacity duration-500 ${isModalVisible ? 'opacity-50' : 'opacity-0'}`}
         onClick={onClose}></div>
       <div
-        className={`bg-gray-100 p-3 w-full md:w-1/2 h-[75%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
+        className={`dark:bg-zinc-800 bg-gray-100 p-3 w-full md:w-1/2 h-[75%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
         <h1 className="text-2xl font-bold">Selecione a conta</h1>
         <ul>
           {accounts.map((account: IAccount) => (
             <li
-              className="m-2 p-3 text-2xl font-bold border-black border-2 rounded-xl hover:bg-gray-200 cursor-pointer"
+              className="m-2 p-3 text-2xl font-bold border-black dark:border-white border-2 rounded-xl hover:bg-gray-200 cursor-pointer"
               key={account.id}
               onClick={() => {
                 onChange(account);

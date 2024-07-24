@@ -5,6 +5,7 @@ import { IUser } from '@/types/user';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 
+import Loading from '@/components/common/Loading';
 import NavBar from '@/components/common/NavBar';
 import DashboardMobile from '@/components/mobile/dashboardMobile/DashboardMobile';
 import WelcomeHeader from '@/components/mobile/dashboardMobile/WelcomeHeader';
@@ -36,7 +37,7 @@ export default function Dashboard(props: IDashboardProps) {
   user.personalSheetId = 'WzP4Qn2qhkMdhOiWbcN8';
 
   return (
-    <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black overflow-y-scroll">
+    <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black dark:bg-zinc-800 dark:text-white overflow-y-scroll">
       <div className="w-full h-full overflow-y-hidden">
         <WelcomeHeader name={user.name} />
         <DashboardMobile user={user} accounts={accounts} />
