@@ -1,9 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { IAccount } from '@/types/account';
 import { IUser } from '@/types/user';
-import axios from 'axios';
 
 import ChangeAccountModal from '@/components/changeAccountModal/ChangeAccountModal';
 import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
@@ -15,8 +14,6 @@ interface IDashboardMobileProps {
   user: IUser;
   accounts: IAccount[];
 }
-
-const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function DashboardMobile({ user, accounts }: IDashboardMobileProps) {
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
@@ -40,6 +37,7 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
   };
 
   if (!selectedAccount) return null;
+
   return (
     <div className="w-full h-[90%]">
       <CreateItemModal
@@ -54,6 +52,7 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
         onChange={handleChangeAccount}
         isOpen={isChangeAccountOpen}
         onClose={handleChangeAccountModal}
+        accounts={accounts}
       />
       <BalanceCard
         account={selectedAccount}

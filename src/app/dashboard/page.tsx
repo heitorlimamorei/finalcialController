@@ -1,5 +1,4 @@
 'use client';
-import { useEffect, useState } from 'react';
 
 import { useAccount } from '@/hook/useAccount';
 import { useFetchUserData } from '@/hook/useFetchUserData';
@@ -27,6 +26,7 @@ export default function Dashboard(props: IDashboardProps) {
     error: accountsError,
     isLoading: accountsLoading,
   } = useSWR<IAccount[]>(id, getAccounts);
+
   const { data: user, error: userError, isLoading: userLoading } = useSWR<IUser>(id, fetchUser);
 
   if (accountsLoading || userLoading) {
@@ -35,15 +35,15 @@ export default function Dashboard(props: IDashboardProps) {
 
   if (accountsError || userError || !accounts || !user) {
     return <div>Error loading data...</div>;
-  } else {
-    return (
-      <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black overflow-y-scroll">
-        <div className="w-full h-full overflow-y-hidden">
-          <WelcomeHeader name={user?.name} />
-          <DashboardMobile user={user} accounts={accounts} />
-        </div>
-        <NavBar user={user} selectedButton={'home'} />
-      </div>
-    );
   }
+
+  return (
+    <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black overflow-y-scroll">
+      <div className="w-full h-full overflow-y-hidden">
+        <WelcomeHeader name={user?.name} />
+        <DashboardMobile user={user} accounts={accounts} />
+      </div>
+      <NavBar user={user} selectedButton={'home'} />
+    </div>
+  );
 }
