@@ -15,7 +15,7 @@ export function ConfigProfile({ user }: IConfigProfileProps) {
     return (
       <div className="flex flex-row h-[20%] w-full items-center justify-center">
         <Image
-          src={session.user.image}
+          src={session.user!.image!}
           className="rounded-full"
           alt="Profile picture"
           width={100}

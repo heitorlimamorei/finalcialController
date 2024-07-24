@@ -4,22 +4,18 @@ import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-import { useFetchUserData } from '@/hook/useFetchUserData';
 import useWindowSize from '@/hook/useWindowSize';
+import { IUser } from '@/types/user';
 import axios from 'axios';
 
 import LandingPageBody from '@/components/landingPage/LandingPageBody';
 import LandingPageHeader from '@/components/landingPage/LandingPageHeader';
 
-interface IUser {
-  name: string;
-  email: string;
-}
+const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function Home() {
   const { width } = useWindowSize();
   const { data: session } = useSession();
-  const { fetchByEmail } = useFetchUserData();
   const email = session?.user?.email;
   const router = useRouter();
 
@@ -27,9 +23,9 @@ export default function Home() {
     if (session != null) {
       const fetchData = async (email: string) => {
         try {
-          const user = await fetchByEmail(email);
-          if (user.email != '') {
-            console.log(user);
+          const resp = await axios.get(`${api}/user?email=${email}`);
+          const user: IUser = resp.data;
+          if (user?.email != '') {
             router.push(`/dashboard?u=${user.id}`);
           }
         } catch (error) {
@@ -45,7 +41,7 @@ export default function Home() {
         fetchData(email);
       }
     }
-  }, [email, router, fetchByEmail, session]);
+  }, [email, session]);
 
   return (
     <div className="relative w-full h-screen bg-gray-100 text-black">

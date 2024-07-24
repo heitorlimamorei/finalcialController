@@ -1,12 +1,13 @@
-import { useEffect, useState, type ReactElement, ChangeEvent } from 'react';
+import { useEffect, useState, type ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { useCategory } from '@/hook/useCategory';
 import useItem from '@/hook/useItem';
 import { createItemSchema } from '@/schemas/createItemSchema';
 import { ICategory } from '@/types/category';
 import { IUser } from '@/types/user';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { mutate } from 'swr';
 import { z } from 'zod';
 
 import Button from '../common/Button';
@@ -22,16 +23,19 @@ interface CreateItemFormProps {
   selectedType: ItemType;
   user: IUser;
   accountId: string;
+  onClose: () => void;
 }
+
+const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function CreateItemForm({
   selectedType,
   type,
   user,
   accountId,
+  onClose,
 }: CreateItemFormProps): ReactElement {
   const { createItem } = useItem();
-  const { getCategories } = useCategory();
   const [categories, setCategories] = useState<ICategory[]>([]);
   const {
     register,
@@ -56,15 +60,15 @@ export default function CreateItemForm({
   useEffect(() => {
     const fetchCategories = async (sheetId: string) => {
       try {
-        const categories: ICategory[] = await getCategories(sheetId);
-        setCategories(categories);
+        const categories = await axios.get(`${api}/category?sheetId=${sheetId}`);
+        setCategories(categories.data);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchCategories(user.personalSheetId);
-  }, [getCategories, user.personalSheetId]);
+    fetchCategories(user.personalSpreadSheet);
+  }, [user.personalSpreadSheet]);
 
   const onSubmit = async (data: CreateItemFormData) => {
     const categoryId = data.selectedSubcategoryId
@@ -74,28 +78,22 @@ export default function CreateItemForm({
     const validDate = data.date || new Date();
 
     try {
-      console.log({
-        sheetId: user.personalSheetId,
-        categoryId: categoryId,
-        ownerId: user.id,
-        name: data.name,
-        description: data.description,
-        accountId,
-        amount: data.amount,
-        date: validDate.toISOString(),
-        type: type,
-      });
       const response = await createItem({
-        sheetId: user.personalSheetId,
+        sheetId: user.personalSpreadSheet,
         categoryId: categoryId,
         ownerId: user.id,
         name: data.name,
-        description: data.description,
+        description: !data.description ? '' : data.description,
         accountId,
         amount: data.amount,
         date: validDate.toISOString(),
         type: type,
       });
+      onClose();
+
+      mutate(`/account?owid=${user.id}`);
+      mutate(`/items?sheetid=${user.personalSpreadSheet}`);
+
       console.log('Item created successfully:', response);
     } catch (error) {
       console.error('Error creating item:', error);

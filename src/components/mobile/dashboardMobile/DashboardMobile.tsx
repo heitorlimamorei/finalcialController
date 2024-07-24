@@ -1,32 +1,38 @@
 'use client';
 import { useState } from 'react';
 
+import { IAccount } from '@/types/account';
 import { IUser } from '@/types/user';
 
 import ChangeAccountModal from '@/components/changeAccountModal/ChangeAccountModal';
 import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
-import { sheet } from '@/components/sheetMock';
 
 import BalanceCard from './components/BalanceCard';
+import ItemList from './components/ItemList';
 
 interface IDashboardMobileProps {
   user: IUser;
+  accounts: IAccount[];
 }
 
-export default function DashboardMobile({ user }: IDashboardMobileProps) {
+export default function DashboardMobile({ user, accounts }: IDashboardMobileProps) {
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
-  const [accountId, setAccountId] = useState<string>('');
+  const [selectedAccount, setSelectedAccount] = useState<IAccount>(accounts[0]);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
 
   const handleCreateItemModal = () => {
     setIsCreateItemOpen((c) => !c);
   };
+
   const handleChangeAccountModal = () => {
     setIsChangeAccountOpen((c) => !c);
   };
-  const handleChangeAccount = (id: string) => {
-    setAccountId(id);
+
+  const handleChangeAccount = (account: IAccount) => {
+    setSelectedAccount(account);
   };
+
+  if (!selectedAccount) return <p>Não existe conta selecionada</p>;
 
   return (
     <div className="w-full h-[90%]">
@@ -34,41 +40,25 @@ export default function DashboardMobile({ user }: IDashboardMobileProps) {
         user={user}
         isOpen={isCreateItemOpen}
         onClose={handleCreateItemModal}
-        accountId={accountId}
+        accountId={selectedAccount.id}
       />
       <ChangeAccountModal
         userId={user.id}
         onChange={handleChangeAccount}
         isOpen={isChangeAccountOpen}
         onClose={handleChangeAccountModal}
+        accounts={accounts}
       />
       <BalanceCard
+        selectedAccount={selectedAccount}
         openChangeAccountModal={handleChangeAccountModal}
         openCreateItemModal={handleCreateItemModal}
       />
-      <div className="h-[70%] overflow-y-hidden py-2 px-4">
-        <h1 className="font-bold text-3xl">Últimas atividades</h1>
-        <ul>
-          {sheet.map((item: any) => (
-            <li
-              key={item.id}
-              className="h-[5rem] border-x-transparent border-t-gray-200 flex flex-col justify-end">
-              <div className="flex flex-row justify-between items-center h-full">
-                <div>
-                  <h1 className="text-xl font-semibold">{item.name}</h1>
-                  <p className="text-gray-500">30/06/2023</p>
-                </div>
-                <div className="flex items-center">
-                  <p
-                    className={`text-xl font-bold ${item.value > 0 ? 'text-green-500' : 'text-red-600'}`}>
-                    R${item.value > 0 ? item.value : item.value * -1}
-                  </p>
-                </div>
-              </div>
-              <span className="h-[2px] w-full flex bg-gray-300"></span>
-            </li>
-          ))}
-        </ul>
+      <div className="h-[70%] py-2">
+        <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>
+        <div className="w-full h-full overflow-y-scroll">
+          <ItemList sheetId={user.personalSpreadSheet} accountId={selectedAccount.id} />
+        </div>
       </div>
     </div>
   );
