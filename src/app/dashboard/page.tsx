@@ -30,7 +30,7 @@ export default function Dashboard(props: IDashboardProps) {
   }
 
   if (!accounts || !user) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   user.personalSheetId = 'WzP4Qn2qhkMdhOiWbcN8';
