@@ -57,7 +57,7 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>
         <div className="w-full h-full overflow-y-scroll">
-          <ItemList sheetId={user.personalSheetId} accountId={selectedAccount.id} />
+          <ItemList sheetId={user.personalSpreadSheet} accountId={selectedAccount.id} />
         </div>
       </div>
     </div>

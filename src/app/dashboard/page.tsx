@@ -33,8 +33,6 @@ export default function Dashboard(props: IDashboardProps) {
     return <div>Loading...</div>;
   }
 
-  user.personalSheetId = 'WzP4Qn2qhkMdhOiWbcN8';
-
   return (
     <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black overflow-y-scroll">
       <div className="w-full h-full overflow-y-hidden">
