@@ -3,7 +3,9 @@ import { Session } from 'next-auth';
 import { Inter } from 'next/font/google';
 
 import { SessionProvider } from '@/components/nextAuth/SessionProvider';
+
 import './globals.css';
+import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,8 +24,12 @@ export default function RootLayout(
 ) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <SessionProvider session={session}>{children}</SessionProvider>
+      <body className={`${inter.className}`}>
+        <SessionProvider session={session}>
+          <ThemeProvider defaultTheme="dark" attribute="class" themes={['light', 'dark']}>
+            {children}
+          </ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );
