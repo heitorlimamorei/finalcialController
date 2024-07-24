@@ -1,4 +1,6 @@
 import { IAccount } from '@/types/account';
+import fetcher from '@/utils/fetcher';
+import useSWR from 'swr';
 
 import { ClockIcon, CurrencyIcon, TransferIcon } from '@/components/icons/Icons';
 
@@ -7,14 +9,25 @@ import QuickMenuButton from './QuickMenuButton';
 interface BalanceCardProps {
   openCreateItemModal: () => void;
   openChangeAccountModal: () => void;
-  account: IAccount;
+  selectedAccount: IAccount;
 }
 
 export default function BalanceCard({
   openCreateItemModal,
   openChangeAccountModal,
-  account,
+  selectedAccount,
 }: BalanceCardProps) {
+  const { data: accounts, error: accountsError } = useSWR<IAccount[]>(
+    `/account?owid=${selectedAccount.ownerId}`,
+    fetcher,
+  );
+  let account;
+  if (accounts) {
+    account = accounts.find((account) => account.id === selectedAccount.id);
+  }
+  if (!account) {
+    return;
+  }
   return (
     <div className="m-4 rounded-2xl bg-[#121826] h-[13rem] text-white">
       <div className="bg-green-500 rounded-2xl h-1/2 flex flex-col items-center justify-center">

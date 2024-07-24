@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-import { useFetchUserData } from '@/hook/useFetchUserData';
 import axios from 'axios';
 
 import Button from '@/components/common/Button';
@@ -15,7 +14,6 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function UserForm() {
   const { data: session } = useSession();
-  const { fetchByEmail } = useFetchUserData();
   const router = useRouter();
   const email = session?.user?.email;
   const [name, setName] = useState<string>('');
@@ -28,9 +26,9 @@ export default function UserForm() {
     if (session && email) {
       const fetchData = async (email: string) => {
         try {
-          const result = await fetchByEmail(email);
-          if (result.email !== '') {
-            console.log(result);
+          const result = await axios.get(`${api}/user?email=${email}`);
+          const user = result.data;
+          if (user.email !== '') {
             router.push('/');
           }
         } catch (error) {

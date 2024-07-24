@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { useAccount } from '@/hook/useAccount';
 import { IAccount } from '@/types/account';
 
 interface IChangeAccountModalProps {

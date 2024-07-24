@@ -1,5 +1,5 @@
 interface WelcomeHeaderProps {
-  name?: string;
+  name: string;
 }
 
 export default function WelcomeHeader({ name }: WelcomeHeaderProps) {
