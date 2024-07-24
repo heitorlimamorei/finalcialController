@@ -20,10 +20,6 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
   const [selectedAccount, setSelectedAccount] = useState<IAccount>(accounts[0]);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
 
-  const changeBalance = (amount: number) => {
-    selectedAccount.balance += amount;
-  };
-
   const handleCreateItemModal = () => {
     setIsCreateItemOpen((c) => !c);
   };
@@ -36,12 +32,11 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
     setSelectedAccount(account);
   };
 
-  if (!selectedAccount) return null;
+  if (!selectedAccount) return <p>Não existe conta selecionada</p>;
 
   return (
     <div className="w-full h-[90%]">
       <CreateItemModal
-        changeBalance={changeBalance}
         user={user}
         isOpen={isCreateItemOpen}
         onClose={handleCreateItemModal}
@@ -55,13 +50,15 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
         accounts={accounts}
       />
       <BalanceCard
-        account={selectedAccount}
+        selectedAccount={selectedAccount}
         openChangeAccountModal={handleChangeAccountModal}
         openCreateItemModal={handleCreateItemModal}
       />
-      <div className="h-[70%] overflow-y-hidden py-2 px-4">
-        <h1 className="font-bold text-3xl">Últimas atividades</h1>
-        <ItemList sheetId={user.personalSheetId} />
+      <div className="h-[70%] py-2">
+        <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>
+        <div className="w-full h-full overflow-y-scroll">
+          <ItemList sheetId={user.personalSheetId} accountId={selectedAccount.id} />
+        </div>
       </div>
     </div>
   );
