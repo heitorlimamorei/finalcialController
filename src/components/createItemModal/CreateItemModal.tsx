@@ -11,6 +11,7 @@ interface CreateItemModalProps {
   isOpen: boolean;
   onClose: () => void;
   user: IUser;
+  changeBalance: (amount: number) => void;
 }
 
 export type ItemType = 'EXPENSE' | 'INCOME';
@@ -20,6 +21,7 @@ export function CreateItemModal({
   onClose,
   user,
   accountId,
+  changeBalance,
 }: CreateItemModalProps): ReactElement {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isContainerVisible, setIsContainerVisible] = useState<boolean>(false);
@@ -39,6 +41,12 @@ export function CreateItemModal({
     }
   }, [isOpen]);
 
+  const handleOnClose = () => {
+    if (isOpen) {
+      onClose();
+    }
+  };
+
   const handleSetTypeChange = (newType: ItemType) => {
     if (newType !== selectedType) {
       setTransitionType(newType);
@@ -54,7 +62,7 @@ export function CreateItemModal({
       className={`fixed inset-0 z-0 flex items-end justify-center ${isContainerVisible ? '' : 'hidden'}`}>
       <div
         className={`fixed inset-0 bg-black transition-opacity duration-500 ${isModalVisible ? 'opacity-50' : 'opacity-0'}`}
-        onClick={onClose}></div>
+        onClick={handleOnClose}></div>
       <div
         className={`bg-gray-100 w-full md:w-1/2 h-[80%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
         <div className="p-4 relative overflow-hidden h-full">
@@ -78,6 +86,8 @@ export function CreateItemModal({
 
           {transitionType && (
             <CreateItemForm
+              onClose={onClose}
+              changeBalance={changeBalance}
               selectedType={selectedType!}
               user={user}
               type={transitionType}

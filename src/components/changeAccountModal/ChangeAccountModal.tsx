@@ -1,12 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import { useAccount } from '@/hook/useAccount';
 import { IAccount } from '@/types/account';
 
 interface IChangeAccountModalProps {
   isOpen: boolean;
   onClose: () => void;
   onChange: (account: IAccount) => void;
+  userId: string;
   accounts: IAccount[];
 }
 
@@ -14,6 +16,7 @@ export default function ChangeAccountModal({
   onChange,
   isOpen,
   onClose,
+  userId,
   accounts,
 }: IChangeAccountModalProps) {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);

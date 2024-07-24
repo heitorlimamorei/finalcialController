@@ -23,9 +23,9 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
   const [selectedAccount, setSelectedAccount] = useState<IAccount>(accounts[0]);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    setSelectedAccount(accounts[0]);
-  }, [accounts]);
+  const changeBalance = (amount: number) => {
+    selectedAccount.balance += amount;
+  };
 
   const handleCreateItemModal = () => {
     setIsCreateItemOpen((c) => !c);
@@ -43,13 +43,14 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
   return (
     <div className="w-full h-[90%]">
       <CreateItemModal
+        changeBalance={changeBalance}
         user={user}
         isOpen={isCreateItemOpen}
         onClose={handleCreateItemModal}
         accountId={selectedAccount.id}
       />
       <ChangeAccountModal
-        accounts={accounts}
+        userId={user.id}
         onChange={handleChangeAccount}
         isOpen={isChangeAccountOpen}
         onClose={handleChangeAccountModal}

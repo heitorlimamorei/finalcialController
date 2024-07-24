@@ -45,7 +45,7 @@ export default function Home() {
         fetchData(email);
       }
     }
-  }, [email, router, fetchByEmail, session]);
+  }, [email, session]);
 
   return (
     <div className="relative w-full h-screen bg-gray-100 text-black">

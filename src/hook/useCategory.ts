@@ -5,11 +5,14 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 export function useCategory() {
   async function getCategories(sheetId: string) {
     const categories = await axios.get(`${api}/category?sheetId=${sheetId}`);
+    console.log('useCategory');
     return categories.data;
   }
 
   async function getCategory(sheetId: string, categoryId: string) {
-    const category = await axios.get(`${api}/category/${categoryId}?sheetId=${sheetId}`);
+    const category = await axios.get(
+      `${api}/category/${categoryId}?sheetId=${sheetId}`,
+    );
     return category.data;
   }
 
@@ -31,7 +34,9 @@ export function useCategory() {
   }
 
   async function deleteCategory(sheetId: string, categoryId: string) {
-    const resp = await axios.delete(`${api}/category/${categoryId}?sheetId=${sheetId}`);
+    const resp = await axios.delete(
+      `${api}/category/${categoryId}?sheetId=${sheetId}`,
+    );
     if (resp.status !== 200) {
       console.error('Error deleting category');
     }

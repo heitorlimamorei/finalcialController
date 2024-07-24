@@ -14,7 +14,11 @@ export default function ItemList({ sheetId }: ItemListProps) {
     try {
       const fetchSheet = async (sheetId: string) => {
         const resp = await getItems(sheetId);
-        setSheetItems(resp);
+        const sortedItems = resp.sort(
+          (a: IItem, b: IItem) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        );
+        setSheetItems(sortedItems);
+        console.log('fetched items');
       };
       if (sheetId) {
         fetchSheet(sheetId);
@@ -22,7 +26,7 @@ export default function ItemList({ sheetId }: ItemListProps) {
     } catch (error) {
       console.log(error);
     }
-  }, [getItems, sheetId]);
+  }, [sheetId]);
   return (
     <ul>
       {sheetItems.map((item: IItem) => (

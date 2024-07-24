@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { IAccount } from '@/types/account';
 
 import { ClockIcon, CurrencyIcon, TransferIcon } from '@/components/icons/Icons';

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation'; // Ensure this import is correct
+import { useRouter } from 'next/navigation';
 
 import { useFetchUserData } from '@/hook/useFetchUserData';
 import axios from 'axios';
@@ -31,7 +31,7 @@ export default function UserForm() {
           const result = await fetchByEmail(email);
           if (result.email !== '') {
             console.log(result);
-            router.push('/dashboard');
+            router.push('/');
           }
         } catch (error) {
           if (axios.isAxiosError(error)) {
@@ -44,7 +44,7 @@ export default function UserForm() {
       };
       fetchData(email);
     }
-  }, [email, router, fetchByEmail, session]);
+  }, [email, session]);
 
   async function Createuser() {
     try {
@@ -52,6 +52,7 @@ export default function UserForm() {
         name,
         email,
       });
+      router.push('/');
     } catch (error) {
       console.error('Failed to create user:', error);
     }

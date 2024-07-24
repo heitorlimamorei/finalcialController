@@ -7,6 +7,7 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 export default function useItem() {
   async function getItems(sheetId: string) {
     const response = await axios.get(`${api}/items?sheetid=${sheetId}`);
+    console.log('fetched items');
 
     const items: IItem[] = response.data.map((item: IBackItem) => ({
       ...item,

@@ -6,6 +6,7 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 export function useFetchUserData() {
   async function fetchByEmail(email: string): Promise<IUser> {
     const resp = await axios.get<IUser>(`${api}/user?email=${email}`);
+    console.log('fetched user');
 
     if (resp.status !== 200) console.error('Error when fetching user data');
 

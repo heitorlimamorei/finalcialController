@@ -22,6 +22,8 @@ interface CreateItemFormProps {
   selectedType: ItemType;
   user: IUser;
   accountId: string;
+  changeBalance: (amount: number) => void;
+  onClose: () => void;
 }
 
 export default function CreateItemForm({
@@ -29,6 +31,8 @@ export default function CreateItemForm({
   type,
   user,
   accountId,
+  changeBalance,
+  onClose,
 }: CreateItemFormProps): ReactElement {
   const { createItem } = useItem();
   const { getCategories } = useCategory();
@@ -64,7 +68,7 @@ export default function CreateItemForm({
     };
 
     fetchCategories(user.personalSheetId);
-  }, [getCategories, user.personalSheetId]);
+  }, [user.personalSheetId]);
 
   const onSubmit = async (data: CreateItemFormData) => {
     const categoryId = data.selectedSubcategoryId
@@ -74,17 +78,6 @@ export default function CreateItemForm({
     const validDate = data.date || new Date();
 
     try {
-      console.log({
-        sheetId: user.personalSheetId,
-        categoryId: categoryId,
-        ownerId: user.id,
-        name: data.name,
-        description: data.description,
-        accountId,
-        amount: data.amount,
-        date: validDate.toISOString(),
-        type: type,
-      });
       const response = await createItem({
         sheetId: user.personalSheetId,
         categoryId: categoryId,
@@ -96,6 +89,8 @@ export default function CreateItemForm({
         date: validDate.toISOString(),
         type: type,
       });
+      changeBalance(type === 'INCOME' ? data.amount : data.amount * -1);
+      onClose();
       console.log('Item created successfully:', response);
     } catch (error) {
       console.error('Error creating item:', error);
