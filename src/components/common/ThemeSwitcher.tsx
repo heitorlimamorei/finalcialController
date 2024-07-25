@@ -31,7 +31,7 @@ export default function BotaoTema(props: BotaTemaProps) {
     <div
       onClick={() => setTheme('dark')}
       className={`
-       w-[6rem] h-[3rem] bg-gray-100  rounded-full flex items-center ${props.ClassName} hover:cursor-pointer       `}>
+       w-[6rem] h-[3rem] bg-gray-100  rounded-full flex items-center ${props.ClassName} hover:cursor-pointer`}>
       <div className={'flex items-center ml-1.5 text-[#5344FF] w-8 h-8 rounded-full'}>
         {MoonIcon(8)}
       </div>

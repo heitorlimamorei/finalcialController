@@ -50,7 +50,12 @@ export default function NavBar({ selectedButton, user }: NavBarProps) {
 
   const getIconColor = (id: string) => {
     if (selectedButton === id) {
-      return '#141B54'; // Color for selected button
+      if (theme === 'dark') {
+        return '#141B54';
+      }
+      if (theme === 'light') {
+        return '#0000FF';
+      }
     }
     return theme === 'dark' ? '#ffffff' : '#000000'; // Color based on theme
   };
@@ -62,7 +67,7 @@ export default function NavBar({ selectedButton, user }: NavBarProps) {
           key={id}
           onClick={() => router.push(path)}
           className={`flex items-center justify-center w-[13%] my-3 rounded-full transition-all duration-300 ${
-            selectedButton === id ? 'bg-blue-700' : ''
+            selectedButton === id ? 'dark:bg-blue-700 bg-blue-200' : ''
           }`}>
           {icon(getIconColor(id), size)}
         </Button>
