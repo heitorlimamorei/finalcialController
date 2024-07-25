@@ -16,7 +16,7 @@ interface IConfigProps {
 }
 
 export default function Config(props: IConfigProps) {
-  const { data: user, error, isLoading } = useSWR<IUser>(`/user/${props.searchParams.u}`, fetcher);
+  const { data: user, isLoading } = useSWR<IUser>(`/user/${props.searchParams.u}`, fetcher);
   if (isLoading || !user) {
     return <Loading />;
   }
