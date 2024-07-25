@@ -6,21 +6,7 @@
     "axe/forms": [
       "default",
       {
-        "select-name": "off",
-        "label": "off"
-      }
-    ],
-    "apple-touch-icons": "off",
-    "axe/name-role-value": [
-      "default",
-      {
-        "button-name": "off"
-      }
-    ],
-    "axe/text-alternatives": [
-      "default",
-      {
-        "image-alt": "off"
+        "select-name": "off"
       }
     ]
   }
