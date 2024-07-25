@@ -22,11 +22,13 @@ export default function Config(props: IConfigProps) {
   }
   return (
     <div className="flex flex-col h-screen w-screen justify-between dark:bg-zinc-800 dark:text-white bg-gray-100 text-black overflow-y-scroll">
-      <ConfigProfile user={user} />
-      <div className="w-full h-full">
-        <div className="border-y-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between">
-          <h1 className=" text-2xl font-semibold ">Tema</h1>
-          <ThemeSwitcher />
+      <div className="flex flex-col h-screen w-screen justify-between dark:bg-zinc-800 dark:text-white bg-gray-100 text-black overflow-y-scroll">
+        <ConfigProfile user={user} />
+        <div className="w-full h-full">
+          <div className="border-t-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between">
+            <h1 className=" text-2xl font-semibold ">Tema</h1>
+            <ThemeSwitcher />
+          </div>
         </div>
       </div>
       <NavBar user={user} selectedButton="config" />
