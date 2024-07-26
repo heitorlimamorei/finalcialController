@@ -67,8 +67,8 @@ export default function CreateItemForm({
       }
     };
 
-    fetchCategories(user.personalSheetId);
-  }, [user.personalSheetId]);
+    fetchCategories(user.personalSpreadSheet);
+  }, [user.personalSpreadSheet]);
 
   const onSubmit = async (data: CreateItemFormData) => {
     const categoryId = data.selectedSubcategoryId
@@ -79,7 +79,7 @@ export default function CreateItemForm({
 
     try {
       const response = await createItem({
-        sheetId: user.personalSheetId,
+        sheetId: user.personalSpreadSheet,
         categoryId: categoryId,
         ownerId: user.id,
         name: data.name,
@@ -92,7 +92,7 @@ export default function CreateItemForm({
       onClose();
 
       mutate(`/account?owid=${user.id}`);
-      mutate(`/items?sheetid=${user.personalSheetId}`);
+      mutate(`/items?sheetid=${user.personalSpreadSheet}`);
 
       console.log('Item created successfully:', response);
     } catch (error) {
