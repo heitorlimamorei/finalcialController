@@ -57,7 +57,7 @@ export default function NavBar({ selectedButton, user }: NavBarProps) {
         return '#0000FF';
       }
     }
-    return theme === 'dark' ? '#ffffff' : '#000000'; // Color based on theme
+    return theme === 'dark' ? '#ffffff' : '#000000';
   };
 
   return (

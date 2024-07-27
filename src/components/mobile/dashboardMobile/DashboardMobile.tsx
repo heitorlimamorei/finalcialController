@@ -43,7 +43,6 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
         accountId={selectedAccount.id}
       />
       <ChangeAccountModal
-        userId={user.id}
         onChange={handleChangeAccount}
         isOpen={isChangeAccountOpen}
         onClose={handleChangeAccountModal}

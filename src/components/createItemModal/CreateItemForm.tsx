@@ -119,7 +119,7 @@ export default function CreateItemForm({
             Nome{errors.name && '*'}
           </label>
           <TextInput
-            className="w-full bg-gray-200 border-gray-300 dark:bg-zinc-600 rounded-xl py-3 px-3"
+            className="w-full"
             placeholder={type === 'INCOME' ? 'Dividendo' : 'Padaria'}
             value={nameValue}
             onChange={(e) => setValue('name', e.target.value, { shouldValidate: true })}
@@ -129,7 +129,7 @@ export default function CreateItemForm({
         <div className="w-full my-2">
           <label htmlFor="description">Descrição (opcional)</label>
           <TextInput
-            className="w-full bg-gray-200 border-gray-300 dark:bg-zinc-600 rounded-xl py-3 px-3"
+            className="w-full"
             placeholder={type === 'INCOME' ? 'Ação Vale' : '5x Pães'}
             value={descriptionValue!}
             onChange={(e) => setValue('description', e.target.value, { shouldValidate: true })}
