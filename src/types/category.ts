@@ -4,6 +4,15 @@ export interface ICategory {
   name: string;
   ownerId: string;
   type: string;
-  mainCategoryId: string;
+  mainCategoryId?: string;
   imagePath: string;
+}
+
+export interface INewCategory {
+  sheetId: string;
+  name: string;
+  ownerId: string;
+  type: string;
+  mainCategoryId?: string;
+  image_path: string;
 }
