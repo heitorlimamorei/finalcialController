@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { IAccount } from '@/types/account';
 import { IUser } from '@/types/user';
 
@@ -13,12 +15,14 @@ import ItemList from './components/ItemList';
 interface IDashboardMobileProps {
   user: IUser;
   accounts: IAccount[];
+  account: IAccount;
 }
 
-export default function DashboardMobile({ user, accounts }: IDashboardMobileProps) {
+export default function DashboardMobile({ user, accounts, account }: IDashboardMobileProps) {
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
-  const [selectedAccount, setSelectedAccount] = useState<IAccount>(accounts[0]);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleCreateItemModal = () => {
     setIsCreateItemOpen((c) => !c);
@@ -28,11 +32,9 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
     setIsChangeAccountOpen((c) => !c);
   };
 
-  const handleChangeAccount = (account: IAccount) => {
-    setSelectedAccount(account);
+  const handleChangeAccount = (c: IAccount) => {
+    router.push(`/dashboard?u=${user.id}&account=${c.id}`);
   };
-
-  if (!selectedAccount) return <p>Não existe conta selecionada</p>;
 
   return (
     <div className="w-full h-[90%]">
@@ -40,7 +42,7 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
         user={user}
         isOpen={isCreateItemOpen}
         onClose={handleCreateItemModal}
-        accountId={selectedAccount.id}
+        accountId={account.id}
       />
       <ChangeAccountModal
         onChange={handleChangeAccount}
@@ -49,14 +51,14 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
         accounts={accounts}
       />
       <BalanceCard
-        selectedAccount={selectedAccount}
+        selectedAccount={account}
         openChangeAccountModal={handleChangeAccountModal}
         openCreateItemModal={handleCreateItemModal}
       />
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>
         <div className="w-full h-full overflow-y-scroll">
-          <ItemList sheetId={user.personalSpreadSheet} accountId={selectedAccount.id} />
+          <ItemList sheetId={user.personalSpreadSheet} accountId={account.id} />
         </div>
       </div>
     </div>

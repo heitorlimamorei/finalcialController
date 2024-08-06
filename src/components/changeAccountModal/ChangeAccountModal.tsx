@@ -25,7 +25,7 @@ export default function ChangeAccountModal({
         <ul>
           {accounts.map((account: IAccount) => (
             <li
-              className="m-2 p-3 text-2xl font-bold border-gray-300 dark:border-gray-600 border-2 rounded-xl cursor-pointer"
+              className="m-2 p-3 text-2xl font-bold border-gray-300 dark:border-gray-600 border-2 rounded-xl hover:bg-gray-200 cursor-pointer"
               key={account.id}
               onClick={() => {
                 onChange(account);
