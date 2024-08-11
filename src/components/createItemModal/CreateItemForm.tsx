@@ -174,7 +174,10 @@ export default function CreateItemForm({
           {errors.selectedCategoryId && <p>{errors.selectedCategoryId.message}</p>}
         </div>
 
-        {categories.some((category) => category.mainCategoryId === selectedCategoryIdValue) && (
+        {categories.some(
+          (category) =>
+            category.mainCategoryId === selectedCategoryIdValue && category.type === 'subcategory',
+        ) && (
           <div className="w-full my-2 flex flex-col">
             <label htmlFor="subcategory">Subcategoria (opcional)</label>
             <select

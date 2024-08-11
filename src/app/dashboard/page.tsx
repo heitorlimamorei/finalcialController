@@ -38,7 +38,10 @@ export default function Dashboard(props: IDashboardProps) {
     <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black dark:bg-zinc-800 dark:text-white overflow-y-scroll">
       <div className="w-full h-full overflow-y-hidden">
         <WelcomeHeader name={user.name} />
-        <DashboardMobile user={user} accounts={accounts} />
+        <DashboardMobile
+          user={{ ...user, personalSpreadSheet: 'WzP4Qn2qhkMdhOiWbcN8' }}
+          accounts={accounts}
+        />
       </div>
       <NavBar user={user} selectedButton={'home'} />
     </div>
