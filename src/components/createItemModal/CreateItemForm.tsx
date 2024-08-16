@@ -178,27 +178,27 @@ export default function CreateItemForm({
           (category) =>
             category.mainCategoryId === selectedCategoryIdValue && category.type === 'subcategory',
         ) && (
-          <div className="w-full my-2 flex flex-col">
-            <label htmlFor="subcategory">Subcategoria (opcional)</label>
-            <select
-              id="subcategory"
-              className="p-2 rounded-xl dark:bg-zinc-600 bg-gray-200"
-              value={selectedSubcategoryIdValue}
-              {...register('selectedSubcategoryId')}
-              onChange={(e) =>
-                setValue('selectedSubcategoryId', e.target.value, { shouldValidate: true })
-              }>
-              <option value="">Selecione</option>
-              {categories
-                .filter((category) => category.mainCategoryId === selectedCategoryIdValue)
-                .map((subcategory) => (
-                  <option key={subcategory.id} value={subcategory.id}>
-                    {subcategory.name}
-                  </option>
-                ))}
-            </select>
-          </div>
-        )}
+            <div className="w-full my-2 flex flex-col">
+              <label htmlFor="subcategory">Subcategoria (opcional)</label>
+              <select
+                id="subcategory"
+                className="p-2 rounded-xl dark:bg-zinc-600 bg-gray-200"
+                value={selectedSubcategoryIdValue}
+                {...register('selectedSubcategoryId')}
+                onChange={(e) =>
+                  setValue('selectedSubcategoryId', e.target.value, { shouldValidate: true })
+                }>
+                <option value="">Selecione</option>
+                {categories
+                  .filter((category) => category.mainCategoryId === selectedCategoryIdValue)
+                  .map((subcategory) => (
+                    <option key={subcategory.id} value={subcategory.id}>
+                      {subcategory.name}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          )}
 
         <Button
           className={`w-full m-2 ${type === 'INCOME' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}

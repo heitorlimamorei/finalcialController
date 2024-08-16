@@ -20,7 +20,7 @@ export default function ItemList({ sheetId, accountId }: ItemListProps) {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error) return <p>Failed to load</p>;
+  if (error) return <p></p>;
 
   if (items != undefined) {
     const sortedItems = [...items]

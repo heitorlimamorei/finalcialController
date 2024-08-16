@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { IAccount } from '@/types/account';
 import { IUser } from '@/types/user';
 
@@ -19,6 +21,7 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
   const [selectedAccount, setSelectedAccount] = useState<IAccount>(accounts[0]);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleCreateItemModal = () => {
     setIsCreateItemOpen((c) => !c);
@@ -30,6 +33,10 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
 
   const handleChangeAccount = (account: IAccount) => {
     setSelectedAccount(account);
+  };
+
+  const handleOpenSheetView = () => {
+    router.push(`/sheet?u=${user.id}` + '&' + `aid=${selectedAccount.id}`);
   };
 
   if (!selectedAccount) return <p>Não existe conta selecionada</p>;
@@ -52,6 +59,7 @@ export default function DashboardMobile({ user, accounts }: IDashboardMobileProp
         selectedAccount={selectedAccount}
         openChangeAccountModal={handleChangeAccountModal}
         openCreateItemModal={handleCreateItemModal}
+        openSheetView={handleOpenSheetView}
       />
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>

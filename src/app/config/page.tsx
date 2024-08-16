@@ -38,7 +38,7 @@ export default function Config(props: IConfigProps) {
         userId={props.searchParams.u}
         isOpen={isCategoriesOpen}
         onClose={() => setIsCategoriesOpen(false)}
-        personalSpreadSheetId={'WzP4Qn2qhkMdhOiWbcN8'}
+        personalSpreadSheetId={user.personalSpreadSheet}
       />
       <div className="flex flex-col h-screen w-screen justify-between dark:bg-zinc-800 dark:text-white bg-gray-100 text-black overflow-y-scroll">
         <ConfigProfile user={user} />

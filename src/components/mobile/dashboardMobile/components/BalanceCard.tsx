@@ -9,12 +9,14 @@ import QuickMenuButton from './QuickMenuButton';
 interface BalanceCardProps {
   openCreateItemModal: () => void;
   openChangeAccountModal: () => void;
+  openSheetView: () => void;
   selectedAccount: IAccount;
 }
 
 export default function BalanceCard({
   openCreateItemModal,
   openChangeAccountModal,
+  openSheetView,
   selectedAccount,
 }: BalanceCardProps) {
   const { data: accounts, error: accountsError } = useSWR<IAccount[]>(
@@ -37,7 +39,7 @@ export default function BalanceCard({
       <div className="dark:bg-[#000826] bg-[#121826] h-1/2 rounded-b-2xl flex flex-row justify-between px-6">
         <QuickMenuButton icon={CurrencyIcon} label="Adicionar" onClick={openCreateItemModal} />
         <QuickMenuButton icon={TransferIcon} label="Alternar" onClick={openChangeAccountModal} />
-        <QuickMenuButton icon={ClockIcon} label="Histórico" onClick={openCreateItemModal} />
+        <QuickMenuButton icon={ClockIcon} label="Histórico" onClick={openSheetView} />
       </div>
     </div>
   );

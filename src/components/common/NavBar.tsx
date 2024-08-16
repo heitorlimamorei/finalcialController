@@ -33,10 +33,10 @@ export default function NavBar({ selectedButton, user }: NavBarProps) {
       size: 8,
     },
     {
-      id: 'sheets',
+      id: 'sheet',
       icon: SheetIcon,
-      path: `/dashboard?u=${user.id}`,
-      label: 'Sheets',
+      path: `/sheet?u=${user.id}`,
+      label: 'Sheet',
       size: 8,
     },
     {
