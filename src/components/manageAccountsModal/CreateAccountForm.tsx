@@ -35,7 +35,7 @@ export default function CreateAccountForm({ ownerId, onClose }: ICreateAccountPr
 
   const handleCreateAccount = async (data: CreateAccountFormData) => {
     try {
-      const response = await createAccount({
+      await createAccount({
         nickname: data.name,
         financial_institution: data.financial_institution,
         balance: data.balance ?? 0,
