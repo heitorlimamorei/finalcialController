@@ -8,9 +8,9 @@ import { IUser } from '@/types/user';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 
+import AccountView from '@/components/accountView/AccountView';
 import Loading from '@/components/common/Loading';
 import NavBar from '@/components/common/NavBar';
-import AccountView from '@/components/sheetView/SheetView';
 
 interface ISheetProps {
   searchParams: {
