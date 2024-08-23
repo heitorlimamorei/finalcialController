@@ -47,7 +47,7 @@ export default function Sheet(props: ISheetProps) {
   }
   if (!props.searchParams.aid && !props.searchParams.cid) {
     return (
-      <div className="h-[100vh] p-2 bg-gray-100 dark:bg-zinc-800">
+      <div className="h-[100vh] dark:text-white text-black p-2 bg-gray-100 dark:bg-zinc-800">
         <h1 className="text-xl font-bold">Selecione a conta para visualizar</h1>
         <ul>
           {accounts!.map((account) => (

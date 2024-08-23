@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 
 import { ICategory } from '@/types/category';
 import fetcher from '@/utils/fetcher';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
 
 import BaseModal from '../common/BaseModal';
 import Button from '../common/Button';
-import Loading from '../common/Loading';
-import { PlusIcon, TrashIcon } from '../icons/Icons';
 import CreateCategoryForm from './CreateCategoryForm';
 
 interface IManageCategoriesModalProps {
@@ -82,7 +82,7 @@ export default function ManageCategoriesModal({
                   setCategoryType('category');
                   handleEnterCreatingAccount(true);
                 }}>
-                {PlusIcon(8)}
+                <AddCircleIcon />
               </Button>
             </div>
 
@@ -99,12 +99,13 @@ export default function ManageCategoriesModal({
                         <Button
                           onClick={() => handleDeleteCategory(category.id)}
                           className="p-1 text-red-400 border-2 border-gray-400">
-                          {TrashIcon(6)}
+                          <DeleteOutlineIcon />
                         </Button>
                       </div>
                       <div className="flex flex-col w-[95%] h-fit px-5 border-2 border-gray-500 border-t-0 rounded-xl rounded-t-none">
                         <div className="w-full flex flex-row justify-between my-3">
                           <h1 className="font-bold text-lg ">Subcategorias</h1>
+
                           <Button
                             className="bg-green-500 h-fit px-1 py-1 text-white"
                             onClick={() => {
@@ -112,7 +113,7 @@ export default function ManageCategoriesModal({
                               setMainCategoryId(category.id);
                               handleEnterCreatingAccount(true);
                             }}>
-                            {PlusIcon(6)}
+                            <AddCircleIcon />
                           </Button>
                         </div>
                         <ul className="mb-2">
@@ -126,7 +127,7 @@ export default function ManageCategoriesModal({
                                 <Button
                                   onClick={() => handleDeleteCategory(subCategory.id)}
                                   className="p-1 text-red-400 border-2 border-gray-400">
-                                  {TrashIcon(6)}
+                                  <DeleteOutlineIcon />
                                 </Button>
                               </li>
                             ))}

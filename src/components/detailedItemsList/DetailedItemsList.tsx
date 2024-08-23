@@ -15,11 +15,16 @@ import DetailedItem from './DetailedItem';
 interface IDetailedItemsListProps {
   user: IUser;
   account: IAccount;
+  handleOpenUpdateModal: (item: IBackItem) => void;
 }
 
 const api = process.env.NEXT_PUBLIC_API_URL;
 
-export default function DetailedItemsList({ user, account }: IDetailedItemsListProps) {
+export default function DetailedItemsList({
+  user,
+  account,
+  handleOpenUpdateModal,
+}: IDetailedItemsListProps) {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const { data: items } = useSWR<IBackItem[]>(
     `/items?sheetid=${user.personalSpreadSheet}`,
@@ -48,11 +53,16 @@ export default function DetailedItemsList({ user, account }: IDetailedItemsListP
     })
     .filter((item) => item.accountId === account!.id);
   return (
-    <ul className="px-2">
+    <ul className="">
       {sortedItems.map((item: IBackItem) => (
         <li key={item.id}>
-          <DetailedItem item={item} categories={categories} />
-          <span className="h-[2px] w-full flex bg-gray-300 mt-2"></span>
+          <DetailedItem
+            item={item}
+            categories={categories}
+            sheetId={user.personalSpreadSheet}
+            handleOpenUpdateModal={handleOpenUpdateModal}
+          />
+          <span className="h-[2px] w-full flex bg-gray-300"></span>
         </li>
       ))}
     </ul>
