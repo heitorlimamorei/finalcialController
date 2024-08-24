@@ -4,7 +4,8 @@ import getSurveyStatistics from '../../../backEnd/services/feedbackSurveyStatist
 export default async function feedBackRouter(req: NextApiRequest, res: NextApiResponse) {
   try {
     if (req.method === 'GET') {
-      res.status(200).json(await getSurveyStatistics());
+      const year: any = req.query.year;
+      res.status(200).json(await getSurveyStatistics(year));
     }
   } catch (err) {
     res.status(400).send(err.message);

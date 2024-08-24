@@ -18,7 +18,7 @@ export default function Reviews() {
   const { BASE_URL } = variaveis;
 
   useEffect(() => {
-    axios.get(`${BASE_URL}/api/feedback`).then((response) => {
+    axios.get(`${BASE_URL}/api/feedback?year=2024`).then((response) => {
       setReview(response.data);
     });
   }, []);

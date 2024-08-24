@@ -29,8 +29,10 @@ async function updateFeedback(feedback: IFeedBackItemProps) {
   );
 }
 
-async function getFeedBacks(): Promise<IFeedBackItemProps[]> {
-  const feedbackColletionRef = collection(db, 'feedback2024');
+async function getFeedBacks(year: string): Promise<IFeedBackItemProps[]> {
+  const yearColletionRef = year == '2023' ? 'feedback' : 'feedback2024';
+
+  const feedbackColletionRef = collection(db, yearColletionRef);
   const feedBacks = await getDocs(feedbackColletionRef);
   let normalizado = [];
 

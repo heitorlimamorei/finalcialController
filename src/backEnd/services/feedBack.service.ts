@@ -4,16 +4,8 @@ import axios from 'axios';
 
 async function createFeedBack(newFeedBack: INewFeedBackProps) {
   const {
-    text,
     email,
     user_name,
-    user_url,
-    stars,
-    did_pan_before,
-    financial_management_improved,
-    featuresImprovement,
-    appHasBeenShared,
-    continued_using,
   } = newFeedBack;
 
   if (email != undefined) {
@@ -36,8 +28,8 @@ async function createFeedBack(newFeedBack: INewFeedBackProps) {
   }
 }
 
-async function getFeedBacks() {
-  return await feedbackRepository.getFeedBacks();
+async function getFeedBacks(year: string) {
+  return await feedbackRepository.getFeedBacks(year);
 }
 
 export default {

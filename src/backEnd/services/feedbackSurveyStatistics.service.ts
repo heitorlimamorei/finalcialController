@@ -14,8 +14,8 @@ interface ISurveyDataProps {
   financialManagementImprovedData: number[];
 }
 
-async function getSurveyData(): Promise<ISurveyDataProps> {
-  const feedback = await feedbackService.getFeedBacks();
+async function getSurveyData(year: string): Promise<ISurveyDataProps> {
+  const feedback = await feedbackService.getFeedBacks(year);
 
   const appHasBeenShared: boolean[] = transformArrayByField(feedback, 'appHasBeenShared');
   const did_pan_before: boolean[] = transformArrayByField(feedback, 'did_pan_before');
@@ -65,8 +65,8 @@ function getPercentData(surveyData: ISurveyDataProps) {
   };
 }
 
-export default async function getSurveyStatistics(): Promise<ISurveyStatsResp> {
-  const surveyData = await getSurveyData();
+export default async function getSurveyStatistics(year: string): Promise<ISurveyStatsResp> {
+  const surveyData = await getSurveyData(year);
 
   const surveyMeans = getSuverysMeans(surveyData);
   const surveyPercents = getPercentData(surveyData);

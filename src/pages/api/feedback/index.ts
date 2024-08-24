@@ -10,7 +10,8 @@ export default async function feedBackRouter(
     if (req.method === "POST") {
       res.status(200).json(await feedBackService.createFeedBack(formData));
     } else if (req.method === "GET"){
-      res.status(200).json(await feedBackService.getFeedBacks());
+      const year = req.query.year as string;
+      res.status(200).json(await feedBackService.getFeedBacks(year));
     }
   } catch (err) {
     res.status(400).send(err.message);

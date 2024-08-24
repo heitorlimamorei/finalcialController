@@ -6,19 +6,23 @@ import axios from 'axios';
 import StatsCard from '../../components/template/StatsCard';
 import { StarIcon } from '../../components/icons/Icones';
 import { ISurveyStatsResp } from '../../types/feedBackTypes';
+import { useRouter } from 'next/router';
 const { BASE_URL } = variaveis;
 
 export default function Stats() {
   const [data, setData] = useState<ISurveyStatsResp>(null);
+  const router = useRouter();
 
-  const fetchData = async () => {
-    const response = await axios.get(`${BASE_URL}/api/feedback/statistics`);
+  const year = router.query.year as string;
+  
+  const fetchData = async (year: string) => {
+    const response = await axios.get(`${BASE_URL}/api/feedback/statistics?year=${year}`);
     setData(response.data);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(year);
+  }, [year]);
 
   console.log(data);
 
