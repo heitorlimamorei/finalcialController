@@ -12,6 +12,7 @@ import ThemeSwitcher from '@/components/common/ThemeSwitcher';
 import { ChevronRightIcon } from '@/components/icons/Icons';
 import ManageAccountsModal from '@/components/manageAccountsModal/ManageAccountsModal';
 import ManageCategoriesModal from '@/components/manageCategoriesModal/ManageCategoriesModal';
+import ManageCreditCardsModal from '@/components/manageCreditCardModal/CreateCreditCardModal';
 import { ConfigProfile } from '@/components/mobile/configMobile/ConfigProfile';
 
 interface IConfigProps {
@@ -24,6 +25,8 @@ export default function Config(props: IConfigProps) {
   const { data: user, isLoading } = useSWR<IUser>(`/user/${props.searchParams.u}`, fetcher);
   const [isAccountsOpen, setIsAccountsOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isCreditCardOpen, setIsCreditCardOpen] = useState(false);
+
   if (isLoading || !user) {
     return <Loading />;
   }
@@ -40,6 +43,11 @@ export default function Config(props: IConfigProps) {
         onClose={() => setIsCategoriesOpen(false)}
         personalSpreadSheetId={user.personalSpreadSheet}
       />
+      <ManageCreditCardsModal
+        isOpen={isCreditCardOpen}
+        onClose={() => setIsCreditCardOpen((c) => !c)}
+        ownerId={props.searchParams.u}
+      />
       <div className="flex flex-col h-screen w-screen justify-between dark:bg-zinc-800 dark:text-white bg-gray-100 text-black overflow-y-scroll">
         <ConfigProfile user={user} />
         <div className="w-full h-full">
@@ -52,6 +60,12 @@ export default function Config(props: IConfigProps) {
             className="border-t-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between"
             onClick={() => setIsAccountsOpen(true)}>
             <h1 className=" text-2xl font-semibold ">Contas</h1>
+            {ChevronRightIcon(6)}
+          </div>
+          <div
+            className="border-t-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between"
+            onClick={() => setIsCreditCardOpen(true)}>
+            <h1 className=" text-2xl font-semibold ">Cartões de crédito</h1>
             {ChevronRightIcon(6)}
           </div>
           <div
