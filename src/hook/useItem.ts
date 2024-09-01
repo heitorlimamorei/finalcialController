@@ -23,9 +23,7 @@ export default function useItem() {
     return response.data;
   }
   async function deleteItem(item: IBackItem, sheetId: string) {
-    const response = await axios.delete(
-      `${api}/items/${item.id}?sheetid=${sheetId}`,
-    );
+    const response = await axios.delete(`${api}/items/${item.id}?sheetid=${sheetId}`);
     mutate(`/items?sheetid=${sheetId}`);
     return response.data;
   }
