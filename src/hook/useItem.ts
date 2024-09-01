@@ -23,14 +23,12 @@ export default function useItem() {
     return response.data;
   }
   async function deleteItem(item: IBackItem, sheetId: string) {
-    const response = await axios.delete(
-      `${api}/items/${item.id}?sheetid=${sheetId}`,
-    );
+    const response = await axios.delete(`${api}/items/${item.id}?sheetid=${sheetId}`);
     mutate(`/items?sheetid=${sheetId}`);
     return response.data;
   }
 
-  async function updateItem(data, sheetId: string) {
+  async function updateItem(data: any, sheetId: string) {
     await axios.patch(`${api}/items/${data.id}?sheetid=${sheetId}`, data);
     mutate(`/items?sheetid=${sheetId}`);
   }
