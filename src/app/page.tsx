@@ -25,6 +25,7 @@ export default function Home() {
         try {
           const resp = await axios.get(`${api}/user?email=${email}`);
           const user: IUser = resp.data;
+          console.log(user);
           if (user?.email != '') {
             router.push(`/dashboard?u=${user.id}`);
           }

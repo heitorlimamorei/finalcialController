@@ -21,6 +21,7 @@ interface IDashboardMobileProps {
 export default function DashboardMobile({ user, accounts, account }: IDashboardMobileProps) {
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
+  const router = useRouter();
 
   const router = useRouter();
 
@@ -35,6 +36,13 @@ export default function DashboardMobile({ user, accounts, account }: IDashboardM
   const handleChangeAccount = (c: IAccount) => {
     router.push(`/dashboard?u=${user.id}&account=${c.id}`);
   };
+
+
+  const handleOpenSheetView = () => {
+    router.push(`/sheet?u=${user.id}` + '&' + `aid=${selectedAccount.id}`);
+  };
+
+  if (!selectedAccount) return <p>Não existe conta selecionada</p>;
 
   return (
     <div className="w-full h-[90%]">
@@ -54,6 +62,7 @@ export default function DashboardMobile({ user, accounts, account }: IDashboardM
         selectedAccount={account}
         openChangeAccountModal={handleChangeAccountModal}
         openCreateItemModal={handleCreateItemModal}
+        openSheetView={handleOpenSheetView}
       />
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>

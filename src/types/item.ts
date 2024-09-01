@@ -10,7 +10,7 @@ export interface IBackItem {
   accountId: string;
   amount: number;
   date: firebaseTimesStampType;
-  type: string;
+  type: 'EXPENSE' | 'INCOME';
 }
 
 export interface IItem {
