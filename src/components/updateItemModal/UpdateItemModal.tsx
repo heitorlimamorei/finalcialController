@@ -5,16 +5,15 @@ import useItem from '@/hook/useItem';
 import { updateItemSchema } from '@/schemas/updateItemSchema';
 import { ICategory } from '@/types/category';
 import { IBackItem } from '@/types/item';
-import { firestoreTimestampToDate } from '@/utils/datefunctions';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { mutate } from 'swr';
+import { z } from 'zod';
 
 import BaseModal from '../common/BaseModal';
 import Button from '../common/Button';
 import CurrencyInput from '../common/CurrencyInput';
 import DateInput from '../common/DateInput';
-import Loading from '../common/Loading';
 import TextInput from '../common/TextInput';
 
 type UpdateItemFormData = z.infer<typeof updateItemSchema>;
@@ -114,7 +113,7 @@ export default function UpdateItemModal({ onClose, isOpen, item, sheetId }: IUpd
         className="flex flex-col items-center justify-start h-full w-full p-3"
         onSubmit={handleSubmit(onSubmit)}>
         <CurrencyInput
-          value={amountValue}
+          value={amountValue!}
           onChange={(value) => setValue('amount', value, { shouldValidate: true })}
           type={item.type}
           className="w-full h-[10%] rounded-xl focus:outline-none text-2xl text-center text-white font-bold"
@@ -127,7 +126,7 @@ export default function UpdateItemModal({ onClose, isOpen, item, sheetId }: IUpd
           </label>
           <TextInput
             className="w-full"
-            value={nameValue}
+            value={nameValue!}
             onChange={(e) => setValue('name', e.target.value, { shouldValidate: true })}
           />
         </div>
