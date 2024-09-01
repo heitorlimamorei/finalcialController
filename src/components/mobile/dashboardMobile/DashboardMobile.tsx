@@ -31,7 +31,7 @@ export default function DashboardMobile({
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
   const [isCreditCardOpen, setIsCreditCardOpen] = useState<boolean>(false);
-  
+
   const router = useRouter();
 
   const toggleCreateItemModal = () => {
