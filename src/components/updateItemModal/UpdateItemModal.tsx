@@ -1,61 +1,49 @@
-import { useEffect, useState, type ReactElement } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import useItem from '@/hook/useItem';
-import { createItemSchema } from '@/schemas/createItemSchema';
+import { updateItemSchema } from '@/schemas/updateItemSchema';
 import { ICategory } from '@/types/category';
-import { IUser } from '@/types/user';
+import { IBackItem } from '@/types/item';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { mutate } from 'swr';
 import { z } from 'zod';
 
+import BaseModal from '../common/BaseModal';
 import Button from '../common/Button';
 import CurrencyInput from '../common/CurrencyInput';
 import DateInput from '../common/DateInput';
 import TextInput from '../common/TextInput';
-import { ItemType } from './CreateItemModal';
 
-type CreateItemFormData = z.infer<typeof createItemSchema>;
+type UpdateItemFormData = z.infer<typeof updateItemSchema>;
 
-interface CreateItemFormProps {
-  type: ItemType;
-  selectedType: ItemType;
-  user: IUser;
-  accountId: string;
+interface IUpdateItemModalProps {
   onClose: () => void;
+  isOpen: boolean;
+  sheetId: string;
+  item: IBackItem;
 }
 
 const api = process.env.NEXT_PUBLIC_API_URL;
 
-export default function CreateItemForm({
-  selectedType,
-  type,
-  user,
-  accountId,
-  onClose,
-}: CreateItemFormProps): ReactElement {
-  const { createItem } = useItem();
+export default function UpdateItemModal({ onClose, isOpen, item, sheetId }: IUpdateItemModalProps) {
   const [categories, setCategories] = useState<ICategory[]>([]);
+  const { updateItem } = useItem();
+  const category = categories.find((c) => c.id === item.categoryId);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-  } = useForm<CreateItemFormData>({
-    resolver: zodResolver(createItemSchema),
+  } = useForm<UpdateItemFormData>({
+    resolver: zodResolver(updateItemSchema),
     defaultValues: {
       date: new Date(),
     },
   });
-
-  const nameValue = watch('name', '');
-  const descriptionValue = watch('description', '');
-  const amountValue = watch('amount', 0);
-  const dateValue = watch('date', new Date());
-  const selectedCategoryIdValue = watch('selectedCategoryId', '');
-  const selectedSubcategoryIdValue = watch('selectedSubcategoryId', '');
 
   useEffect(() => {
     const fetchCategories = async (sheetId: string) => {
@@ -67,10 +55,26 @@ export default function CreateItemForm({
       }
     };
 
-    fetchCategories(user.personalSpreadSheet);
-  }, [user.personalSpreadSheet]);
+    fetchCategories(sheetId);
 
-  const onSubmit = async (data: CreateItemFormData) => {
+    if (category?.mainCategoryId) {
+      setValue('selectedCategoryId', category.mainCategoryId);
+      setValue('selectedSubcategoryId', category.id);
+    }
+    if (!category?.mainCategoryId) {
+      setValue('selectedCategoryId', item.categoryId);
+      setValue('selectedSubcategoryId', '');
+    }
+  }, []);
+
+  const nameValue = watch('name', item.name);
+  const descriptionValue = watch('description', item.description);
+  const amountValue = watch('amount', item.amount);
+  const dateValue = watch('date', new Date());
+  const selectedCategoryIdValue = watch('selectedCategoryId', '');
+  const selectedSubcategoryIdValue = watch('selectedSubcategoryId', '');
+
+  const onSubmit = async (data: UpdateItemFormData) => {
     const categoryId = data.selectedSubcategoryId
       ? data.selectedSubcategoryId
       : data.selectedCategoryId;
@@ -78,38 +82,40 @@ export default function CreateItemForm({
     const validDate = data.date || new Date();
 
     try {
-      const response = await createItem({
-        sheetId: user.personalSpreadSheet,
-        categoryId: categoryId,
-        ownerId: user.id,
-        name: data.name,
-        description: !data.description ? '' : data.description,
-        accountId,
-        amount: data.amount,
-        date: validDate.toISOString(),
-        type: type,
-      });
+      const response = await updateItem(
+        {
+          id: item.id,
+          sheetId: sheetId,
+          categoryId: categoryId,
+          ownerId: item.ownerId,
+          name: data.name ? data.name : item.name,
+          description: !data.description ? '' : data.description,
+          accountId: item.accountId,
+          amount: data.amount ? data.amount : item.amount,
+          date: validDate.toISOString(),
+          type: item.type,
+        },
+        sheetId,
+      );
       onClose();
 
-      mutate(`/account?owid=${user.id}`);
-      mutate(`/items?sheetid=${user.personalSpreadSheet}`);
+      mutate(`/account?owid=${item.ownerId}`);
+      mutate(`/items?sheetid=${sheetId}`);
 
-      console.log('Item created successfully:', response);
+      console.log('Item updated successfully');
     } catch (error) {
-      console.error('Error creating item:', error);
+      console.error('Error updating item:', error);
     }
   };
-
   return (
-    <div
-      className={`transition-transform duration-300 w-full h-full ${selectedType === type ? 'translate-x-0' : 'translate-x-[-25rem]'}`}>
+    <BaseModal isOpen={isOpen} onClose={onClose}>
       <form
-        className="flex flex-col items-center justify-start h-full w-full px-3"
+        className="flex flex-col items-center justify-start h-full w-full p-3"
         onSubmit={handleSubmit(onSubmit)}>
         <CurrencyInput
-          value={amountValue}
+          value={amountValue!}
           onChange={(value) => setValue('amount', value, { shouldValidate: true })}
-          type={type}
+          type={item.type}
           className="w-full h-[10%] rounded-xl focus:outline-none text-2xl text-center text-white font-bold"
         />
         {errors.amount && <p className="text-red-500 font-bold text-lg">{errors.amount.message}</p>}
@@ -120,8 +126,7 @@ export default function CreateItemForm({
           </label>
           <TextInput
             className="w-full"
-            placeholder={type === 'INCOME' ? 'Dividendo' : 'Padaria'}
-            value={nameValue}
+            value={nameValue!}
             onChange={(e) => setValue('name', e.target.value, { shouldValidate: true })}
           />
         </div>
@@ -130,7 +135,6 @@ export default function CreateItemForm({
           <label htmlFor="description">Descrição (opcional)</label>
           <TextInput
             className="w-full"
-            placeholder={type === 'INCOME' ? 'Ação Vale' : '5x Pães'}
             value={descriptionValue!}
             onChange={(e) => setValue('description', e.target.value, { shouldValidate: true })}
           />
@@ -201,11 +205,11 @@ export default function CreateItemForm({
         )}
 
         <Button
-          className={`w-full m-2 ${type === 'INCOME' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}
+          className={`w-full m-2 ${item.type === 'INCOME' ? 'bg-green-500' : 'bg-red-500'} text-xl font-bold text-white`}
           type="submit">
-          Criar Item
+          Salvar alterações
         </Button>
       </form>
-    </div>
+    </BaseModal>
   );
 }

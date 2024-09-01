@@ -1,6 +1,7 @@
 import { IBackItem, INewItem, IItem } from '@/types/item';
 import { firestoreTimestampToDate } from '@/utils/datefunctions';
 import axios from 'axios';
+import { mutate } from 'swr';
 
 const api = process.env.NEXT_PUBLIC_API_URL;
 
@@ -21,9 +22,15 @@ export default function useItem() {
     const response = await axios.post(`${api}/items`, item);
     return response.data;
   }
-  async function deleteItem(id: number) {
-    const response = await axios.delete(`${api}/items/${id}`);
+  async function deleteItem(item: IBackItem, sheetId: string) {
+    const response = await axios.delete(`${api}/items/${item.id}?sheetid=${sheetId}`);
+    mutate(`/items?sheetid=${sheetId}`);
     return response.data;
   }
-  return { getItems, createItem, deleteItem };
+
+  async function updateItem(data: any, sheetId: string) {
+    await axios.patch(`${api}/items/${data.id}?sheetid=${sheetId}`, data);
+    mutate(`/items?sheetid=${sheetId}`);
+  }
+  return { getItems, createItem, deleteItem, updateItem };
 }

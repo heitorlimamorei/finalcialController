@@ -1,4 +1,4 @@
-import React, { type ReactElement } from 'react';
+import React from 'react';
 
 import { twMerge } from 'tailwind-merge';
 interface TextInputProps {
@@ -8,12 +8,7 @@ interface TextInputProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function TextInput({
-  className,
-  placeholder,
-  value,
-  onChange,
-}: TextInputProps): ReactElement {
+export default function TextInput({ className, placeholder, value, onChange }: TextInputProps) {
   return (
     <input
       type="text"

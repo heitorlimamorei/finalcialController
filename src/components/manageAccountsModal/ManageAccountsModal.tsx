@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { IAccount } from '@/types/account';
 import fetcher from '@/utils/fetcher';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
 
 import BaseModal from '../common/BaseModal';
 import Button from '../common/Button';
 import Loading from '../common/Loading';
-import { PlusIcon, TrashIcon } from '../icons/Icons';
 import CreateAccountForm from './CreateAccountForm';
 
 interface IManageAccountsModalProps {
@@ -74,7 +75,7 @@ export default function ManageAccountsModal({
               <Button
                 className="bg-green-500 h-fit px-2 py-2 text-white"
                 onClick={() => handleEnterCreatingAccount(true)}>
-                {PlusIcon(8)}
+                <AddCircleIcon />
               </Button>
             </div>
             <div className="w-full h-full">
@@ -86,7 +87,7 @@ export default function ManageAccountsModal({
                   <Button
                     onClick={() => handleDeleteAccount(account.id)}
                     className="p-1 text-red-400 border-2 border-gray-400">
-                    {TrashIcon(6)}
+                    <DeleteOutlineIcon />
                   </Button>
                 </div>
               ))}

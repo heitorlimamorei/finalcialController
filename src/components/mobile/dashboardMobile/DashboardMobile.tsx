@@ -31,7 +31,7 @@ export default function DashboardMobile({
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
   const [isCreditCardOpen, setIsCreditCardOpen] = useState<boolean>(false);
-
+  
   const router = useRouter();
 
   const toggleCreateItemModal = () => {
@@ -52,6 +52,10 @@ export default function DashboardMobile({
 
   const handleChangeCreditCard = (c: ICreditCard) => {
     router.push(`/dashboard?u=${user.id}&creditcard=${c.id}&account=${accounts[0].id}`);
+  };
+
+  const handleOpenSheetView = () => {
+    router.push(`/sheet?u=${user.id}` + '&' + `aid=${account.id}`);
   };
 
   return (
@@ -78,6 +82,7 @@ export default function DashboardMobile({
         selectedAccount={account}
         openChangeAccountModal={toggleChangeAccountModal}
         openCreateItemModal={toggleCreateItemModal}
+        openSheetView={handleOpenSheetView}
       />
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>

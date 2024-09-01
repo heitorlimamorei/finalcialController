@@ -93,13 +93,13 @@ export const TransferIcon = (color: string = '#000000', size: number) => (
   </svg>
 );
 
-export const MinusIcon = (color: string = '#000000', size: number) => (
+export const MinusIcon = (size: number) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
-    stroke={color}
+    stroke="currentColor"
     className={`size-${size}`}>
     <path
       strokeLinecap="round"
@@ -116,7 +116,7 @@ export const PlusIcon = (size: number) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={'size-6'}>
+    className={`size-${size}`}>
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -164,7 +164,7 @@ export const ChevronRightIcon = (size: number) => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="currentColor"
-    className={`size-${size}`}>
+    className={'size-10'}>
     <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
   </svg>
 );

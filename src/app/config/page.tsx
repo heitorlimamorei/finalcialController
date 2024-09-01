@@ -4,12 +4,12 @@ import { useState } from 'react';
 
 import { IUser } from '@/types/user';
 import fetcher from '@/utils/fetcher';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import useSWR from 'swr';
 
 import Loading from '@/components/common/Loading';
 import NavBar from '@/components/common/NavBar';
 import ThemeSwitcher from '@/components/common/ThemeSwitcher';
-import { ChevronRightIcon } from '@/components/icons/Icons';
 import ManageAccountsModal from '@/components/manageAccountsModal/ManageAccountsModal';
 import ManageCategoriesModal from '@/components/manageCategoriesModal/ManageCategoriesModal';
 import ManageCreditCardsModal from '@/components/manageCreditCardModal/ManageCreditCardModal';
@@ -50,6 +50,7 @@ export default function Config(props: IConfigProps) {
       />
       <div className="flex flex-col h-screen w-screen justify-between dark:bg-zinc-800 dark:text-white bg-gray-100 text-black overflow-y-scroll">
         <ConfigProfile user={user} />
+
         <div className="w-full h-full">
           <div className="border-t-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between">
             <h1 className=" text-2xl font-semibold ">Tema</h1>
@@ -60,8 +61,9 @@ export default function Config(props: IConfigProps) {
             className="border-t-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between"
             onClick={() => setIsAccountsOpen(true)}>
             <h1 className=" text-2xl font-semibold ">Contas</h1>
-            {ChevronRightIcon(6)}
+            <ArrowForwardIosIcon fontSize="large" />
           </div>
+
           <div
             className="border-t-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between"
             onClick={() => setIsCreditCardOpen(true)}>
@@ -72,7 +74,7 @@ export default function Config(props: IConfigProps) {
             className="border-t-2 border-y-gray-300 py-5 px-3 flex flex-row items-center justify-between"
             onClick={() => setIsCategoriesOpen(true)}>
             <h1 className=" text-2xl font-semibold ">Categorias</h1>
-            {ChevronRightIcon(6)}
+            <ArrowForwardIosIcon fontSize="large" />
           </div>
         </div>
       </div>
