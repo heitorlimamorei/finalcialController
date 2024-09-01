@@ -3,8 +3,6 @@ import { useState } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import useCreditCard from '@/hook/useCreditCard';
-import useCreditCardItems from '@/hook/useCreditCardItems';
 import { IAccount } from '@/types/account';
 import { ICreditCard } from '@/types/creditCard';
 import { IUser } from '@/types/user';

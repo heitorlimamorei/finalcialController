@@ -34,7 +34,40 @@ export const createCreditCardSchema = z.object({
     }
   }),
   expirationDate: z.string({}).transform((value: string, ctx) => {
-    const date = new Date(value);
+    const [m, y] = value.split('/');
+
+    const month = parseInt(m);
+    const year = parseInt(y);
+
+    const today = new Date();
+
+    if (isNaN(month) || isNaN(year)) {
+      ctx.addIssue({
+        code: 'invalid_date',
+        path: [],
+        message: 'Data de expiração inválida (MM/AA)',
+      });
+    }
+
+    if (!(month >= 1 && month <= 12)) {
+      ctx.addIssue({
+        code: 'invalid_date',
+        path: [],
+        message: 'Mês inválido',
+      });
+    }
+
+    if (!(year >= today.getFullYear() && year <= today.getMonth() + 5)) {
+      ctx.addIssue({
+        code: 'invalid_date',
+        path: [],
+        message: 'Ano inválido',
+      });
+    }
+
+    const dateString = `${month}-01-${year}`;
+
+    const date = new Date(dateString);
 
     if (isNaN(date.getTime())) {
       ctx.addIssue({
@@ -51,7 +84,7 @@ export const createCreditCardSchema = z.object({
   flag: z.string({}).superRefine((value: string, ctx) => {
     const validBrands = ['visa', 'mastercard', 'elo'];
 
-    if (!validBrands.find((c) => c == value)) {
+    if (!validBrands.find((c) => c == value.toLocaleLowerCase().trim())) {
       ctx.addIssue({
         code: 'custom',
         path: [],
