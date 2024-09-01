@@ -7,10 +7,11 @@ import useSWR, { mutate } from 'swr';
 const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function useCreditCard(owid: string) {
-  const { data: creditCardRaw, isLoading } = useSWR<IAPICreditCard[]>(
-    `/credit-card?owid=${owid}`,
-    fetcher,
-  );
+  const {
+    data: creditCardRaw,
+    isLoading,
+    error,
+  } = useSWR<IAPICreditCard[]>(`/credit-card?owid=${owid}`, fetcher);
 
   const sanitizeCreditCard = (c: IAPICreditCard): ICreditCard => {
     return {
@@ -45,6 +46,7 @@ export default function useCreditCard(owid: string) {
   return {
     creditCards,
     isLoading,
+    error,
     handleDeleteCard,
     handleCreateCreditCard,
   };
