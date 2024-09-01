@@ -1,7 +1,9 @@
 import { IAccount } from '@/types/account';
 import fetcher from '@/utils/fetcher';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import CompareArrows from '@mui/icons-material/CompareArrows';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import HistoryIcon from '@mui/icons-material/History';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import useSWR from 'swr';
@@ -38,12 +40,15 @@ export default function BalanceCard({
         <h1 className="text-center text-lg">Seu balanço {account.nickname}</h1>
         <p className="text-center text-4xl font-bold">R${account.balance.toFixed(2)}</p>
       </div>
-      <div className="dark:bg-[#000826] bg-[#121826] h-1/2 rounded-b-2xl flex flex-row justify-between px-6">
+      <div className="dark:bg-[#000826] bg-[#121826] h-1/2 rounded-b-2xl flex flex-row justify-between">
         <QuickMenuButton label="Adicionar" onClick={openCreateItemModal}>
           <PaymentsIcon fontSize="large" />
         </QuickMenuButton>
-        <QuickMenuButton label="Alternar" onClick={openChangeAccountModal}>
-          <CompareArrows fontSize="large" />
+        <QuickMenuButton label="Contas" onClick={openChangeAccountModal}>
+          <AccountBalanceIcon fontSize="large" />
+        </QuickMenuButton>
+        <QuickMenuButton label="Cartões" onClick={openChangeAccountModal}>
+          <CreditCardIcon fontSize="large" />
         </QuickMenuButton>
         <QuickMenuButton label="Histórico" onClick={openSheetView}>
           <HistoryIcon fontSize="large" />

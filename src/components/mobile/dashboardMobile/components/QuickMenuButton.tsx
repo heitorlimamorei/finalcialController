@@ -10,7 +10,7 @@ interface QuickMenuButtonProps extends React.ComponentProps<'button'> {
 
 export default function QuickMenuButton({ label, onClick, children }: QuickMenuButtonProps) {
   return (
-    <Button className="p-5 mb-1 flex flex-col items-center justify-center" onClick={onClick}>
+    <Button className="p-3 mb-1 flex flex-col items-center justify-center" onClick={onClick}>
       {children}
       {label}
     </Button>
