@@ -1,36 +1,36 @@
 'use client';
 
-import { IAccount } from '@/types/account';
+import { ICreditCard } from '@/types/creditCard';
 
 import BaseModal from '../common/BaseModal';
 
-interface IChangeAccountModalProps {
+interface IChangeCreditCardModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onChange: (account: IAccount) => void;
-  accounts: IAccount[];
+  onChange: (account: ICreditCard) => void;
+  creditCards: ICreditCard[];
 }
 
-export default function ChangeAccountModal({
+export default function ChangeCreditCardModal({
   onChange,
   isOpen,
   onClose,
-  accounts,
-}: IChangeAccountModalProps) {
+  creditCards,
+}: IChangeCreditCardModalProps) {
   return (
     <BaseModal isOpen={isOpen} onClose={onClose}>
       <div className="p-4">
-        <h1 className="text-2xl font-bold">Selecione a conta</h1>
+        <h1 className="text-2xl font-bold">Selecione o cartão</h1>
         <ul>
-          {accounts.map((account: IAccount) => (
+          {creditCards.map((creditCard) => (
             <li
               className="m-2 p-3 text-2xl font-bold border-gray-300 dark:border-gray-600 border-2 rounded-xl hover:bg-gray-200 cursor-pointer"
-              key={account.id}
+              key={creditCard.id}
               onClick={() => {
-                onChange(account);
+                onChange(creditCard);
                 onClose();
               }}>
-              {account.nickname}
+              {creditCard.nickname} - {creditCard.cardNumber}
             </li>
           ))}
         </ul>

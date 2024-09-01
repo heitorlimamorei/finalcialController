@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react';
-
-import useItem from '@/hook/useItem';
-import { IBackItem, IItem } from '@/types/item';
+import { IBackItem } from '@/types/item';
 import { firestoreTimestampToDate, formatDate } from '@/utils/datefunctions';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
