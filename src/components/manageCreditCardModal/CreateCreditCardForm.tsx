@@ -62,9 +62,11 @@ export default function CreateCreditCardForm({
   };
 
   return (
-    <div>
-      <h1 className="text-xl font-bold">Crie seu cartão de crédito</h1>
-      <form onSubmit={handleSubmit(handleCreateCreditCard)} className="mt-4">
+    <div className="w-full h-full">
+      <h1 className="text-xl font-bold p-1">Crie seu cartão de crédito</h1>
+      <form
+        onSubmit={handleSubmit(handleCreateCreditCard)}
+        className="mt-1 px-1 w-full h-[80%] overflow-y-scroll">
         <FormField
           label="Apelido do cartão"
           error={errors.nickname?.message}

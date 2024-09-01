@@ -12,7 +12,7 @@ import ThemeSwitcher from '@/components/common/ThemeSwitcher';
 import { ChevronRightIcon } from '@/components/icons/Icons';
 import ManageAccountsModal from '@/components/manageAccountsModal/ManageAccountsModal';
 import ManageCategoriesModal from '@/components/manageCategoriesModal/ManageCategoriesModal';
-import ManageCreditCardsModal from '@/components/manageCreditCardModal/CreateCreditCardModal';
+import ManageCreditCardsModal from '@/components/manageCreditCardModal/ManageCreditCardModal';
 import { ConfigProfile } from '@/components/mobile/configMobile/ConfigProfile';
 
 interface IConfigProps {
