@@ -10,6 +10,7 @@ import useSWR from 'swr';
 import Loading from '@/components/common/Loading';
 import NavBar from '@/components/common/NavBar';
 import ThemeSwitcher from '@/components/common/ThemeSwitcher';
+import { ChevronRightIcon } from '@/components/icons/Icons';
 import ManageAccountsModal from '@/components/manageAccountsModal/ManageAccountsModal';
 import ManageCategoriesModal from '@/components/manageCategoriesModal/ManageCategoriesModal';
 import ManageCreditCardsModal from '@/components/manageCreditCardModal/ManageCreditCardModal';
