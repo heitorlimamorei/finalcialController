@@ -42,8 +42,8 @@ export default function Dashboard(props: IDashboardProps) {
   }
 
   if (!accountId && !creditCardId) {
-    router.push(`/dashboard?u=${id}&account=${accounts[0]?.id || ''}`);
-    return null; // Ensures no further rendering until redirect occurs
+    router.push(`/dashboard?u=${id}&creditcard=${creditCards[0]?.id || accounts[0]?.id}`);
+    return null;
   }
 
   const account = accountId ? accounts.find((c) => c.id === accountId) : null;
