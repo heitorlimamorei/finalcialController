@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 
+import useAccount from '@/hook/useAccount';
 import useCreditCard from '@/hook/useCreditCard';
 import { IAccount } from '@/types/account';
 import { ICreditCard } from '@/types/creditCard';
@@ -28,35 +29,32 @@ export default function Dashboard(props: IDashboardProps) {
   const creditCardId = props.searchParams?.creditcard;
 
   const router = useRouter();
-
-  const { data: accounts, error: accountsError } = useSWR<IAccount[]>(
-    `/account?owid=${id}`,
-    fetcher,
-  );
-
-  const { creditCards, error: creditCardError } = useCreditCard(id);
-
+  const { accounts = [], accountsError, isLoadingAccounts } = useAccount(id);
+  const { creditCards = [], creditCardError, isLoadingCreditCards } = useCreditCard(id);
   const { data: user, error: userError } = useSWR<IUser>(`/user/${id}`, fetcher);
 
   if (accountsError || userError || creditCardError) {
     return <div>Error loading data...</div>;
   }
 
-  if (!accounts || !user || !creditCards) {
+  if (isLoadingAccounts || isLoadingCreditCards || !user) {
     return <Loading />;
   }
 
-  if (!accountId && !creditCardId) router.push(`/dashboard?u=${id}&account=${accounts[0].id}`);
-
-  const account = accounts.find((c) => c.id === accountId);
-  const creditCard = creditCardId ? creditCards.find((c) => c.id === creditCardId) : null;
-
-  if (creditCardId && !creditCard) {
-    return <div>Error loading creditCard data...</div>;
+  if (!accountId && !creditCardId) {
+    router.push(`/dashboard?u=${id}&account=${accounts[0]?.id || ''}`);
+    return null; // Ensures no further rendering until redirect occurs
   }
 
-  if (!account) {
+  const account = accountId ? accounts.find((c) => c.id === accountId) : null;
+  const creditCard = creditCardId ? creditCards.find((c) => c.id === creditCardId) : null;
+
+  if (accountId && !account) {
     return <div>Error loading account data...</div>;
+  }
+
+  if (creditCardId && !creditCard) {
+    return <div>Error loading credit card data...</div>;
   }
 
   return (
@@ -66,7 +64,7 @@ export default function Dashboard(props: IDashboardProps) {
         <DashboardMobile
           user={user}
           accounts={accounts}
-          account={account}
+          account={account as IAccount | null}
           creditCard={creditCard as ICreditCard | null}
           creditCards={creditCards}
         />
