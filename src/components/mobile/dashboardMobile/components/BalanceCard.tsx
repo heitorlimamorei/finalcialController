@@ -11,7 +11,9 @@ import QuickMenuButton from './QuickMenuButton';
 
 interface BalanceCardProps {
   openCreateItemModal: () => void;
+  openCreateCreditCardItemModal: () => void;
   openChangeAccountModal: () => void;
+  openChangeCreditCardModal: () => void;
   openSheetView: () => void;
   accounts: IAccount[];
   creditCards: ICreditCard[];
@@ -22,6 +24,8 @@ interface BalanceCardProps {
 export default function BalanceCard({
   openCreateItemModal,
   openChangeAccountModal,
+  openCreateCreditCardItemModal,
+  openChangeCreditCardModal,
   accounts,
   creditCards,
   openSheetView,
@@ -52,13 +56,15 @@ export default function BalanceCard({
 
       <div
         className={`dark:bg-[#000826] bg-[#121826] ${creditCard ? 'h-[30%]' : 'h-1/2'} rounded-b-2xl flex flex-row items-center justify-between`}>
-        <QuickMenuButton label="Adicionar" onClick={openCreateItemModal}>
+        <QuickMenuButton
+          label="Adicionar"
+          onClick={creditCard ? openCreateCreditCardItemModal : openCreateItemModal}>
           <PaymentsIcon fontSize="large" />
         </QuickMenuButton>
         <QuickMenuButton label="Contas" onClick={openChangeAccountModal}>
           <AccountBalanceIcon fontSize="large" />
         </QuickMenuButton>
-        <QuickMenuButton label="Cartões" onClick={openChangeAccountModal}>
+        <QuickMenuButton label="Cartões" onClick={openChangeCreditCardModal}>
           <CreditCardIcon fontSize="large" />
         </QuickMenuButton>
         <QuickMenuButton label="Histórico" onClick={openSheetView}>
