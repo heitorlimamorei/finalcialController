@@ -1,8 +1,4 @@
-import {
-  IAPICreditCard,
-  ICreditCard,
-  INewCreditCard,
-} from '@/types/creditCard';
+import { IAPICreditCard, ICreditCard, INewCreditCard } from '@/types/creditCard';
 import { firestoreTimestampToDate } from '@/utils/datefunctions';
 import fetcher from '@/utils/fetcher';
 import axios from 'axios';
@@ -27,9 +23,7 @@ export default function useCreditCard(owid: string) {
 
   async function handleDeleteCard(id: string) {
     try {
-      const response = await axios.delete(
-        `${api}/credit-card/${id}?owid=${owid}`,
-      );
+      const response = await axios.delete(`${api}/credit-card/${id}?owid=${owid}`);
       mutate('/credit-card?owid=' + owid);
       console.log(response);
     } catch (err) {

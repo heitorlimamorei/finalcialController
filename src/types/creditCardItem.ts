@@ -44,6 +44,5 @@ export interface INewCreditCardItem {
   interest: number;
   parcellsNumber: number;
   currentParcell: number;
-  hasBeenPaid: boolean;
   date: Date; // JSON DATE
 }
