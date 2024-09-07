@@ -133,7 +133,16 @@ export default function DashboardMobile({
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>
         <div className="w-full h-full overflow-y-scroll">
-          {account && <ItemList sheetId={user.personalSpreadSheet} accountId={account.id} />}
+          {account && (
+            <ItemList ownerId={user.id} sheetId={user.personalSpreadSheet} accountId={account.id} />
+          )}
+          {creditCard && (
+            <ItemList
+              ownerId={user.id}
+              sheetId={user.personalSpreadSheet}
+              creditCardId={creditCard.id}
+            />
+          )}
         </div>
       </div>
     </div>

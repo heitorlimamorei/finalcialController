@@ -13,10 +13,13 @@ export default function useItem(sheetId: string) {
     isLoading: itemIsLoading,
   } = useSWR<IBackItem[]>(`/items?sheetid=${sheetId}`, fetcher);
 
-  const items: IItem[] = itemsRaw!.map((item: IBackItem) => ({
-    ...item,
-    date: firestoreTimestampToDate(item.date),
-  }));
+  let items: IItem[] = [];
+  if (!itemIsLoading) {
+    items = itemsRaw!.map((item: IBackItem) => ({
+      ...item,
+      date: firestoreTimestampToDate(item.date),
+    }));
+  }
 
   async function createItem(item: INewItem) {
     const response = await axios.post(`${api}/items`, item);
