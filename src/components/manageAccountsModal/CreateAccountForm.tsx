@@ -18,7 +18,7 @@ interface ICreateAccountProps {
 }
 
 export default function CreateAccountForm({ ownerId, onClose }: ICreateAccountProps) {
-  const { createAccount } = useAccount();
+  const { createAccount } = useAccount(ownerId);
   const {
     register,
     handleSubmit,
