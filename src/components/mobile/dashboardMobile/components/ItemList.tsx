@@ -5,7 +5,8 @@ import useSWR from 'swr';
 
 interface ItemListProps {
   sheetId: string;
-  accountId: string;
+  accountId?: string;
+  creditCardId?: string;
 }
 
 export default function ItemList({ sheetId, accountId }: ItemListProps) {
@@ -13,20 +14,18 @@ export default function ItemList({ sheetId, accountId }: ItemListProps) {
     data: items,
     isLoading,
     error,
-  } = useSWR<IBackItem[]>(`/items?sheetid=${sheetId}`, fetcher);
+  } = useSWR<IBackItem[]>(`/items?sheetid=${sheetId}&accountId=${accountId}`, fetcher);
 
   if (isLoading) return <p>Loading...</p>;
 
   if (error) return <p></p>;
 
   if (items != undefined) {
-    const sortedItems = [...items]
-      .sort((a, b) => {
-        const dateA = firestoreTimestampToDate(a.date);
-        const dateB = firestoreTimestampToDate(b.date);
-        return dateB.getTime() - dateA.getTime();
-      })
-      .filter((item) => item.accountId === accountId);
+    const sortedItems = [...items].sort((a, b) => {
+      const dateA = firestoreTimestampToDate(a.date);
+      const dateB = firestoreTimestampToDate(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
 
     return (
       <ul className="px-2">
