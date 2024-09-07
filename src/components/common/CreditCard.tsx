@@ -13,13 +13,15 @@ import Button from './Button';
 interface ICreditCardProps {
   creditCard: ICreditCard;
   handleDeleteCard?: (id: string) => void;
+  onClick?: () => void;
 }
 
-export default function CreditCard({ creditCard, handleDeleteCard }: ICreditCardProps) {
+export default function CreditCard({ creditCard, handleDeleteCard, onClick }: ICreditCardProps) {
   return (
     <div
       key={creditCard.id}
-      className={`${handleDeleteCard ? 'relative my-2 rounded-tr-[4.2rem]' : 'flex'} rounded-3xl w-full h-52 p-2 ${creditCard.flag === 'mastercard' && 'bg-red-900'} ${creditCard.flag === 'visa' && 'bg-blue-800'} ${creditCard.flag == 'elo' && 'bg-black'}`}>
+      className={`${handleDeleteCard ? 'relative my-2 rounded-tr-[4.2rem]' : 'flex'} ${onClick && 'my-2'} rounded-3xl w-full h-52 p-2 ${creditCard.flag === 'mastercard' && 'bg-red-900'} ${creditCard.flag === 'visa' && 'bg-blue-800'} ${creditCard.flag == 'elo' && 'bg-black'}`}
+      onClick={onClick}>
       {handleDeleteCard && (
         <>
           <svg
@@ -55,7 +57,7 @@ export default function CreditCard({ creditCard, handleDeleteCard }: ICreditCard
             **** {creditCard.cardNumber.slice(-4)}
           </div>
         </div>
-        {!handleDeleteCard && (
+        {!handleDeleteCard && !onClick && (
           <div className="flex flex-col items-center">
             <span className="text-sm">Limite disponível</span>
             <span className="text-4xl">R${creditCard.availableLimit}</span>
