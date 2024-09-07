@@ -9,6 +9,7 @@ import { IUser } from '@/types/user';
 
 import ChangeAccountModal from '@/components/changeAccountModal/ChangeAccountModal';
 import ChangeCreditCardModal from '@/components/changeCreditCardModal/ChangeCreditCardModa';
+import CreateCreditCardItemModal from '@/components/createCreditCardItemModal/CreateCreditCardItemModal';
 import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
 
 import BalanceCard from './components/BalanceCard';
@@ -30,6 +31,7 @@ export default function DashboardMobile({
   creditCards,
 }: IDashboardMobileProps) {
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
+  const [isCreateCreditCardItemOpen, setIsCreateCreditCardItemOpen] = useState<boolean>(false);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
   const [isCreditCardOpen, setIsCreditCardOpen] = useState<boolean>(false);
 
@@ -37,6 +39,10 @@ export default function DashboardMobile({
 
   const toggleCreateItemModal = () => {
     setIsCreateItemOpen((c) => !c);
+  };
+
+  const toggleCreateCreditCardItemModal = () => {
+    setIsCreateCreditCardItemOpen((c) => !c);
   };
 
   const toggleChangeAccountModal = () => {
@@ -52,7 +58,7 @@ export default function DashboardMobile({
   };
 
   const handleChangeCreditCard = (c: ICreditCard) => {
-    router.push(`/dashboard?u=${user.id}&creditcard=${c.id}&account=${accounts[0].id}`);
+    router.push(`/dashboard?u=${user.id}&creditcard=${c.id}`);
   };
 
   const handleOpenSheetView = () => {
@@ -60,7 +66,7 @@ export default function DashboardMobile({
       router.push(`/sheet?u=${user.id}` + '&' + `aid=${account.id}`);
     }
     if (creditCard) {
-      router.push(`/sheet?u=${user.id}` + '&' + `aid=${creditCard.id}`);
+      router.push(`/sheet?u=${user.id}` + '&' + `cid=${creditCard.id}`);
     }
   };
 
@@ -72,6 +78,15 @@ export default function DashboardMobile({
           isOpen={isCreateItemOpen}
           onClose={toggleCreateItemModal}
           accountId={account.id}
+        />
+      )}
+      {creditCard && (
+        <CreateCreditCardItemModal
+          user={user}
+          sheetId={user.personalSpreadSheet}
+          creditCardId={creditCard.id}
+          onClose={toggleCreateCreditCardItemModal}
+          isOpen={isCreateCreditCardItemOpen}
         />
       )}
 
@@ -95,7 +110,9 @@ export default function DashboardMobile({
           accounts={accounts}
           creditCards={creditCards}
           openChangeAccountModal={toggleChangeAccountModal}
+          openChangeCreditCardModal={toggleChangeCreditCardModal}
           openCreateItemModal={toggleCreateItemModal}
+          openCreateCreditCardItemModal={toggleCreateCreditCardItemModal}
           openSheetView={handleOpenSheetView}
         />
       )}
@@ -106,7 +123,9 @@ export default function DashboardMobile({
           accounts={accounts}
           creditCards={creditCards}
           openChangeAccountModal={toggleChangeAccountModal}
+          openChangeCreditCardModal={toggleChangeCreditCardModal}
           openCreateItemModal={toggleCreateItemModal}
+          openCreateCreditCardItemModal={toggleCreateCreditCardItemModal}
           openSheetView={handleOpenSheetView}
         />
       )}
