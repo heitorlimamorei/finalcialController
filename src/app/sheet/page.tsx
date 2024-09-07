@@ -34,7 +34,7 @@ export default function Sheet(props: ISheetProps) {
     router.push(`/sheet?u=${id}&aid=${accountId}`);
   };
 
-  if (userError) {
+  if (userError || accountError) {
     return <div>Error loading data...</div>;
   }
 
