@@ -96,7 +96,9 @@ export default function CreateCreditCardItemModal({
 
       onClose();
       mutate(`/credit-card?owid=${user.id}`);
-      mutate(`/items?sheetid=${sheetId}`);
+      mutate(
+        `/credit_card_items?owid=${user.id}&sheetid=${sheetId}&credit_card_id=${creditCardId}`,
+      );
 
       console.log(response);
     } catch (error) {
@@ -192,26 +194,26 @@ export default function CreateCreditCardItemModal({
               category.mainCategoryId === selectedCategoryIdValue &&
               category.type === 'subcategory',
           ) && (
-            <FormField label="Subcategoria (opcional)">
-              <select
-                id="subcategory"
-                className="p-2 rounded-xl dark:bg-zinc-600 bg-gray-200"
-                value={selectedSubcategoryIdValue}
-                {...register('selectedSubcategoryId')}
-                onChange={(e) =>
-                  setValue('selectedSubcategoryId', e.target.value, { shouldValidate: true })
-                }>
-                <option value="">Selecione</option>
-                {categories
-                  .filter((category) => category.mainCategoryId === selectedCategoryIdValue)
-                  .map((subcategory) => (
-                    <option key={subcategory.id} value={subcategory.id}>
-                      {subcategory.name}
-                    </option>
-                  ))}
-              </select>
-            </FormField>
-          )}
+              <FormField label="Subcategoria (opcional)">
+                <select
+                  id="subcategory"
+                  className="p-2 rounded-xl dark:bg-zinc-600 bg-gray-200"
+                  value={selectedSubcategoryIdValue}
+                  {...register('selectedSubcategoryId')}
+                  onChange={(e) =>
+                    setValue('selectedSubcategoryId', e.target.value, { shouldValidate: true })
+                  }>
+                  <option value="">Selecione</option>
+                  {categories
+                    .filter((category) => category.mainCategoryId === selectedCategoryIdValue)
+                    .map((subcategory) => (
+                      <option key={subcategory.id} value={subcategory.id}>
+                        {subcategory.name}
+                      </option>
+                    ))}
+                </select>
+              </FormField>
+            )}
           <Button className="w-full m-2 bg-red-500 text-xl font-bold text-white" type="submit">
             Criar Item
           </Button>
