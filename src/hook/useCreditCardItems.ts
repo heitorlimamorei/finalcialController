@@ -1,22 +1,12 @@
-import ICreditCardItem, {
-  IAPICreditCardItem,
-  INewCreditCardItem,
-} from '@/types/creditCardItem';
-import {
-  firestoreTimestampToDate,
-  toggleDateToJson,
-} from '@/utils/datefunctions';
+import ICreditCardItem, { IAPICreditCardItem, INewCreditCardItem } from '@/types/creditCardItem';
+import { firestoreTimestampToDate, toggleDateToJson } from '@/utils/datefunctions';
 import fetcher from '@/utils/fetcher';
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
 
 const api = process.env.NEXT_PUBLIC_API_URL;
 
-export default function useCreditCardItems(
-  owid: string,
-  creditCardId: string,
-  sheetId: string,
-) {
+export default function useCreditCardItems(owid: string, creditCardId: string, sheetId: string) {
   const key_url = `/credit_card_items?owid=${owid}&sheetid=${sheetId}&credit_card_id=${creditCardId}`;
   const {
     data: creditCardItems,
@@ -33,9 +23,7 @@ export default function useCreditCardItems(
 
   const deleteCreditCardItem = async (itemId: string) => {
     try {
-      const resp = await axios.delete(
-        `${api}/credit_card_items/${itemId}?sheetid=${sheetId}`,
-      );
+      const resp = await axios.delete(`${api}/credit_card_items/${itemId}?sheetid=${sheetId}`);
       if (resp.status == 200) mutate(key_url);
     } catch (err) {
       console.error('Error deleting credit card item:', err);
@@ -66,8 +54,7 @@ export default function useCreditCardItems(
 
   const updateCreditCardItem = async (c: ICreditCardItem) => {
     try {
-      if (c.updateLocked)
-        throw new Error(`Update of credit card item (id: ${c.id}) is locked`);
+      if (c.updateLocked) throw new Error(`Update of credit card item (id: ${c.id}) is locked`);
 
       const resp = await axios.put(
         `${api}/credit_card_items/${c.id}?owid=${c.ownerId}&sheetid=${sheetId}&creditCardId=${c.creditCardId}`,

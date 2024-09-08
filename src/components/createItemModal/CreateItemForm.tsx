@@ -35,7 +35,7 @@ export default function CreateItemForm({
   accountId,
   onClose,
 }: CreateItemFormProps): ReactElement {
-  const { createItem } = useItem();
+  const { createItem } = useItem(user.personalSpreadSheet);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const {
     register,
