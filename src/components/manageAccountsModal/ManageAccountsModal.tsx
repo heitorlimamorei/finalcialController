@@ -4,6 +4,7 @@ import { IAccount } from '@/types/account';
 import fetcher from '@/utils/fetcher';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import PersonIcon from '@mui/icons-material/Person';
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
 
@@ -57,6 +58,7 @@ export default function ManageAccountsModal({
       setTimeout(() => setCreatingAccountTransition(value), 10);
     }
   };
+
   if (!accounts || isLoading) {
     return (
       <BaseModal isOpen={isOpen} onClose={onClose}>
@@ -64,6 +66,7 @@ export default function ManageAccountsModal({
       </BaseModal>
     );
   }
+
   return (
     <BaseModal isOpen={isOpen} onClose={onClose}>
       <div className={'p-3 relative '}>
@@ -72,22 +75,28 @@ export default function ManageAccountsModal({
             className={`w-full h-full overflow-hidden transition-transform duration-300 ${creatingAccountTransition === false ? 'translate-x-0' : 'translate-x-full'}`}>
             <div className="w-full flex flex-row items-center justify-between p-2">
               <h1 className="text-xl font-bold">Suas contas</h1>
+
               <Button
                 className="bg-green-500 h-fit px-2 py-2 text-white"
                 onClick={() => handleEnterCreatingAccount(true)}>
                 <AddCircleIcon />
               </Button>
             </div>
+
             <div className="w-full h-full">
               {accounts.map((account: IAccount) => (
                 <div
                   key={account.id}
-                  className="flex flex-row items-center justify-between border-2 border-gray-500 p-5 my-2 rounded-xl">
-                  <h1 className="text-xl font-bold">{account.nickname}</h1>
+                  className="flex flex-row items-center justify-between dark:bg-gray-300  dark:text-zinc-700 text-gray-200 bg-zinc-700 my-2 rounded-full">
+                  <div className="flex flex-row items-center ml-3">
+                    <PersonIcon fontSize="large" className="mr-5" />
+                    <h1 className="text-xl font-bold">{account.nickname}</h1>
+                  </div>
+
                   <Button
                     onClick={() => handleDeleteAccount(account.id)}
-                    className="p-1 text-red-400 border-2 border-gray-400">
-                    <DeleteOutlineIcon />
+                    className="p-2 text-white bg-red-600 rounded-full">
+                    <DeleteOutlineIcon fontSize="large" />
                   </Button>
                 </div>
               ))}
