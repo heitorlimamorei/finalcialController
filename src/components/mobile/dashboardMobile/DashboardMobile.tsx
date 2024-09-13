@@ -13,6 +13,7 @@ import CreateCreditCardItemModal from '@/components/createCreditCardItemModal/Cr
 import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
 
 import BalanceCard from './components/BalanceCard';
+import CreditCardItemList from './components/CreditCardItemList';
 import ItemList from './components/ItemList';
 
 interface IDashboardMobileProps {
@@ -133,11 +134,9 @@ export default function DashboardMobile({
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>
         <div className="w-full h-full overflow-y-scroll">
-          {account && (
-            <ItemList ownerId={user.id} sheetId={user.personalSpreadSheet} accountId={account.id} />
-          )}
+          {account && <ItemList sheetId={user.personalSpreadSheet} accountId={account.id} />}
           {creditCard && (
-            <ItemList
+            <CreditCardItemList
               ownerId={user.id}
               sheetId={user.personalSpreadSheet}
               creditCardId={creditCard.id}
