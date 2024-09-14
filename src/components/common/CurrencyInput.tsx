@@ -37,7 +37,7 @@ export default function CurrencyInput({ value, onChange, type, className }: Curr
       value={formattedValue}
       onChange={handleChange}
       className={twMerge(
-        `border-none ${type == 'INCOME' ? 'bg-green-500' : 'bg-red-500'}`,
+        `border-none p-5 ${type == 'INCOME' ? 'bg-green-500' : 'bg-red-500'}`,
         className,
       )}
     />

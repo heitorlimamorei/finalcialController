@@ -9,9 +9,11 @@ import { IUser } from '@/types/user';
 
 import ChangeAccountModal from '@/components/changeAccountModal/ChangeAccountModal';
 import ChangeCreditCardModal from '@/components/changeCreditCardModal/ChangeCreditCardModa';
+import CreateCreditCardItemModal from '@/components/createCreditCardItemModal/CreateCreditCardItemModal';
 import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
 
 import BalanceCard from './components/BalanceCard';
+import CreditCardItemList from './components/CreditCardItemList';
 import ItemList from './components/ItemList';
 
 interface IDashboardMobileProps {
@@ -19,16 +21,18 @@ interface IDashboardMobileProps {
   accounts: IAccount[];
   creditCard: ICreditCard | null;
   creditCards: ICreditCard[];
-  account: IAccount;
+  account: IAccount | null;
 }
 
 export default function DashboardMobile({
   user,
   accounts,
   account,
+  creditCard,
   creditCards,
 }: IDashboardMobileProps) {
   const [isCreateItemOpen, setIsCreateItemOpen] = useState<boolean>(false);
+  const [isCreateCreditCardItemOpen, setIsCreateCreditCardItemOpen] = useState<boolean>(false);
   const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
   const [isCreditCardOpen, setIsCreditCardOpen] = useState<boolean>(false);
 
@@ -36,6 +40,10 @@ export default function DashboardMobile({
 
   const toggleCreateItemModal = () => {
     setIsCreateItemOpen((c) => !c);
+  };
+
+  const toggleCreateCreditCardItemModal = () => {
+    setIsCreateCreditCardItemOpen((c) => !c);
   };
 
   const toggleChangeAccountModal = () => {
@@ -51,43 +59,89 @@ export default function DashboardMobile({
   };
 
   const handleChangeCreditCard = (c: ICreditCard) => {
-    router.push(`/dashboard?u=${user.id}&creditcard=${c.id}&account=${accounts[0].id}`);
+    router.push(`/dashboard?u=${user.id}&creditcard=${c.id}`);
   };
 
   const handleOpenSheetView = () => {
-    router.push(`/sheet?u=${user.id}` + '&' + `aid=${account.id}`);
+    if (account) {
+      router.push(`/sheet?u=${user.id}` + '&' + `aid=${account.id}`);
+    }
+    if (creditCard) {
+      router.push(`/sheet?u=${user.id}` + '&' + `cid=${creditCard.id}`);
+    }
   };
 
   return (
     <div className="w-full h-[90%]">
-      <CreateItemModal
-        user={user}
-        isOpen={isCreateItemOpen}
-        onClose={toggleCreateItemModal}
-        accountId={account.id}
-      />
+      {account && (
+        <CreateItemModal
+          user={user}
+          isOpen={isCreateItemOpen}
+          onClose={toggleCreateItemModal}
+          accountId={account.id}
+        />
+      )}
+      {creditCard && (
+        <CreateCreditCardItemModal
+          user={user}
+          sheetId={user.personalSpreadSheet}
+          creditCardId={creditCard.id}
+          onClose={toggleCreateCreditCardItemModal}
+          isOpen={isCreateCreditCardItemOpen}
+        />
+      )}
+
       <ChangeAccountModal
         onChange={handleChangeAccount}
         isOpen={isChangeAccountOpen}
         onClose={toggleChangeAccountModal}
         accounts={accounts}
       />
+
       <ChangeCreditCardModal
         onChange={handleChangeCreditCard}
         isOpen={isCreditCardOpen}
         onClose={toggleChangeCreditCardModal}
         creditCards={creditCards}
       />
-      <BalanceCard
-        selectedAccount={account}
-        openChangeAccountModal={toggleChangeAccountModal}
-        openCreateItemModal={toggleCreateItemModal}
-        openSheetView={handleOpenSheetView}
-      />
+
+      {account && (
+        <BalanceCard
+          selectedAccount={account}
+          accounts={accounts}
+          creditCards={creditCards}
+          openChangeAccountModal={toggleChangeAccountModal}
+          openChangeCreditCardModal={toggleChangeCreditCardModal}
+          openCreateItemModal={toggleCreateItemModal}
+          openCreateCreditCardItemModal={toggleCreateCreditCardItemModal}
+          openSheetView={handleOpenSheetView}
+        />
+      )}
+
+      {creditCard && (
+        <BalanceCard
+          selectedCreditCard={creditCard}
+          accounts={accounts}
+          creditCards={creditCards}
+          openChangeAccountModal={toggleChangeAccountModal}
+          openChangeCreditCardModal={toggleChangeCreditCardModal}
+          openCreateItemModal={toggleCreateItemModal}
+          openCreateCreditCardItemModal={toggleCreateCreditCardItemModal}
+          openSheetView={handleOpenSheetView}
+        />
+      )}
+
       <div className="h-[70%] py-2">
         <h1 className="font-bold text-3xl px-2">Últimas atividades</h1>
         <div className="w-full h-full overflow-y-scroll">
-          <ItemList sheetId={user.personalSpreadSheet} accountId={account.id} />
+          {account && <ItemList sheetId={user.personalSpreadSheet} accountId={account.id} />}
+          {creditCard && (
+            <CreditCardItemList
+              ownerId={user.id}
+              sheetId={user.personalSpreadSheet}
+              creditCardId={creditCard.id}
+            />
+          )}
         </div>
       </div>
     </div>

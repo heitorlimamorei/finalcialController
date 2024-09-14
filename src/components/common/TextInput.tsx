@@ -13,7 +13,7 @@ export default function TextInput({ className, placeholder, value, onChange }: T
     <input
       type="text"
       className={twMerge(
-        'bg-gray-200 border-gray-300 dark:bg-zinc-600 rounded-xl py-3 px-3 ouline-none',
+        'bg-gray-200 border-gray-300 dark:bg-zinc-600 rounded-xl p-2 ouline-none',
         className,
       )}
       placeholder={placeholder}

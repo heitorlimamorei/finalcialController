@@ -33,7 +33,7 @@ export default function BaseModal({ isOpen, onClose, children }: IBaseModalProps
         className={`fixed inset-0 bg-black transition-opacity duration-500 ${isModalVisible ? 'opacity-50' : 'opacity-0'}`}
         onClick={handleOnClose}></div>
       <div
-        className={`dark:bg-zinc-800 bg-gray-100 w-full md:w-1/2 h-[80%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
+        className={`dark:bg-zinc-800 bg-gray-100 w-full md:w-1/2 h-[90%] transform transition-transform duration-500 ${isModalVisible ? 'translate-y-0' : 'translate-y-full'} rounded-t-xl`}>
         {children}
       </div>
     </div>

@@ -25,7 +25,7 @@ export default function DetailedItem({
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [transitionIsOptionsOpen, setTransitionIsOptionsOpen] = useState(false);
 
-  const { deleteItem } = useItem();
+  const { deleteItem } = useItem(sheetId);
 
   const handleDeleteItem = () => {
     deleteItem(item, sheetId);

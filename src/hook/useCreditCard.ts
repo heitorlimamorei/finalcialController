@@ -9,8 +9,8 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 export default function useCreditCard(owid: string) {
   const {
     data: creditCardRaw,
-    isLoading,
-    error,
+    isLoading: isLoadingCreditCards,
+    error: creditCardError,
   } = useSWR<IAPICreditCard[]>(`/credit-card?owid=${owid}`, fetcher);
 
   const sanitizeCreditCard = (c: IAPICreditCard): ICreditCard => {
@@ -45,8 +45,8 @@ export default function useCreditCard(owid: string) {
 
   return {
     creditCards,
-    isLoading,
-    error,
+    isLoadingCreditCards,
+    creditCardError,
     handleDeleteCard,
     handleCreateCreditCard,
   };

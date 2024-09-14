@@ -29,7 +29,7 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function UpdateItemModal({ onClose, isOpen, item, sheetId }: IUpdateItemModalProps) {
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const { updateItem } = useItem();
+  const { updateItem } = useItem(sheetId);
   const category = categories.find((c) => c.id === item.categoryId);
 
   const {
