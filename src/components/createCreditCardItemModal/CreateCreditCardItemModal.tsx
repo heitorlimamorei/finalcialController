@@ -48,6 +48,7 @@ export default function CreateCreditCardItemModal({
     formState: { errors },
     setValue,
     watch,
+    reset,
   } = useForm<CreateCreditCardFormData>({
     resolver: zodResolver(createCreditCardItemSchema),
     defaultValues: {
@@ -61,7 +62,7 @@ export default function CreateCreditCardItemModal({
   const descriptionValue = watch('description', '');
   const amountValue = watch('amount', 0);
   const dateValue = watch('date', new Date());
-  const parcellsNumberValue = watch('parcellsNumber', 0);
+  const parcellsNumberValue = watch('parcellsNumber', 1);
   const interestValue = watch('interest', 0);
   const selectedCategoryIdValue = watch('selectedCategoryId', '');
   const selectedSubcategoryIdValue = watch('selectedSubcategoryId', '');
@@ -79,6 +80,11 @@ export default function CreateCreditCardItemModal({
     fetchCategories();
   }, [sheetId]);
 
+  const handleCloseModal = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (data: CreateCreditCardFormData) => {
     try {
       const response = await createCreditCardItem({
@@ -94,12 +100,12 @@ export default function CreateCreditCardItemModal({
         date: data.date,
       });
 
-      onClose();
       mutate(`/credit-card?owid=${user.id}`);
       mutate(
         `/credit_card_items?owid=${user.id}&sheetid=${sheetId}&credit_card_id=${creditCardId}`,
       );
 
+      handleCloseModal();
       console.log(response);
     } catch (error) {
       console.error('Error creating credit card item:', error);
@@ -107,7 +113,7 @@ export default function CreateCreditCardItemModal({
   };
 
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose}>
+    <BaseModal isOpen={isOpen} onClose={handleCloseModal}>
       <div className="w-full h-full overflow-y-scroll p-2">
         <form
           className="flex flex-col oveerflow-y-scroll items-center justify-start h-full w-full px-3"

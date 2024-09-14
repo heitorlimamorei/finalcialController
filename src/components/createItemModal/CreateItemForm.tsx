@@ -43,6 +43,7 @@ export default function CreateItemForm({
     formState: { errors },
     setValue,
     watch,
+    reset,
   } = useForm<CreateItemFormData>({
     resolver: zodResolver(createItemSchema),
     defaultValues: {
@@ -70,6 +71,11 @@ export default function CreateItemForm({
     fetchCategories(user.personalSpreadSheet);
   }, [user.personalSpreadSheet]);
 
+  const handleCloseModal = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = async (data: CreateItemFormData) => {
     const categoryId = data.selectedSubcategoryId
       ? data.selectedSubcategoryId
@@ -89,10 +95,10 @@ export default function CreateItemForm({
         date: validDate.toISOString(),
         type: type,
       });
-      onClose();
 
       mutate(`/account?owid=${user.id}`);
       mutate(`/items?sheetid=${user.personalSpreadSheet}`);
+      handleCloseModal();
 
       console.log('Item created successfully:', response);
     } catch (error) {
