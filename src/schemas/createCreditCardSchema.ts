@@ -57,7 +57,7 @@ export const createCreditCardSchema = z.object({
       });
     }
 
-    if (!(year >= today.getFullYear() && year <= today.getMonth() + 5)) {
+    if (!(year >= today.getFullYear() && year <= today.getFullYear() + 5)) {
       ctx.addIssue({
         code: 'invalid_date',
         path: [],
