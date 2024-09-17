@@ -2,6 +2,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
+import useCreditCard from '@/hook/useCreditCard';
 import { createCreditCardSchema } from '@/schemas/createCreditCardSchema';
 import { CardBrands, INewCreditCard } from '@/types/creditCard';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,8 +15,8 @@ import TextInput from '../common/TextInput';
 interface ICreateCreditCardFormProps {
   ownerId: string;
   onClose: () => void;
-  onSubmit: (props: INewCreditCard) => Promise<void>;
 }
+
 type CreateCreditCardFormData = z.infer<typeof createCreditCardSchema>;
 
 interface ICreateCardZodResp {
@@ -27,11 +28,8 @@ interface ICreateCardZodResp {
   flag: string;
 }
 
-export default function CreateCreditCardForm({
-  ownerId,
-  onClose,
-  onSubmit,
-}: ICreateCreditCardFormProps) {
+export default function CreateCreditCardForm({ ownerId, onClose }: ICreateCreditCardFormProps) {
+  const { handleCreateCreditCard: onSubmit } = useCreditCard(ownerId);
   const {
     register,
     handleSubmit,

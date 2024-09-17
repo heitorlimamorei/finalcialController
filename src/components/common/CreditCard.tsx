@@ -33,7 +33,10 @@ export default function CreditCard({ creditCard, handleDeleteCard, onClick }: IC
             <path className="dark:flex hidden" d="M 100 0 Q 0 0 0 100 L 100 100 Z" fill="#27272A" />
           </svg>
           <Button
-            onClick={() => handleDeleteCard(creditCard.id)}
+            onClick={(ev) => {
+              ev.stopPropagation();
+              handleDeleteCard(creditCard.id);
+            }}
             className="absolute top-1 right-1 text-red-600 p-0">
             <DeleteIcon fontSize="large" color="inherit" />
           </Button>
