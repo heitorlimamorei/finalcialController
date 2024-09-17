@@ -37,3 +37,18 @@ export interface INewCreditCard {
   financialInstitution: string;
   spendingLimit: number;
 }
+
+export interface IUpdateCreditCardProps {
+  id: string;
+  cardNumber: string;
+  nickname: string;
+  flag: CardBrands;
+  spendingLimit: number;
+  availableLimit: number;
+}
+
+export interface IUpdatedFieldsCreditCard {
+  nickname: string;
+  spendingLimit: number;
+  availableLimit: number;
+}
