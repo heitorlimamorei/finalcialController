@@ -1,4 +1,9 @@
-import { IAPICreditCard, ICreditCard, INewCreditCard } from '@/types/creditCard';
+import {
+  IAPICreditCard,
+  ICreditCard,
+  INewCreditCard,
+  IUpdateCreditCardProps,
+} from '@/types/creditCard';
 import { firestoreTimestampToDate } from '@/utils/datefunctions';
 import fetcher from '@/utils/fetcher';
 import axios from 'axios';
@@ -41,6 +46,22 @@ export default function useCreditCard(owid: string) {
     }
   }
 
+  async function handleUpdateCreditCard(data: IUpdateCreditCardProps) {
+    try {
+      const resp = await axios.patch(`${api}/credit-card/${data.id}`, {
+        ownerId: owid,
+        nickname: data.nickname,
+        cardNumber: data.cardNumber,
+        flag: data.flag,
+        spendingLimit: data.spendingLimit,
+        availableLimit: data.availableLimit,
+      });
+      mutate('/credit-card?owid=' + owid);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   const creditCards = creditCardRaw?.map(sanitizeCreditCard);
 
   return {
@@ -49,5 +70,6 @@ export default function useCreditCard(owid: string) {
     creditCardError,
     handleDeleteCard,
     handleCreateCreditCard,
+    handleUpdateCreditCard,
   };
 }
