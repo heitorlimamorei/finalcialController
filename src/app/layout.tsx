@@ -6,6 +6,8 @@ import { SessionProvider } from '@/components/nextAuth/SessionProvider';
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
 
+import { AI } from './ai';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
@@ -50,7 +52,7 @@ export default function RootLayout(
       <body className={`${inter.className}`}>
         <SessionProvider session={session}>
           <ThemeProvider defaultTheme="dark" attribute="class" themes={['light', 'dark']}>
-            {children}
+            <AI>{children}</AI>
           </ThemeProvider>
         </SessionProvider>
       </body>

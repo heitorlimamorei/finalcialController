@@ -79,7 +79,7 @@ export default function Config(props: IConfigProps) {
           </div>
         </div>
       </div>
-      <NavBar user={user} selectedButton="config" />
+      <NavBar u={user.id} selectedButton="config" />
     </div>
   );
 }

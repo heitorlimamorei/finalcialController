@@ -69,7 +69,7 @@ export default function Dashboard(props: IDashboardProps) {
           creditCards={creditCards}
         />
       </div>
-      <NavBar user={user} selectedButton={'home'} />
+      <NavBar u={props.searchParams.u} selectedButton={'home'} />
     </div>
   );
 }
