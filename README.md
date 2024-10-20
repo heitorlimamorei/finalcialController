@@ -1,7 +1,32 @@
-
-
 # Financial Controller
 
 ## Overview
 
-O Financial Controller é um sofisticado webapp desenvolvido para auxiliar no planejamento financeiro pessoal utilizando inteligência artificial. Construído com as tecnologias React, NEXTJS e Tailwind CSS para o frontend, e NESTJS com Firebase para o backend, este aplicativo oferece uma interface intuitiva e altamente customizável. O sistema coleta dados financeiros dos usuários e utiliza modelagem de IA para fornecer feedback imediato, análises detalhadas e sugestões personalizadas sobre a gestão de receitas e despesas. Além disso, o app oferece funcionalidades específicas para o controle de gastos com cartões de crédito, ajudando os usuários a entenderem melhor o impacto de suas compras e a melhorarem sua saúde financeira. Testes iniciais com usuários mostraram uma aceitação positiva e resultados promissores, com planos futuros de expansão para aplicativos nativos e integração de IA em novas áreas.
+O Financial Controller é um sofisticado webapp desenvolvido para auxiliar no planejamento financeiro pessoal utilizando inteligência artificial.
+
+## Funcionalidades Principais
+
+- **Coleta de Dados:** Receitas e despesas registradas pelos usuários.
+- **Feedback Imediato:** Utilização de IA para fornecer feedback em tempo real.
+- **Análises Personalizadas:** Sugestões e estatísticas adaptadas ao perfil financeiro do usuário.
+- **Controle de Gastos com Cartão de Crédito:** Visão clara e detalhada para melhor entendimento e quitação de dívidas.
+
+## Tecnologias Utilizadas
+
+### Frontend
+
+- **React**: Biblioteca JavaScript para construção de interfaces.
+- **Next.js**: Framework para React, focado em renderização do lado do servidor.
+- **Tailwind CSS**: Framework de CSS utilitário para estilização rápida e customizável.
+
+### Backend
+
+- **NestJS**: Framework Node.js para construção de aplicações escaláveis e eficientes.
+- **Firebase**: Plataforma para desenvolvimento de apps com foco em backend como serviço (BaaS).
+
+## Plano Futuro
+
+- **Aplicativo Nativo:** Transformação do webapp em um aplicativo nativo.
+- **Expansão da IA:** Ampliação da aplicação da inteligência artificial em outras áreas do aplicativo.
+
+Testes iniciais com usuários mostraram uma aceitação positiva e resultados promissores, com a nota média de avaliação sendo 4.1 de 5. O feedback contínuo dos usuários será utilizado para aprimorar e expandir as funcionalidades do Financial Controller.
