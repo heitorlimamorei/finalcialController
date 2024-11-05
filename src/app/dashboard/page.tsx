@@ -33,7 +33,11 @@ export default function Dashboard(props: IDashboardProps) {
   const { creditCards = [], creditCardError, isLoadingCreditCards } = useCreditCard(id);
   const { data: user, error: userError } = useSWR<IUser>(`/user/${id}`, fetcher);
 
-  if (accountsError || userError || creditCardError) {
+  if (userError) {
+    return <div>Error loading user data...</div>;
+  }
+
+  if (accountsError && creditCardError) {
     return <div>Error loading data...</div>;
   }
 
@@ -42,7 +46,10 @@ export default function Dashboard(props: IDashboardProps) {
   }
 
   if (!accountId && !creditCardId) {
-    router.push(`/dashboard?u=${id}&creditcard=${creditCards[0]?.id || accounts[0]?.id}`);
+    let credituri = `creditcard=${creditCards[0]?.id}`;
+    let accounturi = `account=${accounts[0]?.id}`;
+
+    router.push(`/dashboard?u=${id}&${creditCards[0]?.id ? credituri : accounturi}`);
     return null;
   }
 
@@ -69,7 +76,12 @@ export default function Dashboard(props: IDashboardProps) {
           creditCards={creditCards}
         />
       </div>
-      <NavBar u={props.searchParams.u} selectedButton={'home'} />
+      <NavBar
+        u={props.searchParams.u}
+        cid={creditCard?.id}
+        acid={account?.id}
+        selectedButton={'home'}
+      />
     </div>
   );
 }

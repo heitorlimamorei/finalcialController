@@ -14,6 +14,8 @@ import { AI } from '../ai';
 interface IFcAIProps {
   searchParams: {
     u: string;
+    account?: string;
+    creditcard?: string;
   };
 }
 
@@ -21,13 +23,20 @@ export default function FinancialControllerAI(props: IFcAIProps) {
   const [conversation, setConversation] = useUIState<typeof AI>();
   const { continueConversation } = useActions<typeof AI>();
 
+  const personalSpreadsheet = 'vW4IJc9KvA3X3uBR9m2k';
+
   const handleSubmit = async (c: string) => {
     setConversation((currentConversation: ClientMessage[]) => [
       ...currentConversation,
       { id: generateId(), role: 'user', display: <Message role="user" display={c} /> }, // ui state
     ]);
 
-    const message = await continueConversation(c); // ai state
+    const message = await continueConversation(c, {
+      u: props.searchParams.u,
+      sheetid: personalSpreadsheet,
+      account: props.searchParams.account,
+      creditcard: props.searchParams.creditcard,
+    }); // ai state
 
     setConversation((currentConversation: ClientMessage[]) => [...currentConversation, message]); // ui state
   };
@@ -38,7 +47,12 @@ export default function FinancialControllerAI(props: IFcAIProps) {
         <MessagesContainer conversation={conversation} />
         <InputContainer onSubmit={handleSubmit} />
       </div>
-      <ChatNavbar u={props.searchParams.u} selectedButton={'a'} />
+      <ChatNavbar
+        cid={props.searchParams.creditcard}
+        acid={props.searchParams.account}
+        u={props.searchParams.u}
+        selectedButton={'a'}
+      />
     </div>
   );
 }

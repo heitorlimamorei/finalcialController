@@ -8,6 +8,14 @@ import { getMutableAIState, streamUI } from 'ai/rsc';
 import { z } from 'zod';
 
 import Message from '@/components/AI/Message';
+import ServerWrapper from '@/components/AI/ServerWrapper';
+
+interface IQuery {
+  u: string;
+  sheetid: string;
+  account?: string;
+  creditcard?: string;
+}
 
 export interface ServerMessage {
   role: 'user' | 'assistant';
@@ -20,7 +28,7 @@ export interface ClientMessage {
   display: ReactNode;
 }
 
-export async function continueConversation(input: string): Promise<ClientMessage> {
+export async function continueConversation(input: string, query: IQuery): Promise<ClientMessage> {
   'use server';
 
   const history = getMutableAIState();
@@ -40,7 +48,22 @@ export async function continueConversation(input: string): Promise<ClientMessage
         return <Message role="assistant" display={content} />;
       }
     },
-    tools: {},
+    tools: {
+      summarizeExpensesCreditCard: {
+        description: 'Resuma os itens salvos no cartão de crédito provido pelo usuário',
+        parameters: z.object({}),
+        generate: async () => {
+          return (
+            <Message
+              role="assistant"
+              display={
+                <ServerWrapper u={query.u} creditcard={query.creditcard} sheetid={query.sheetid} />
+              }
+            />
+          );
+        },
+      },
+    },
   });
 
   return {

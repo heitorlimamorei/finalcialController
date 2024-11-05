@@ -14,8 +14,8 @@ export default function useItem(sheetId: string) {
   } = useSWR<IBackItem[]>(`/items?sheetid=${sheetId}`, fetcher);
 
   let items: IItem[] = [];
-  if (!itemIsLoading) {
-    items = itemsRaw!.map((item: IBackItem) => ({
+  if (!itemIsLoading && itemsRaw) {
+    items = itemsRaw.map((item: IBackItem) => ({
       ...item,
       date: firestoreTimestampToDate(item.date),
     }));

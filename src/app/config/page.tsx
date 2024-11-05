@@ -19,6 +19,8 @@ import { ConfigProfile } from '@/components/mobile/configMobile/ConfigProfile';
 interface IConfigProps {
   searchParams: {
     u: string;
+    account?: string;
+    creditcard?: string;
   };
 }
 
@@ -79,7 +81,12 @@ export default function Config(props: IConfigProps) {
           </div>
         </div>
       </div>
-      <NavBar u={user.id} selectedButton="config" />
+      <NavBar
+        cid={props.searchParams?.creditcard}
+        acid={props.searchParams?.account}
+        u={user.id}
+        selectedButton="config"
+      />
     </div>
   );
 }
