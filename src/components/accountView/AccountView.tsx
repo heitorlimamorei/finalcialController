@@ -13,7 +13,7 @@ import DetailedItemsList from '../detailedItemsList/DetailedItemsList';
 import UpdateItemModal from '../updateItemModal/UpdateItemModal';
 
 interface ISheetViewProps {
-  accountId?: string;
+  accountId: string;
   user: IUser;
 }
 export default function AccountView({ accountId, user }: ISheetViewProps) {
@@ -36,6 +36,10 @@ export default function AccountView({ accountId, user }: ISheetViewProps) {
 
   if (!account) {
     return <Loading />;
+  }
+
+  if (accountError) {
+    return <div>Erro ao buscar items</div>;
   }
 
   const handleCreateItemModal = () => {

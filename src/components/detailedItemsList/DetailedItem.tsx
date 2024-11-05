@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import useCategory from '@/hook/useCategory';
 import useItem from '@/hook/useItem';
 import { ICategory } from '@/types/category';
 import { IBackItem } from '@/types/item';
@@ -11,21 +12,18 @@ import Button from '../common/Button';
 
 interface IDetailedItemProps {
   item: IBackItem;
-  categories: ICategory[];
   sheetId: string;
   handleOpenUpdateModal: (item: IBackItem) => void;
 }
 
-export default function DetailedItem({
-  item,
-  categories,
-  sheetId,
-  handleOpenUpdateModal,
-}: IDetailedItemProps) {
+export default function DetailedItem({ item, sheetId, handleOpenUpdateModal }: IDetailedItemProps) {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const [transitionIsOptionsOpen, setTransitionIsOptionsOpen] = useState(false);
 
   const { deleteItem } = useItem(sheetId);
+  const { findCategoryById } = useCategory(sheetId);
+
+  const category: ICategory | undefined = findCategoryById(item.categoryId);
 
   const handleDeleteItem = () => {
     deleteItem(item, sheetId);
@@ -42,11 +40,6 @@ export default function DetailedItem({
     }
   };
 
-  const getCategoryName = (categoryId: string) => {
-    const category = categories.find((cat) => cat.id === categoryId);
-    return category ? category.name : 'Categoria Desconhecida';
-  };
-
   return (
     <div className="flex flex-row">
       <div
@@ -55,7 +48,7 @@ export default function DetailedItem({
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-col">
             <h1 className="text-2xl font-semibold">{item.name}</h1>
-            <p className="">{'|' + getCategoryName(item.categoryId)}</p>
+            <p className="">{category ? `| ${category.name}` : '| Categoria não encontrada'}</p>
           </div>
 
           <p className="text-gray-500">{formatDate(firestoreTimestampToDate(item.date))}</p>

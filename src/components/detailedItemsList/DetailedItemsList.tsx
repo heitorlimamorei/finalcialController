@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 
+import useCategory from '@/hook/useCategory';
 import { IAccount } from '@/types/account';
 import { ICategory } from '@/types/category';
 import { IBackItem } from '@/types/item';
@@ -10,6 +11,7 @@ import fetcher from '@/utils/fetcher';
 import axios from 'axios';
 import useSWR from 'swr';
 
+import Loading from '../common/Loading';
 import DetailedItem from './DetailedItem';
 
 interface IDetailedItemsListProps {
@@ -25,24 +27,10 @@ export default function DetailedItemsList({
   account,
   handleOpenUpdateModal,
 }: IDetailedItemsListProps) {
-  const [categories, setCategories] = useState<ICategory[]>([]);
   const { data: items } = useSWR<IBackItem[]>(
     `/items?sheetid=${user.personalSpreadSheet}`,
     fetcher,
   );
-
-  useEffect(() => {
-    const fetchCategories = async (sheetId: string) => {
-      try {
-        const categories = await axios.get(`${api}/category?sheetId=${sheetId}`);
-        setCategories(categories.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchCategories(user.personalSpreadSheet);
-  }, [user.personalSpreadSheet]);
   if (items === undefined) return null;
 
   const sortedItems = [...items]
@@ -58,7 +46,6 @@ export default function DetailedItemsList({
         <li key={item.id}>
           <DetailedItem
             item={item}
-            categories={categories}
             sheetId={user.personalSpreadSheet}
             handleOpenUpdateModal={handleOpenUpdateModal}
           />

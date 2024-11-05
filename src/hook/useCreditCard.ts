@@ -1,4 +1,8 @@
-import { IAPICreditCard, ICreditCard, INewCreditCard } from '@/types/creditCard';
+import {
+  IAPICreditCard,
+  ICreditCard,
+  INewCreditCard,
+} from '@/types/creditCard';
 import { firestoreTimestampToDate } from '@/utils/datefunctions';
 import fetcher from '@/utils/fetcher';
 import axios from 'axios';
@@ -10,7 +14,7 @@ export default function useCreditCard(owid: string) {
   const {
     data: creditCardRaw,
     isLoading: isLoadingCreditCards,
-    error: creditCardError,
+    error: creditCardsError,
   } = useSWR<IAPICreditCard[]>(`/credit-card?owid=${owid}`, fetcher);
 
   const sanitizeCreditCard = (c: IAPICreditCard): ICreditCard => {
@@ -23,7 +27,9 @@ export default function useCreditCard(owid: string) {
 
   async function handleDeleteCard(id: string) {
     try {
-      const response = await axios.delete(`${api}/credit-card/${id}?owid=${owid}`);
+      const response = await axios.delete(
+        `${api}/credit-card/${id}?owid=${owid}`,
+      );
       mutate('/credit-card?owid=' + owid);
       console.log(response);
     } catch (err) {
@@ -46,7 +52,7 @@ export default function useCreditCard(owid: string) {
   return {
     creditCards,
     isLoadingCreditCards,
-    creditCardError,
+    creditCardsError,
     handleDeleteCard,
     handleCreateCreditCard,
   };
