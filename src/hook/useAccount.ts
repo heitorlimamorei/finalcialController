@@ -27,5 +27,10 @@ export default function useAccount(ownerId: string) {
     }
   }
 
-  return { accounts, accountsError: errorF, isLoadingAccounts, createAccount };
+  return {
+    accounts: accounts ? accounts : [],
+    accountsError: errorF,
+    isLoadingAccounts,
+    createAccount,
+  };
 }

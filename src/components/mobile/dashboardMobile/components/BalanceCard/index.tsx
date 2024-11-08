@@ -7,7 +7,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 
 import CreditCard from '@/components/common/CreditCard';
 
-import QuickMenuButton from './QuickMenuButton';
+import QuickMenuButton from '../QuickMenuButton';
 
 interface BalanceCardProps {
   openCreateItemModal: () => void;

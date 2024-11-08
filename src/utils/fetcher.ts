@@ -2,6 +2,16 @@ import axios from 'axios';
 
 const api = process.env.NEXT_PUBLIC_API_URL;
 
+export interface IReqError {
+  message: string;
+  statuscode: number;
+}
+
+export const parseError = (err: string): IReqError => {
+  const error = JSON.parse(err);
+  return error;
+};
+
 const fetcher = (path: string) =>
   axios
     .get(`${api}${path}`)
@@ -15,13 +25,3 @@ const fetcher = (path: string) =>
     });
 
 export default fetcher;
-
-export interface IReqError {
-  message: string;
-  statuscode: number;
-}
-
-export const parseError = (err: string): IReqError => {
-  const error = JSON.parse(err);
-  return error;
-};

@@ -11,6 +11,7 @@ import ChangeAccountModal from '@/components/changeAccountModal/ChangeAccountMod
 import ChangeCreditCardModal from '@/components/changeCreditCardModal/ChangeCreditCardModa';
 import CreateCreditCardItemModal from '@/components/createCreditCardItemModal/CreateCreditCardItemModal';
 import { CreateItemModal } from '@/components/createItemModal/CreateItemModal';
+import ChangeDashboardView from '@/components/dashboard/ChangeDashboardView';
 
 import BalanceCard from './components/BalanceCard';
 import CreditCardItemList from './components/CreditCardItemList';
@@ -91,19 +92,7 @@ export default function DashboardMobile({
         />
       )}
 
-      <ChangeAccountModal
-        onChange={handleChangeAccount}
-        isOpen={isChangeAccountOpen}
-        onClose={toggleChangeAccountModal}
-        accounts={accounts}
-      />
-
-      <ChangeCreditCardModal
-        onChange={handleChangeCreditCard}
-        isOpen={isCreditCardOpen}
-        onClose={toggleChangeCreditCardModal}
-        creditCards={creditCards}
-      />
+      <ChangeDashboardView />
 
       {account && (
         <BalanceCard
