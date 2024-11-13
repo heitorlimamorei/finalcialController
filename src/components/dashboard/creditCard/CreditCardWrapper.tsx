@@ -32,7 +32,6 @@ export default function CreditCardWrapper({ user, creditCardId }: ICreditCardWra
     <div className="w-full h-[90%]">
       <CreateCreditCardItemModal
         user={user}
-        sheetId={user.personalSpreadSheet}
         creditCardId={creditCard.id}
         onClose={toggleCreateCreditCardItemModal}
         isOpen={isCreateCreditCardItemOpen}
