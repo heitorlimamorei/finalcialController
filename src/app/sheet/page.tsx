@@ -59,7 +59,7 @@ export default function Sheet(props: ISheetProps) {
             </li>
           ))}
         </ul>
-        <NavBar user={user} selectedButton="sheet" />
+        <NavBar u={props.searchParams.u} selectedButton="sheet" />
       </div>
     );
   }
@@ -67,7 +67,7 @@ export default function Sheet(props: ISheetProps) {
   return (
     <div className="h-[100vh]">
       {props.searchParams.aid && <AccountView accountId={props.searchParams.aid} user={user} />}
-      <NavBar user={user} selectedButton="sheet" />
+      <NavBar u={props.searchParams.u} selectedButton="sheet" />
     </div>
   );
 }

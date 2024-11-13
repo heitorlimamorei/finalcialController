@@ -4,8 +4,9 @@ import {
   INewCreditCard,
   IUpdateCreditCardProps,
 } from '@/types/creditCard';
+import { sanitizeCreditCard } from '@/utils/creditCardUtils';
 import { firestoreTimestampToDate } from '@/utils/datefunctions';
-import fetcher from '@/utils/fetcher';
+import fetcher, { parseError } from '@/utils/fetcher';
 import axios from 'axios';
 import useSWR, { mutate } from 'swr';
 
@@ -18,13 +19,9 @@ export default function useCreditCard(owid: string) {
     error: creditCardError,
   } = useSWR<IAPICreditCard[]>(`/credit-card?owid=${owid}`, fetcher);
 
-  const sanitizeCreditCard = (c: IAPICreditCard): ICreditCard => {
-    return {
-      ...c,
-      expirationDate: firestoreTimestampToDate(c.expirationDate),
-      lastBill: c?.lastBill ? firestoreTimestampToDate(c.lastBill) : null,
-    };
-  };
+  const errorObj = creditCardError ? parseError(creditCardError.message) : null;
+  const loding = errorObj?.statuscode == 404 ? false : isLoadingCreditCards;
+  const errorF = errorObj?.statuscode == 404 ? null : errorObj;
 
   async function handleDeleteCard(id: string) {
     try {
@@ -62,12 +59,12 @@ export default function useCreditCard(owid: string) {
     }
   }
 
-  const creditCards = creditCardRaw?.map(sanitizeCreditCard);
+  const creditCards: ICreditCard[] = creditCardRaw ? creditCardRaw.map(sanitizeCreditCard) : [];
 
   return {
     creditCards,
-    isLoadingCreditCards,
-    creditCardError,
+    isLoadingCreditCards: loding,
+    creditCardError: errorF,
     handleDeleteCard,
     handleCreateCreditCard,
     handleUpdateCreditCard,

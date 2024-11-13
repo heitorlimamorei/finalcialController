@@ -14,8 +14,8 @@ export default function useItem(sheetId: string) {
   } = useSWR<IBackItem[]>(`/items?sheetid=${sheetId}`, fetcher);
 
   let items: IItem[] = [];
-  if (!itemIsLoading) {
-    items = itemsRaw!.map((item: IBackItem) => ({
+  if (!itemIsLoading && itemsRaw) {
+    items = itemsRaw.map((item: IBackItem) => ({
       ...item,
       date: firestoreTimestampToDate(item.date),
     }));
@@ -23,17 +23,18 @@ export default function useItem(sheetId: string) {
 
   async function createItem(item: INewItem) {
     const response = await axios.post(`${api}/items`, item);
+    if (response.status == 201) mutate(`/items?sheetid=${sheetId}`);
     return response.data;
   }
   async function deleteItem(item: IBackItem, sheetId: string) {
     const response = await axios.delete(`${api}/items/${item.id}?sheetid=${sheetId}`);
-    mutate(`/items?sheetid=${sheetId}`);
+    if (response.status == 200) mutate(`/items?sheetid=${sheetId}`);
     return response.data;
   }
 
   async function updateItem(data: any, sheetId: string) {
-    await axios.patch(`${api}/items/${data.id}?sheetid=${sheetId}`, data);
-    mutate(`/items?sheetid=${sheetId}`);
+    const response = await axios.patch(`${api}/items/${data.id}?sheetid=${sheetId}`, data);
+    if (response.status == 200) mutate(`/items?sheetid=${sheetId}`);
   }
   return {
     items,
