@@ -2,7 +2,8 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { ICreditCard } from '@/types/creditCard';
+import { IAPICreditCard } from '@/types/creditCard';
+import { sanitizeCreditCard } from '@/utils/creditCardUtils';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 
@@ -18,21 +19,21 @@ export default function CreditCardBalanceCard() {
     data: creditCard,
     error,
     isLoading,
-  } = useSWR<ICreditCard>(`/credit-card/${cid}?owid=${owid}`, fetcher);
+  } = useSWR<IAPICreditCard>(`/credit-card/${cid}?owid=${owid}`, fetcher, {
+    refreshInterval: 1000,
+  });
 
   return (
-    <div className={'m-4 mt-5 rounded-3xl dark:bg-[#000826] bg-[#121826] h-[19rem] text-white'}>
-      <div className="rounded-3xl h-[70%] flex flex-col items-center justify-start">
-        {creditCard ? (
-          <CreditCard creditCard={creditCard} />
-        ) : isLoading ? (
-          <div className="text-center text-lg">Carregando...</div>
-        ) : error ? (
-          <div className="text-center text-lg text-red-500">
-            Ocorreu um erro ao carregar o cartão de crédito.
-          </div>
-        ) : null}
-      </div>
+    <div className="rounded-3xl h-[70%] flex flex-col items-center justify-start">
+      {creditCard ? (
+        <CreditCard creditCard={sanitizeCreditCard(creditCard)} />
+      ) : isLoading ? (
+        <div className="text-center text-lg">Carregando...</div>
+      ) : error ? (
+        <div className="text-center text-lg text-red-500">
+          Ocorreu um erro ao carregar o cartão de crédito.
+        </div>
+      ) : null}
     </div>
   );
 }

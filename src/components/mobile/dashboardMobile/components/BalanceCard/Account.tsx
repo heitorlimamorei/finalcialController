@@ -6,7 +6,7 @@ import { IAccount } from '@/types/account';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
 
-export default function Account() {
+export default function AccountBalanceCard() {
   const searchParams = useSearchParams();
 
   const owid = searchParams.get('u');
@@ -16,7 +16,9 @@ export default function Account() {
     data: account,
     error,
     isLoading,
-  } = useSWR<IAccount>(`/account/${acid}?owid=${owid}`, fetcher);
+  } = useSWR<IAccount>(`/account/${acid}?owid=${owid}`, fetcher, {
+    refreshInterval: 1000,
+  });
 
   return (
     <div className="bg-green-500 rounded-2xl h-1/2 flex flex-col items-center justify-center">

@@ -1,28 +1,22 @@
 'use client';
 
-import { useState } from 'react';
-
 import { useSearchParams, useRouter } from 'next/navigation';
 
 import ChangeAccountModal from '@/components/changeAccountModal/ChangeAccountModal';
 import ChangeCreditCardModal from '@/components/changeCreditCardModal/ChangeCreditCardModa';
 
-export default function ChangeDashboardView() {
-  const [isChangeAccountOpen, setIsChangeAccountOpen] = useState<boolean>(false);
-  const [isCreditCardOpen, setIsCreditCardOpen] = useState<boolean>(false);
+interface IChangeDashboardView {
+  isChangeAccountOpen: boolean;
+  isCreditCardOpen: boolean;
+  toggleChangeCreditCardModal: () => void;
+  toggleChangeAccountModal: () => void;
+}
 
+export default function ChangeDashboardView(props: IChangeDashboardView) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const userId = searchParams.get('u') ?? '';
-
-  const toggleChangeAccountModal = () => {
-    setIsChangeAccountOpen((c) => !c);
-  };
-
-  const toggleChangeCreditCardModal = () => {
-    setIsCreditCardOpen((c) => !c);
-  };
 
   const handleChangeAccount = (acid: string) => {
     router.push(`/dashboard?u=${userId}&account=${acid}`);
@@ -36,14 +30,14 @@ export default function ChangeDashboardView() {
     <>
       <ChangeAccountModal
         onChange={handleChangeAccount}
-        isOpen={isChangeAccountOpen}
-        onClose={toggleChangeAccountModal}
+        isOpen={props.isChangeAccountOpen}
+        onClose={props.toggleChangeAccountModal}
       />
 
       <ChangeCreditCardModal
         onChange={handleChangeCreditCard}
-        isOpen={isCreditCardOpen}
-        onClose={toggleChangeCreditCardModal}
+        isOpen={props.isCreditCardOpen}
+        onClose={props.toggleChangeCreditCardModal}
       />
     </>
   );

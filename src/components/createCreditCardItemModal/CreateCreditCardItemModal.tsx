@@ -21,7 +21,6 @@ type CreateCreditCardFormData = z.infer<typeof createCreditCardItemSchema>;
 
 interface CreateCreditCardItemModalProps {
   user: IUser;
-  sheetId: string;
   creditCardId: string;
   onClose: () => void;
   isOpen: boolean;
@@ -31,11 +30,11 @@ const api = process.env.NEXT_PUBLIC_API_URL;
 
 export default function CreateCreditCardItemModal({
   user,
-  sheetId,
   creditCardId,
   isOpen,
   onClose,
 }: CreateCreditCardItemModalProps): ReactElement {
+  const sheetId = user.personalSpreadSheet;
   const { createCreditCardItem, creditCardItemError } = useCreditCardItems(
     user.id,
     creditCardId,

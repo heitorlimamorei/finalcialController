@@ -1,64 +1,49 @@
-import { IAccount } from '@/types/account';
-import { ICreditCard } from '@/types/creditCard';
+'use client';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import HistoryIcon from '@mui/icons-material/History';
 import PaymentsIcon from '@mui/icons-material/Payments';
 
-import CreditCard from '@/components/common/CreditCard';
-
 import QuickMenuButton from '../QuickMenuButton';
+import AccountBalanceCard from './Account';
+import CreditCardBalanceCard from './CreditCard';
 
 interface BalanceCardProps {
   openCreateItemModal: () => void;
-  openCreateCreditCardItemModal: () => void;
   openChangeAccountModal: () => void;
   openChangeCreditCardModal: () => void;
-  openSheetView: () => void;
-  accounts: IAccount[];
-  creditCards: ICreditCard[];
-  selectedAccount?: IAccount;
-  selectedCreditCard?: ICreditCard;
 }
 
 export default function BalanceCard({
   openCreateItemModal,
   openChangeAccountModal,
-  openCreateCreditCardItemModal,
   openChangeCreditCardModal,
-  accounts,
-  creditCards,
-  openSheetView,
-  selectedAccount,
-  selectedCreditCard,
 }: BalanceCardProps) {
-  const account = selectedAccount && accounts.find((acc) => acc.id === selectedAccount.id);
-  const creditCard =
-    selectedCreditCard && creditCards.find((cc) => cc.id === selectedCreditCard.id);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const creditCardId = searchParams.get('creditcard');
+  const accountId = searchParams.get('account');
+  const userId = searchParams.get('u');
+
+  const handleOpenSheetView = () => {
+    if (creditCardId) {
+      router.push(`/sheet?u=${userId}` + '&' + `cid=${creditCardId}`);
+    } else {
+      router.push(`/sheet?u=${userId}` + '&' + `aid=${accountId}`);
+    }
+  };
 
   return (
     <div
-      className={`m-4 mt-5 rounded-3xl dark:bg-[#000826] bg-[#121826] ${creditCard ? 'h-[19rem]' : 'h-[13rem]'} text-white`}>
-      {creditCard ? (
-        <div className="rounded-3xl h-[70%] flex flex-col items-center justify-start">
-          <CreditCard creditCard={creditCard} />
-        </div>
-      ) : account ? (
-        <div className="bg-green-500 rounded-2xl h-1/2 flex flex-col items-center justify-center">
-          <h1 className="text-center text-lg">Seu balanço {account.nickname}</h1>
-          <p className="text-center text-4xl font-bold">R${account.balance.toFixed(2)}</p>
-        </div>
-      ) : (
-        <div className="h-1/2 flex items-center justify-center">
-          <p className="text-center text-lg">Nenhuma conta ou cartão selecionado</p>
-        </div>
-      )}
-
+      className={`m-4 mt-5 rounded-3xl dark:bg-[#000826] bg-[#121826] ${creditCardId ? 'h-[19rem]' : 'h-[13rem]'} text-white`}>
+      {creditCardId ? <CreditCardBalanceCard /> : <AccountBalanceCard />}
       <div
-        className={`dark:bg-[#000826] bg-[#121826] ${creditCard ? 'h-[30%]' : 'h-1/2'} rounded-b-2xl flex flex-row items-center justify-between`}>
-        <QuickMenuButton
-          label="Adicionar"
-          onClick={creditCard ? openCreateCreditCardItemModal : openCreateItemModal}>
+        className={`dark:bg-[#000826] bg-[#121826] ${creditCardId ? 'h-[30%]' : 'h-1/2'} rounded-b-2xl flex flex-row items-center justify-between`}>
+        <QuickMenuButton label="Adicionar" onClick={openCreateItemModal}>
           <PaymentsIcon fontSize="large" />
         </QuickMenuButton>
         <QuickMenuButton label="Contas" onClick={openChangeAccountModal}>
@@ -67,7 +52,7 @@ export default function BalanceCard({
         <QuickMenuButton label="Cartões" onClick={openChangeCreditCardModal}>
           <CreditCardIcon fontSize="large" />
         </QuickMenuButton>
-        <QuickMenuButton label="Histórico" onClick={openSheetView}>
+        <QuickMenuButton label="Histórico" onClick={handleOpenSheetView}>
           <HistoryIcon fontSize="large" />
         </QuickMenuButton>
       </div>

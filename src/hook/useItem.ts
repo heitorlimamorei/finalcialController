@@ -23,7 +23,7 @@ export default function useItem(sheetId: string) {
 
   async function createItem(item: INewItem) {
     const response = await axios.post(`${api}/items`, item);
-    if (response.status == 200) mutate(`/items?sheetid=${sheetId}`);
+    if (response.status == 201) mutate(`/items?sheetid=${sheetId}`);
     return response.data;
   }
   async function deleteItem(item: IBackItem, sheetId: string) {
