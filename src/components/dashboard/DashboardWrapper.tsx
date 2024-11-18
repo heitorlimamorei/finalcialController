@@ -1,6 +1,9 @@
 'use client';
+import { useEffect } from 'react';
+
 import { useRouter } from 'next/navigation';
 
+import useParams from '@/hook/useParams';
 import { IUser } from '@/types/user';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
@@ -20,8 +23,16 @@ export default function DashboardWrapper({
   accountId,
   creditCardId,
 }: DashboardWrapperProps) {
-  const { data: user, error: userError } = useSWR<IUser>(`/user/${userId}`, fetcher);
+  const { data: user, error: userError } = useSWR<IUser>(
+    `/user/${userId}`,
+    fetcher,
+  );
   const router = useRouter();
+  const { saveParams, getParams } = useParams();
+  const { currentSelectionType, currentSelectionValue } = getParams();
+  useEffect(() => {
+    saveParams(accountId, creditCardId);
+  }, [accountId, creditCardId]);
 
   if (userError) {
     return <div>Error loading user data...</div>;
@@ -30,7 +41,9 @@ export default function DashboardWrapper({
   if (!user) return <div></div>;
 
   if (accountId == null && creditCardId == null) {
-    router.push(`/dashboard?u=${userId}&account=wallet`);
+    const defaultQuery = `u=${userId}&account=wallet`;
+    const query = `u=${userId}&${currentSelectionType === 'account' ? `account=${currentSelectionValue}` : `creditcard=${currentSelectionValue}`}`;
+    router.push(`/dashboard?${currentSelectionValue ? query : defaultQuery}`);
     return null;
   }
   return (
@@ -39,7 +52,12 @@ export default function DashboardWrapper({
         <WelcomeHeader name={user.name} />
         <DashboardMobile user={user} />
       </div>
-      <NavBar u={userId} cid={creditCardId} acid={accountId} selectedButton={'home'} />
+      <NavBar
+        u={userId}
+        cid={creditCardId}
+        acid={accountId}
+        selectedButton={'home'}
+      />
     </div>
   );
 }
