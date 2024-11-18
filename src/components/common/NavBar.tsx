@@ -1,6 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
+import useParams from '@/hook/useParams';
 import AssistantIcon from '@mui/icons-material/Assistant';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import HomeIcon from '@mui/icons-material/Home';
@@ -18,8 +19,11 @@ interface NavBarProps {
 
 export default function NavBar({ selectedButton, u, cid, acid }: NavBarProps) {
   const router = useRouter();
+  const { getParams } = useParams();
+  const { currentSelectionType, currentSelectionValue } = getParams();
 
-  const query = `u=${u}${cid ? '&creditcard=' + cid : ''}&${acid ? '&account=' + acid : ''}`;
+  const query = `u=${u}&${currentSelectionType === 'account' ? `account=${currentSelectionValue}` : `creditcard=${currentSelectionValue}`}`;
+  console.log(query);
 
   const disableAi = !cid && !acid;
 
