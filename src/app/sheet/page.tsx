@@ -11,6 +11,8 @@ import useSWR from 'swr';
 import AccountView from '@/components/accountView/AccountView';
 import Loading from '@/components/common/Loading';
 import NavBar from '@/components/common/NavBar';
+import useGetParams from '@/hook/useGetParams';
+import useParams from '@/hook/useParams';
 
 interface ISheetProps {
   searchParams: {
@@ -23,16 +25,26 @@ interface ISheetProps {
 export default function Sheet(props: ISheetProps) {
   const id = props.searchParams.u;
 
-  const { data: user, error: userError } = useSWR<IUser>(`/user/${id}`, fetcher);
+  const { data: user, error: userError } = useSWR<IUser>(
+    `/user/${id}`,
+    fetcher,
+  );
   const { data: accounts, error: accountError } = useSWR<IAccount[]>(
     `/account?owid=${id}`,
     fetcher,
   );
   const router = useRouter();
+  const { getParams } = useParams();
+  const { currentSelectionType, currentSelectionValue } = getParams();
 
   const handleSelectAccount = (accountId: string) => {
     router.push(`/sheet?u=${id}&aid=${accountId}`);
   };
+
+  if (!currentSelectionValue) {
+    router.push(`/dashboard?u=${id}`);
+    return;
+  }
 
   if (userError || accountError) {
     return <div>Error loading data...</div>;
@@ -45,28 +57,12 @@ export default function Sheet(props: ISheetProps) {
       </div>
     );
   }
-  if (!props.searchParams.aid && !props.searchParams.cid) {
-    return (
-      <div className="h-[100vh] dark:text-white text-black p-2 bg-gray-100 dark:bg-zinc-800">
-        <h1 className="text-xl font-bold">Selecione a conta para visualizar</h1>
-        <ul>
-          {accounts!.map((account) => (
-            <li
-              key={account.id}
-              className="border-zinc-600 border-2 p-3 my-1 rounded-xl hover:cursor-pointer"
-              onClick={() => handleSelectAccount(account.id)}>
-              <h1 className="text-xl font-semibold">{account.nickname}</h1>
-            </li>
-          ))}
-        </ul>
-        <NavBar u={props.searchParams.u} selectedButton="sheet" />
-      </div>
-    );
-  }
 
   return (
     <div className="h-[100vh]">
-      {props.searchParams.aid && <AccountView accountId={props.searchParams.aid} user={user} />}
+      {currentSelectionType === 'account' && (
+        <AccountView accountId={currentSelectionValue} user={user} />
+      )}
       <NavBar u={props.searchParams.u} selectedButton="sheet" />
     </div>
   );
