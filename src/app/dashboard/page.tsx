@@ -13,11 +13,5 @@ export default function Dashboard(props: IDashboardProps) {
   const accountId = props.searchParams?.account;
   const creditCardId = props.searchParams?.creditcard;
 
-  return (
-    <DashboardWrapper
-      userId={id}
-      accountId={accountId}
-      creditCardId={creditCardId}
-    />
-  );
+  return <DashboardWrapper userId={id} accountId={accountId} creditCardId={creditCardId} />;
 }

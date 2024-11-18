@@ -20,10 +20,7 @@ export default function DashboardWrapper({
   accountId,
   creditCardId,
 }: DashboardWrapperProps) {
-  const { data: user, error: userError } = useSWR<IUser>(
-    `/user/${userId}`,
-    fetcher,
-  );
+  const { data: user, error: userError } = useSWR<IUser>(`/user/${userId}`, fetcher);
   const router = useRouter();
 
   if (userError) {
@@ -42,12 +39,7 @@ export default function DashboardWrapper({
         <WelcomeHeader name={user.name} />
         <DashboardMobile user={user} />
       </div>
-      <NavBar
-        u={userId}
-        cid={creditCardId}
-        acid={accountId}
-        selectedButton={'home'}
-      />
+      <NavBar u={userId} cid={creditCardId} acid={accountId} selectedButton={'home'} />
     </div>
   );
 }
