@@ -23,13 +23,11 @@ export default function DashboardWrapper({
   accountId,
   creditCardId,
 }: DashboardWrapperProps) {
-  const { data: user, error: userError } = useSWR<IUser>(
-    `/user/${userId}`,
-    fetcher,
-  );
+  const { data: user, error: userError } = useSWR<IUser>(`/user/${userId}`, fetcher);
   const router = useRouter();
   const { saveParams, getParams } = useParams();
   const { currentSelectionType, currentSelectionValue } = getParams();
+
   useEffect(() => {
     saveParams(accountId, creditCardId);
   }, [accountId, creditCardId]);
@@ -46,18 +44,14 @@ export default function DashboardWrapper({
     router.push(`/dashboard?${currentSelectionValue ? query : defaultQuery}`);
     return null;
   }
+
   return (
     <div className="flex flex-col h-screen w-screen justify-between bg-gray-100 text-black dark:bg-zinc-800 dark:text-white overflow-y-scroll">
       <div className="w-full h-full overflow-y-hidden">
         <WelcomeHeader name={user.name} />
         <DashboardMobile user={user} />
       </div>
-      <NavBar
-        u={userId}
-        cid={creditCardId}
-        acid={accountId}
-        selectedButton={'home'}
-      />
+      <NavBar u={userId} cid={creditCardId} acid={accountId} selectedButton={'home'} />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import React from 'react';
 
 import { useRouter } from 'next/navigation';
 
+import useParams from '@/hook/useParams';
 import { IAccount } from '@/types/account';
 import { IUser } from '@/types/user';
 import fetcher from '@/utils/fetcher';
@@ -11,8 +12,6 @@ import useSWR from 'swr';
 import AccountView from '@/components/accountView/AccountView';
 import Loading from '@/components/common/Loading';
 import NavBar from '@/components/common/NavBar';
-import useGetParams from '@/hook/useGetParams';
-import useParams from '@/hook/useParams';
 
 interface ISheetProps {
   searchParams: {
@@ -25,10 +24,7 @@ interface ISheetProps {
 export default function Sheet(props: ISheetProps) {
   const id = props.searchParams.u;
 
-  const { data: user, error: userError } = useSWR<IUser>(
-    `/user/${id}`,
-    fetcher,
-  );
+  const { data: user, error: userError } = useSWR<IUser>(`/user/${id}`, fetcher);
   const { data: accounts, error: accountError } = useSWR<IAccount[]>(
     `/account?owid=${id}`,
     fetcher,

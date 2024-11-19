@@ -1,8 +1,5 @@
 export default function useParams() {
-  const saveParams = (
-    account: string | undefined,
-    creditcard: string | undefined,
-  ) => {
+  const saveParams = (account: string | undefined, creditcard: string | undefined) => {
     if (account) {
       localStorage.setItem('currentSelectionType', 'account');
       localStorage.setItem('currentSelectionValue', account as string);
