@@ -28,3 +28,9 @@ export const toggleJsonToDate = (date: string) => {
   if (!(typeof date == 'string')) throw new Error('This method supports only string');
   return new Date(date);
 };
+
+export const getDifferenceInHours = (date1: Date, date2: Date): number => {
+  const differenceInMillis = Math.abs(date1.getTime() - date2.getTime());
+  const differenceInHours = differenceInMillis / (1000 * 60 * 60);
+  return differenceInHours;
+};

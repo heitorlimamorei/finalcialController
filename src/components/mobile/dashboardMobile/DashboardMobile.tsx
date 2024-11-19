@@ -1,8 +1,6 @@
 'use client';
 import { useState } from 'react';
 
-import { IAccount } from '@/types/account';
-import { ICreditCard } from '@/types/creditCard';
 import { IUser } from '@/types/user';
 
 import ChangeDashboardView from '@/components/dashboard/ChangeDashboardView';

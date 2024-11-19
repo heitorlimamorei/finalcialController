@@ -1,4 +1,5 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 
 import useParams from '@/hook/useParams';
@@ -23,7 +24,6 @@ export default function NavBar({ selectedButton, u, cid, acid }: NavBarProps) {
   const { currentSelectionType, currentSelectionValue } = getParams();
 
   const query = `u=${u}&${currentSelectionType === 'account' ? `account=${currentSelectionValue}` : `creditcard=${currentSelectionValue}`}`;
-  console.log(query);
 
   const disableAi = !cid && !acid;
 

@@ -1,9 +1,11 @@
 'use client';
+
 import { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
 import useParams from '@/hook/useParams';
+import useValidateRecurringItem from '@/hook/useValidateRecurringItem';
 import { IUser } from '@/types/user';
 import fetcher from '@/utils/fetcher';
 import useSWR from 'swr';
@@ -27,6 +29,8 @@ export default function DashboardWrapper({
   const router = useRouter();
   const { saveParams, getParams } = useParams();
   const { currentSelectionType, currentSelectionValue } = getParams();
+
+  useValidateRecurringItem(user?.personalSpreadSheet!);
 
   useEffect(() => {
     saveParams(accountId, creditCardId);
