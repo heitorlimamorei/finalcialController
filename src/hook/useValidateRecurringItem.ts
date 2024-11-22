@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { getDifferenceInHours, toggleJsonToDate } from '@/utils/datefunctions';
 import axios from 'axios';
