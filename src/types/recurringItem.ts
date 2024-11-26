@@ -20,7 +20,7 @@ export interface INewRecurringItem {
   description: string;
   amount: number;
   frequency: number; // n days of interval between billing charges
-  startDate: Date;
+  startDate: string; // JSON DATE;
   paymentMethod: 'credit-card' | 'account';
   paymentMethodId: string;
   categoryId: string;
@@ -41,3 +41,5 @@ export default interface IRecurringItem {
   paymentMethod: 'credit-card' | 'account';
   paymentMethodId: string;
 }
+
+export type PaymentMethodType = 'credit-card' | 'account';
